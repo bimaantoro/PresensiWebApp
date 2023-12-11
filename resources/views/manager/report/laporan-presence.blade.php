@@ -51,7 +51,7 @@
               <div class="row mt-2">
                 <div class="col-12">
                   <div class="form-group">
-                    <select name="id_employee" id="idEmployee" class="form-select">
+                    <select name="id_employee" id="id_employee" class="form-select">
                       <option value="">Pilih karyawan</option>
                       @foreach ($employees as $employee)
                           <option value="{{ $employee->id_employee }}">{{ $employee->fullname }}</option>
