@@ -26,7 +26,7 @@
           <input type="text" class="form-control" name="position" value="{{ old('position', $employee->position) }}">
         </div>
       </div>
-      <div class="col-lg-12">
+      {{-- <div class="col-lg-12">
         <div class="mb-3">
           <div class="form-label">Jenis kelamin</div>
           <select class="form-select" name="gender" id="gender">
@@ -34,7 +34,7 @@
             <option value="p" @selected(old('gender', $employee->gender) == 'p')>Perempuan</option>
           </select>
         </div>
-      </div>
+      </div> --}}
       <div class="col-lg-12">
         <div class="mb-3">
           <div class="form-label">Foto</div>

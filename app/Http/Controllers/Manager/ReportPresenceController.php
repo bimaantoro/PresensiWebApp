@@ -1,42 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class PresenceEmployeeController extends Controller
+class ReportPresenceController extends Controller
 {
     //
-    public function index() {
-        return view('admin.presence.index');
-    }
-
-    public function getPresence(Request $request) {
-        $date = $request->date;
-
-        $presence = DB::table('presences')
-        ->select('presences.*', 'fullname')
-        ->join('employees', 'presences.employee_id', '=', 'employees.id_employee')
-        ->where('presence_at', $date)
-        ->get();
-
-        return view('admin.presence.get-presence', compact('presence'));
-    }
-
-    public function showMap(Request $request) {
-        $id = $request->id;
-        
-        $presence = DB::table('presences')
-        ->join('employees', 'presences.employee_id', '=', 'employees.id_employee')
-        ->where('id', $id)
-        ->first();
-
-        return view('admin.presence.show-map', compact('presence'));
-    }
-
-    public function report() {
+    public function reportPresence() {
         $months = [
             "",
             "Januari",
@@ -58,7 +31,7 @@ class PresenceEmployeeController extends Controller
         ->orderBy('fullname')
         ->get();
 
-        return view('admin.presence.laporan', compact('months', 'employees'));
+        return view('manager.report.laporan-presence', compact('months', 'employees'));
     }
 
     public function printReportPresence(Request $request) {
@@ -93,10 +66,10 @@ class PresenceEmployeeController extends Controller
         ->orderBy('presence_at')
         ->get();
 
-        return view('admin.presence.cetak-laporan', compact('month', 'year', 'months', 'employee', 'presence'));
+        return view('manager.presence.cetak-laporan', compact('month', 'year', 'months', 'employee', 'presence'));
     }
 
-    public function rekap() {
+    public function recapPresence() {
         $months = [
             "",
             "Januari",
@@ -113,7 +86,7 @@ class PresenceEmployeeController extends Controller
             "Desember"
         ];
 
-        return view('admin.presence.rekap-presence', compact('months'));
+        return view('manager.report.recap-presence', compact('months'));
     }
 
     public function printRecapPresence(Request $request) {
@@ -147,6 +120,6 @@ class PresenceEmployeeController extends Controller
 
         dd($recapPresence);
 
-        return view('admin.presence.cetak-rekap-presence', compact('month', 'year', 'months', 'recapPresence'));
+        return view('manager.presence.cetak-rekap-presence', compact('month', 'year', 'months', 'recapPresence'));
     }
 }

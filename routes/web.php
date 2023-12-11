@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RedirectAuthenticatedUsersController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\History\HistoryController;
+use App\Http\Controllers\Manager\ReportPresenceController;
 use App\Http\Controllers\Pengajuan\PengajuanIzinController;
 use App\Http\Controllers\Presence\PresenceController;
 use App\Http\Controllers\Profile\ProfileController;
@@ -24,19 +25,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::controller(LoginController::class)->group(function() {
-    Route::get('/', 'index')->name('login');
-    Route::post('/login', 'authenticate')->name('authenticate');
+Route::middleware(['guest:employee'])->group(function() {
+    Route::controller(LoginController::class)->group(function() {
+        Route::get('/', 'index')->name('login');
+        Route::post('/login', 'authenticate')->name('authenticate');
+    });
 });
 
 Route::middleware(['auth:employee'])->group(function() {
 
     Route::get('/redirectAuthenticatedUsers', [RedirectAuthenticatedUsersController::class, 'home']);
 
-    // Route::post('/logout', [LoginController::class, 'logout']);
+    // Manager
+    Route::middleware(['authRole:manager'])->group(function() {
+
+        Route::get('/manager/logout', [LoginController::class, 'logoutManager']);
+
+        Route::controller(ReportPresenceController::class)->group(function() {
+            Route::get('/manager/presence/report', 'reportPresence')->name('report-presence');
+            Route::get('/manager/presence/recap', 'recapPresence')->name('recap-presence');
+            Route::post('/admin/report-presence/print', 'printReportPresence');
+            Route::post('/admin/recap-presence/print', 'printRecapPresence');
+        });
+    });
 
     // Admin
     Route::middleware(['authRole:admin'])->group(function() {
+        Route::get('/admin/logout', [LoginController::class, 'logoutAdmin']);
+
         Route::get('/admin/dashboard', [DashboardAdminController::class, 'index'])->name('dashboard-admin');
 
         Route::controller(EmployeeAdminController::class)->group(function() {
@@ -51,10 +67,10 @@ Route::middleware(['auth:employee'])->group(function() {
             Route::get('/admin/presences', 'index')->name('presence-admin');
             Route::post('/admin/presences', 'getPresence')->name('presence-admin.get-presence');
             Route::post('/admin/presence/map', 'showMap')->name('presence-admin.show-map');
-            Route::get('/admin/presence/report', 'report')->name('report-presence-admin');
-            Route::post('/admin/presence/cetak-laporan', 'cetakLaporan');
-            Route::get('/admin/presence/rekap', 'rekap')->name('rekap-presence-admin');
-            Route::post('/admin/presence/cetak-rekap', 'cetakRekap');
+            // Route::get('/admin/presence/report', 'report')->name('report-presence-admin');
+            // Route::post('/admin/presence/cetak-laporan', 'printReportPresence');
+            // Route::get('/admin/presence/rekap', 'rekap')->name('rekap-presence-admin');
+            // Route::post('/admin/presence/cetak-rekap', 'printRecapPresence');
         });
 
         Route::controller(PengajuanIzinKaryawanController::class)->group(function() {
@@ -66,6 +82,8 @@ Route::middleware(['auth:employee'])->group(function() {
 
     // User
     Route::middleware(['authRole:user'])->group(function() {
+        Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::controller(PresenceController::class)->group(function() {
