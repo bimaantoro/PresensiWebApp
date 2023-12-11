@@ -84,7 +84,7 @@ class EmployeeAdminController extends Controller
         $password = Hash::make('12345678');
         $fullname = $request->fullname;
         $position = $request->position;
-        $gender = $request->gender;
+        // $gender = $request->gender;
         $oldPhoto = $request->old_photo;
 
         if($request->hasFile('photo')) {
@@ -99,7 +99,7 @@ class EmployeeAdminController extends Controller
                 'password' => $password,
                 'fullname' => $fullname,
                 'position' => $position,
-                'gender' => $gender,
+                // 'gender' => $gender,
                 'photo' => $photo,
             ];
 
