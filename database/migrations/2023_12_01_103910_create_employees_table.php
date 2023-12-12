@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('id_employee', 50)->primary();
             $table->string('username', 50)->unique();
             $table->string('fullname');
-            $table->string('position', 50)->nullable();
+            $table->string('position', 50);
             // $table->string('gender', 25)->nullable();
             $table->string('password');
             $table->string('role', 10)->default('user');

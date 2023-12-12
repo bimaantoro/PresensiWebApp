@@ -243,6 +243,7 @@
             }).then((result) => {
               $("#fullname").focus();
             });
+            return false;
           } else if(position === "") {
             Swal.fire({
               icon: "warning",
@@ -252,6 +253,7 @@
             }).then((result) => {
               $("#position").focus();
             });
+            return false;
           }
         });
 

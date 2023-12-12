@@ -33,6 +33,7 @@ class UserSeeder extends Seeder
             'id_employee' => '111',
             'username' => 'manager',
             'fullname' => 'Manager KOPINETGO',
+            'position' => 'manager',
             'password' => bcrypt('12345678'),
             'role' => 'manager'
         ]);
@@ -41,6 +42,7 @@ class UserSeeder extends Seeder
             'id_employee' => '222',
             'username' => 'admin',
             'fullname' => 'Admin KOPINETGO',
+            'position' => 'admin',
             'password' => bcrypt('12345678'),
             'role' => 'admin'
         ]);
