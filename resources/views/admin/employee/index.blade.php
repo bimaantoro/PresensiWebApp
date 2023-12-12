@@ -132,31 +132,31 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form action="{{ route('employee.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('employee.store') }}" id="form-add-employee" method="POST" enctype="multipart/form-data">
               @csrf
               <div class="row">
                 <div class="col-lg-12">
                   <div class="mb-3">
                     <label class="form-label">ID Karyawan</label>
-                    <input type="text" class="form-control" name="id_employee">
+                    <input type="text" id="id_employee" class="form-control" name="id_employee">
                   </div>
                 </div>
                 <div class="col-lg-12">
                   <div class="mb-3">
                     <label class="form-label">Username</label>
-                    <input type="text" class="form-control" name="username">
+                    <input type="text" id="username" class="form-control" name="username">
                   </div>
                 </div>
                 <div class="col-lg-12">
                   <div class="mb-3">
                     <label class="form-label">Nama Lengkap</label>
-                    <input type="text" class="form-control" name="fullname">
+                    <input type="text" id="fullname" class="form-control" name="fullname">
                   </div>
                 </div>
                 <div class="col-lg-12">
                   <div class="mb-3">
                     <label class="form-label">Jabatan</label>
-                    <input type="text" class="form-control" name="position">
+                    <input type="text" id="position" class="form-control" name="position">
                   </div>
                 </div>
                 {{-- <div class="col-lg-12">
@@ -206,6 +206,53 @@
       $(function() {
         $("#btn-add-employee").click(function() {
           $("#modal-add-employee").modal("show");
+        });
+
+        $("#form-add-employee").submit(function() {
+          const idEmployee = $("#id_employee").val();
+          const username = $("#username").val();
+          const fullname = $("#fullname").val();
+          const position = $("#position").val();
+
+          if(idEmployee === "") {
+            Swal.fire({
+              icon: "warning",
+              title: 'Warning!',
+              text: "Bidang ini harus diisi",
+              confirmButtonText: "OK"
+            }).then((result) => {
+              $("#id_employee").focus();
+            });
+            return false;
+          } else if(username === "") {
+            Swal.fire({
+              icon: "warning",
+              title: 'Warning!',
+              text: "Bidang ini harus diisi",
+              confirmButtonText: "OK"
+            }).then((result) => {
+              $("#username").focus();
+            });
+            return false;
+          } else if(fullname === "") {
+            Swal.fire({
+              icon: "warning",
+              title: 'Warning!',
+              text: "Bidang ini harus diisi",
+              confirmButtonText: "OK"
+            }).then((result) => {
+              $("#fullname").focus();
+            });
+          } else if(position === "") {
+            Swal.fire({
+              icon: "warning",
+              title: 'Warning!',
+              text: "Bidang ini harus diisi",
+              confirmButtonText: "OK"
+            }).then((result) => {
+              $("#position").focus();
+            });
+          }
         });
 
         $(".edit").click(function() {
