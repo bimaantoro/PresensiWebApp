@@ -21,7 +21,6 @@
             <div class="d-none d-xl-block ps-2">
               <div>{{ Auth::guard('employee')->user()->fullname }}</div>
               <div class="mt-1 small text-secondary">{{ Auth::guard('employee')->user()->role }}</div>
-              <div>admin</div>
             </div>
           </a>
           <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
