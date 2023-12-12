@@ -13,9 +13,9 @@
                     <b>{{ date('d-m-Y', strtotime($h->presence_at)) }}</b><br>
                 </div>
                 <span class="badge {{ $h->check_in < '07:00' ? 'bg-success' : 'bg-danger' }}">
-                    {{ $h->check_in }}
+                    Masuk: {{ $h->check_in }}
                 </span>
-                <span class="badge bg-danger">{{ $h->check_out }}</span>
+                <span class="badge bg-danger">Keluar: {{ $h->check_out }}</span>
             </div>
         </div>
     </li>
