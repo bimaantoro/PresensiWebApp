@@ -15,11 +15,11 @@
                 {{ session('success') }}
             </div>
         @endif
-        @if (session()->has('error'))
+        {{-- @if (session()->has('error'))
             <div class="alert alert-danger">
                 {{ session('danger') }}
             </div>
-        @endif
+        @endif --}}
     </div>
     <form action="/profile/{{ $employee->id_employee }}" method="POST" enctype="multipart/form-data">
         @method('put')
