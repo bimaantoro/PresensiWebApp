@@ -24,7 +24,6 @@
             </div>
           </a>
           <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-            <a href="./settings.html" class="dropdown-item">Settings</a>
             <a href="/manager/logout" class="dropdown-item">Logout</a>
           </div>
         </div>
