@@ -4,11 +4,11 @@ use App\Http\Controllers\Admin\DashboardAdminController;
 use App\Http\Controllers\Admin\EmployeeAdminController;
 use App\Http\Controllers\Admin\PengajuanIzinKaryawanController;
 use App\Http\Controllers\Admin\PresenceEmployeeController;
+use App\Http\Controllers\Admin\ReportPresenceController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RedirectAuthenticatedUsersController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\History\HistoryController;
-use App\Http\Controllers\Manager\ReportPresenceController;
 use App\Http\Controllers\Pengajuan\PengajuanIzinController;
 use App\Http\Controllers\Presence\PresenceController;
 use App\Http\Controllers\Profile\ProfileController;
@@ -36,24 +36,26 @@ Route::middleware(['auth:employee'])->group(function() {
 
     Route::get('/redirectAuthenticatedUsers', [RedirectAuthenticatedUsersController::class, 'home']);
 
-    // Manager
-    Route::middleware(['authRole:manager'])->group(function() {
+    // // Manager
+    // Route::middleware(['authRole:manager'])->group(function() {
 
-        Route::get('/manager/logout', [LoginController::class, 'logout']);
+    //     Route::get('/manager/logout', [LoginController::class, 'logout']);
 
-        Route::controller(ReportPresenceController::class)->group(function() {
-            Route::get('/manager/presence-employee/report', 'reportPresence')->name('report-presence');
-            Route::get('/manager/presence-employee/recap', 'recapPresence')->name('recap-presence');
-            Route::post('/manager/report-presence/print', 'printReportPresence');
-            Route::post('/manager/recap-presence/print', 'printRecapPresence');
-        });
-    });
+    //     Route::controller(ReportPresenceController::class)->group(function() {
+    //         Route::get('/manager/presence-employee/report', 'reportPresence')->name('report-presence');
+    //         Route::get('/manager/presence-employee/recap', 'recapPresence')->name('recap-presence');
+    //         Route::post('/manager/report-presence/print', 'printReportPresence');
+    //         Route::post('/manager/recap-presence/print', 'printRecapPresence');
+    //     });
+    // });
 
     // Admin
     Route::middleware(['authRole:admin'])->group(function() {
         Route::get('/admin/logout', [LoginController::class, 'logout']);
 
-        Route::get('/admin/dashboard', [DashboardAdminController::class, 'index'])->name('dashboard-admin');
+        Route::controller(DashboardAdminController::class)->group(function() {
+            Route::get('/admin/dashboard', 'index')->name('dashboard-admin');
+        });
 
         Route::controller(EmployeeAdminController::class)->group(function() {
             Route::get('/admin/employees', 'index')->name('employee-admin');
@@ -67,10 +69,13 @@ Route::middleware(['auth:employee'])->group(function() {
             Route::get('/admin/presences', 'index')->name('presence-admin');
             Route::post('/admin/presences', 'getPresence')->name('presence-admin.get-presence');
             Route::post('/admin/presence/map', 'showMap')->name('presence-admin.show-map');
-            // Route::get('/admin/presence/report', 'report')->name('report-presence-admin');
-            // Route::post('/admin/presence/cetak-laporan', 'printReportPresence');
-            // Route::get('/admin/presence/rekap', 'rekap')->name('rekap-presence-admin');
-            // Route::post('/admin/presence/cetak-rekap', 'printRecapPresence');
+        });
+
+        Route::controller(ReportPresenceController::class)->group(function() {
+            Route::get('/admin/presence-student/report', 'reportPresence')->name('report-presence-admin');
+            Route::get('/admin/presence-student/recap', 'recapPresence')->name('recap-presence-admin');
+            Route::post('/admin/report-presence/print', 'printReportPresence');
+            Route::post('/admin/recap-presence/print', 'printRecapPresence');
         });
 
         Route::controller(PengajuanIzinKaryawanController::class)->group(function() {
@@ -84,7 +89,9 @@ Route::middleware(['auth:employee'])->group(function() {
     Route::middleware(['authRole:user'])->group(function() {
         Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::controller(DashboardController::class)->group(function() {
+            Route::get('/dashboard', 'index')->name('dashboard');
+        });
 
         Route::controller(PresenceController::class)->group(function() {
             Route::get('/presence/create', 'create')->name('presence.create');

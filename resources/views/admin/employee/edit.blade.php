@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="mb-3">
-          <label class="form-label">ID Karyawan</label>
+          <label class="form-label">ID</label>
           <input type="text" class="form-control" name="id_employee" value="{{ old('id_employee', $employee->id_employee) }}" disabled>
         </div>
       </div>
@@ -22,7 +22,7 @@
       </div>
       <div class="col-lg-12">
         <div class="mb-3">
-          <label class="form-label">Jabatan</label>
+          <label class="form-label">Asal</label>
           <input type="text" class="form-control" name="position" value="{{ old('position', $employee->position) }}">
         </div>
       </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Manager;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -31,7 +31,7 @@ class ReportPresenceController extends Controller
         ->orderBy('fullname')
         ->get();
 
-        return view('manager.report.laporan-presence', compact('months', 'employees'));
+        return view('admin.report-presence.laporan', compact('months', 'employees'));
     }
 
     public function printReportPresence(Request $request) {
@@ -66,7 +66,7 @@ class ReportPresenceController extends Controller
         ->orderBy('presence_at')
         ->get();
 
-        return view('manager.report.print-presence', compact('months', 'month', 'year', 'employee', 'presence'));
+        return view('admin.report-presence.print-presence', compact('months', 'month', 'year', 'employee', 'presence'));
     }
 
     public function recapPresence() {
@@ -86,7 +86,7 @@ class ReportPresenceController extends Controller
             "Desember"
         ];
 
-        return view('manager.report.recap-presence', compact('months'));
+        return view('admin.report-presence.recap-presence', compact('months'));
     }
 
     public function printRecapPresence(Request $request) {
@@ -149,6 +149,6 @@ class ReportPresenceController extends Controller
         ->get();
 
 
-        return view('manager.report.print-recap-presence', compact('month', 'year', 'months', 'recapPresence'));
+        return view('admin.report-presence.print-recap-presence', compact('month', 'year', 'months', 'recapPresence'));
     }
 }

@@ -6,7 +6,7 @@
           <div class="row g-2 align-items-center">
             <div class="col">
               <h2 class="page-title">
-                Data Karyawan
+                Data Peserta Magang
               </h2>
             </div>
           </div>
@@ -40,7 +40,7 @@
                         <div class="row">
                           <div class="col-8">
                             <div class="form-group">
-                              <input type="text" class="form-control" name="fullname" placeholder="Nama Karyawan" value="{{ request()->fullname }}">
+                              <input type="text" class="form-control" name="fullname" placeholder="Nama" value="{{ request()->fullname }}">
                             </div>
                           </div>
                           <div class="col-4">
@@ -56,7 +56,7 @@
                       <a href="#" class="btn btn-primary d-none d-sm-inline-block" id="btn-add-employee">
                         <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></svg>
-                        Tambah Karyawan
+                        Tambah Peserta
                       </a>
                     </div>
                   </div>
@@ -69,7 +69,7 @@
                           <th>No</th>
                           <th>ID</th>
                           <th>Nama</th>
-                          <th>Jabatan</th>
+                          <th>Asal</th>
                           <th class="w-1"></th>
                         </tr>
                       </thead>
@@ -128,7 +128,7 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Tambah data karyawan</h5>
+            <h5 class="modal-title">Tambah data Peserta</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -137,7 +137,7 @@
               <div class="row">
                 <div class="col-lg-12">
                   <div class="mb-3">
-                    <label class="form-label">ID Karyawan</label>
+                    <label class="form-label">ID</label>
                     <input type="text" id="id_employee" class="form-control" name="id_employee">
                   </div>
                 </div>
@@ -192,7 +192,7 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Edit data karyawan</h5>
+            <h5 class="modal-title">Edit data Peserta</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body" id="edit-employee-form">

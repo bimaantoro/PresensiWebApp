@@ -29,29 +29,20 @@ class UserSeeder extends Seeder
 
         // $user->assignRole('user');
 
-        $manager = Employee::create([
-            'id_employee' => '111',
-            'username' => 'manager',
-            'fullname' => 'Manager KOPINETGO',
-            'position' => 'manager',
-            'password' => bcrypt('12345678'),
-            'role' => 'manager'
-        ]);
-
         $admin = Employee::create([
             'id_employee' => '222',
             'username' => 'admin',
-            'fullname' => 'Admin KOPINETGO',
+            'fullname' => 'Admin Telkom',
             'position' => 'admin',
             'password' => bcrypt('12345678'),
             'role' => 'admin'
         ]);
 
         $user = Employee::create([
-            'id_employee' => '331',
-            'username' => 'loremipsum',
-            'fullname' => 'mas lorem ipsum',
-            'position' => 'Software Engineering',
+            'id_employee' => '531420054',
+            'username' => 'bimantoro',
+            'fullname' => 'Muhammad Amirul Bimantoro',
+            'position' => 'Magang UNG',
             'password' => bcrypt('12345678'),
             'role' => 'user'
         ]);
