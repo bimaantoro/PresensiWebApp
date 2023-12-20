@@ -6,7 +6,7 @@
       <div class="card">
         <div class="card-body">
           <h4 class="mb-2">Welcome to E-Presensi! 👋</h4>
-          <p class="mb-4">Please sign-in to your account and start the adventure</p>
+          <p class="mb-4">Masuk ke akun Anda</p>
           <form id="formLogin" class="mb-3" action="{{ route('authenticate') }}" method="POST">
             @csrf
             <div class="mb-3">
@@ -34,7 +34,7 @@
                   name="password"
                   placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                   aria-describedby="password" />
-                <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                {{-- <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span> --}}
               </div>
             </div>
             <div class="mb-3">

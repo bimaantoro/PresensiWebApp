@@ -58,8 +58,8 @@ class DashboardController extends Controller
         $dataIzin = DB::table('pengajuan_izin')
         ->selectRaw('SUM(IF(status="i", 1, 0)) as jmlh_izin, SUM(IF(status="s", 1, 0)) as jmlh_sakit')
         ->where('employee_id', $idEmployee)
-        ->whereRaw('MONTH(izin_at)="' . $thisMonth . '"')
-        ->whereRaw('YEAR(izin_at)="' . $thisYear . '"')
+        ->whereRaw('MONTH(from_date_at)="' . $thisMonth . '"')
+        ->whereRaw('YEAR(from_date_at)="' . $thisYear . '"')
         ->where('status_approved', 1)
         ->first();
 

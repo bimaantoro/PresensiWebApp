@@ -9,11 +9,11 @@
             @if (!empty(Auth::guard('employee')->user()->photo))
                 <img src="{{ asset('storage/uploads/employee/' . Auth::guard('employee')->user()->photo) }}" alt="avatar" class="imaged w64" style="height: 60px">
             @else
-                <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
+                <img src="assets/img/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
             @endif
         </div>
         <div id="user-info">
-            <h2 id="user-name">{{ Auth::guard('employee')->user()->fullname }}</h2>
+            <h3 id="user-name">{{ Auth::guard('employee')->user()->fullname }}</h3>
             <span id="user-role">{{ Auth::guard('employee')->user()->position }}</span>
         </div>
     </div>

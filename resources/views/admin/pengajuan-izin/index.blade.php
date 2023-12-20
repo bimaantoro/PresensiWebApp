@@ -99,7 +99,7 @@
                                             @foreach ($dataIzin as $di)
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ date('d-m-Y', strtotime($di->izin_at)) }}</td>
+                                                    <td>{{ date('d-m-Y', strtotime($di->from_date_at)) }}</td>
                                                     <td>{{ $di->employee_id }}</td>
                                                     <td>{{ $di->fullname }}</td>
                                                     <td>{{ $di->position }}</td>
