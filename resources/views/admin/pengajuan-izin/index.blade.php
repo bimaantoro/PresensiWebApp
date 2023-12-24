@@ -86,7 +86,7 @@
                                             <tr>
                                                 <th>No</th>
                                                 <th>Tanggal</th>
-                                                <th>ID Karyawan</th>
+                                                <th>ID Pegawai</th>
                                                 <th>Nama</th>
                                                 <th>Jabatan</th>
                                                 <th>Status</th>

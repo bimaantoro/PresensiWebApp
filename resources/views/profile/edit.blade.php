@@ -1,7 +1,7 @@
 @extends('layouts.master-user')
 @section('header')
 <!-- App Header -->
- <div class="appHeader bg-danger text-light">
+ <div class="appHeader bg-primary text-light">
     <div class="pageTitle">Edit Profil</div>
     <div class="right"></div>
 </div>

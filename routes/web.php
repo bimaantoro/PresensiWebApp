@@ -37,6 +37,10 @@ Route::middleware(['auth:employee'])->group(function() {
 
     // Admin
     Route::middleware(['authRole:admin'])->group(function() {
+
+        Route::get('/admin/logout', [LoginController::class, 'logout']);
+
+
         Route::get('/admin/dashboard', [DashboardAdminController::class, 'index'])->name('dashboard-admin');
 
         Route::controller(EmployeeAdminController::class)->group(function() {
@@ -66,6 +70,8 @@ Route::middleware(['auth:employee'])->group(function() {
 
     // User
     Route::middleware(['authRole:user'])->group(function() {
+        Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::controller(PresenceController::class)->group(function() {

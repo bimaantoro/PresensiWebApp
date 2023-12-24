@@ -28,15 +28,15 @@
     <script src="{{ asset('assets/js/lib/demo-theme.min.js?1692870487') }}"></script>
     <div class="page">
       <!-- Sidebar -->
-      @include('partials.admin.sidebar')
+      @include('partials.admin-2.sidebar')
       <!-- Navbar -->
-      @include('partials.admin.header')
+      @include('partials.admin-2.header')
       <div class="page-wrapper">
         <!-- Page header -->
         <!-- Page body -->
         @yield('content')
         
-        @include('partials.admin.footer')
+        @include('partials.admin-2.footer')
       </div>
     </div>
 

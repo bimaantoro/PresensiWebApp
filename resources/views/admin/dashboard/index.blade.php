@@ -1,3 +1,72 @@
+{{-- @extends('layouts.master-admin')
+@section('content')
+
+<div class="container-xxl flex-grow-1 container-p-y">
+  <div class="row">
+    <div class="col-lg-12 col-md-12 order-1">
+      <div class="row">
+        <div class="col-lg-3 col-md-12 col-6 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="card-title d-flex align-items-start justify-content-between">
+                <div class="avatar flex-shrink-0">
+                  <i class="bx bx-fingerprint"></i>
+                </div>
+              </div>
+              <span class="fw-medium d-block mb-1">Hadir</span>
+              <h3 class="card-title mb-2">{{ $dataPresence->jmlh_hadir != null ? $dataPresence->jmlh_hadir : 0 }} Karyawan</h3>
+              <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-12 col-6 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="card-title d-flex align-items-start justify-content-between">
+                <div class="avatar flex-shrink-0">
+                  <i class="bx bx-time"></i>
+                </div>
+              </div>
+              <span class="fw-medium d-block mb-1">Terlambat</span>
+              <h3 class="card-title text-nowrap mb-1">{{ $dataPresence->jmlh_terlambat != null ? $dataPresence->jmlh_terlambat : 0 }} Karyawan</h3>
+              <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-12 col-6 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="card-title d-flex align-items-start justify-content-between">
+                <div class="avatar flex-shrink-0">
+                  <i class="bx bx-calendar"></i>
+                </div>
+              </div>
+              <span class="fw-medium d-block mb-1">Izin</span>
+              <h3 class="card-title text-nowrap mb-1">{{ $dataIzin->jmlh_izin != null ? $dataIzin->jmlh_izin : 0 }} Karyawan</h3>
+              <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-12 col-6 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <div class="card-title d-flex align-items-start justify-content-between">
+                <div class="avatar flex-shrink-0">
+                  <i class="bx bx-plus-medical"></i>
+                </div>
+              </div>
+              <span class="fw-medium d-block mb-1">Sakit</span>
+              <h3 class="card-title text-nowrap mb-1">{{ $dataIzin->jmlh_sakit != null ? $dataIzin->jmlh_sakit : 0 }} Karyawan</h3>
+              <small class="text-success fw-medium"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+@endsection --}}
+@section('content')
 @extends('layouts.master-admin')
 @section('content')
 <div class="page-header d-print-none">
@@ -46,7 +115,7 @@
                         </div>
                         <div class="col">
                           <div class="font-weight-medium">
-                            {{ $dataPresence->jmlh_hadir != null ? $dataPresence->jmlh_hadir : 0 }} Karyawan
+                            {{ $dataPresence->jmlh_hadir != null ? $dataPresence->jmlh_hadir : 0 }} Pegawai
                           </div>
                           <div class="text-secondary">
                             Hadir
@@ -67,7 +136,7 @@
                         </div>
                         <div class="col">
                           <div class="font-weight-medium">
-                            {{ $dataPresence->jmlh_terlambat != null ? $dataPresence->jmlh_terlambat : 0 }} Karyawan
+                            {{ $dataPresence->jmlh_terlambat != null ? $dataPresence->jmlh_terlambat : 0 }} Pegawai
                           </div>
                           <div class="text-secondary">
                             Terlambat
@@ -88,7 +157,7 @@
                         </div>
                         <div class="col">
                           <div class="font-weight-medium">
-                            {{ $dataIzin->jmlh_izin != null ? $dataIzin->jmlh_izin : 0 }} Karyawan
+                            {{ $dataIzin->jmlh_izin != null ? $dataIzin->jmlh_izin : 0 }} Pegawai
                           </div>
                           <div class="text-secondary">
                             Izin
@@ -107,7 +176,7 @@
                         </div>
                         <div class="col">
                           <div class="font-weight-medium">
-                            {{ $dataIzin->jmlh_sakit != null ? $dataIzin->jmlh_sakit : 0 }} Karyawan
+                            {{ $dataIzin->jmlh_sakit != null ? $dataIzin->jmlh_sakit : 0 }} Pegawai
                           </div>
                           <div class="text-secondary">
                             Sakit
@@ -120,4 +189,5 @@
         </div>
     </div>
 </div>
+@endsection
 @endsection

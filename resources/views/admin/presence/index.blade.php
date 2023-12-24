@@ -32,11 +32,11 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <table class="table table-vcenter table-striped">
+                                <table class="table table-vcenter table-striped">
                                         <thead>
                                             <tr>
                                                 <th>No</th>
-                                                <th>ID karyawan</th>
+                                                <th>ID Pegawai</th>
                                                 <th>Nama</th>
                                                 <th>Jam masuk</th>
                                                 <th>Jam pulang</th>

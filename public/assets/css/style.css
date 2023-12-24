@@ -27,7 +27,7 @@ body {
 
 a {
   transition: 0.2s all;
-  color: #ec4433;
+  color: #007bff;
   outline: 0 !important;
 }
 
@@ -35,7 +35,7 @@ a:hover,
 a:active,
 a:focus {
   outline: 0 !important;
-  color: #ec4433;
+  color: #007bff;
   text-decoration: none;
 }
 
@@ -7996,7 +7996,7 @@ body.dark-mode-active .cart-item .cart-item-footer {
 
 #user-section {
   height: 180px;
-  background-color: #ec4433;
+  background-color: #007bff;
   padding: 20px;
 }
 
