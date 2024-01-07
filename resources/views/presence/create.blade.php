@@ -18,7 +18,7 @@
     </div>
     <div class="row mt-2">
         <div class="col">
-            @if ($checkIsPresence > 0)
+        @if ($checkIsPresence > 0)
             <button id="btn-check-in" class="btn btn-danger btn-block">
                 <ion-icon name="camera-outline"></ion-icon> Absen Pulang
             </button>
@@ -68,10 +68,10 @@ crossorigin=""/>
         getLatitude.value = latitude;
         getLongitude.value = longitude;
         const map = L.map('map').setView([latitude, longitude], 13);
-        
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+
+        L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+        maxZoom: 20,
+        subdomains:['mt0','mt1','mt2','mt3']
         }).addTo(map);
 
         const marker = L.marker([latitude, longitude]).addTo(map)

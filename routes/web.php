@@ -39,19 +39,19 @@ Route::middleware(['auth:employee'])->group(function() {
     // Manager
     Route::middleware(['authRole:manager'])->group(function() {
 
-        Route::get('/manager/logout', [LoginController::class, 'logoutManager']);
+        Route::get('/manager/logout', [LoginController::class, 'logout']);
 
         Route::controller(ReportPresenceController::class)->group(function() {
-            Route::get('/manager/presence/report', 'reportPresence')->name('report-presence');
-            Route::get('/manager/presence/recap', 'recapPresence')->name('recap-presence');
-            Route::post('/admin/report-presence/print', 'printReportPresence');
-            Route::post('/admin/recap-presence/print', 'printRecapPresence');
+            Route::get('/manager/presence-employee/report', 'reportPresence')->name('report-presence');
+            Route::get('/manager/presence-employee/recap', 'recapPresence')->name('recap-presence');
+            Route::post('/manager/report-presence/print', 'printReportPresence');
+            Route::post('/manager/recap-presence/print', 'printRecapPresence');
         });
     });
 
     // Admin
     Route::middleware(['authRole:admin'])->group(function() {
-        Route::get('/admin/logout', [LoginController::class, 'logoutAdmin']);
+        Route::get('/admin/logout', [LoginController::class, 'logout']);
 
         Route::get('/admin/dashboard', [DashboardAdminController::class, 'index'])->name('dashboard-admin');
 
