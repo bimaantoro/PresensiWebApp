@@ -7,7 +7,7 @@
             <ion-icon name="chevron-back-outline"></ion-icon>
         </a>
     </div>
-    <div class="pageTitle">Form Izin</div>
+    <div class="pageTitle">Form Izin Sakit</div>
     <div class="right"></div>
 </div>
 <!-- * App Header -->
@@ -16,17 +16,27 @@
 <div class="section content-master-user">
     <div class="row">
         <div class="col">
-            <form action="{{ route('pengajuan-izin.store') }}" method="POST" id="form-pengajuan-izin">
+            <form action="/pengajuan-izin/sakit/store" method="POST" id="form-pengajuan-izin" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
-                    <input type="text" class="form-control datepicker" placeholder="Tanggal" id="izinAt" name="izinAt" autocomplete="off">
+                    <input type="text" class="form-control datepicker" placeholder="Dari Tanggal" id="from_date" name="from_date" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <select name="status" id="status" class="form-control">
-                        <option value="">-- Jenis pengajuan --</option>
-                        <option value="i">Izin</option>
-                        <option value="s">Sakit</option>
-                    </select>
+                    <input type="text" class="form-control datepicker" placeholder="Sampai Tanggal" id="to_date" name="to_date" autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Jumlah Hari" id="jumlah_hari" name="jumlah_hari" readonly>
+                </div>
+                <div class="custom-file-upload form-group" id="fileUpload1" style="height: 100px !important">
+                    <input type="file" name="file_sid" id="fileUploadInput" accept=".png, .jpg, .jpeg">
+                    <label for="fileUploadInput">
+                        <span>
+                            <strong>
+                                <ion-icon name="cloud-upload-outline" class="md hydrated"></ion-icon>
+                                <i>Tap to upload Surat Izin Dokter</i>
+                            </strong>
+                        </span>
+                    </label>
                 </div>
                 <div class="form-group">
                     <textarea name="keterangan" id="keterangan" class="form-control" cols="30" rows="5" placeholder="Keterangan"></textarea>
@@ -54,6 +64,33 @@
                 format: 'yyyy-mm-dd'    
             });
 
+            function loadJumlahHari() {
+                const fromDate = $('#from_date').val();
+                const toDate = $('#to_date').val();
+                const date1 = new Date(fromDate);
+                const date2 = new Date(toDate);
+
+                // to calculate the time different of two dates
+                const differenceInTime = date2.getTime() - date1.getTime();
+
+                // to calculate the no of days between two dates
+                const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+
+                let jumlahHari;
+
+                if(fromDate === '' || toDate === '') {
+                    jumlahHari = 0;
+                } else {
+                    jumlahHari = differenceInDays + 1;
+                }
+
+                $('#jumlah_hari').val(jumlahHari + " Hari");
+            }
+
+            $('#from_date, #to_date').change(function(e) {
+                loadJumlahHari(); 
+            });
+
             $('#izinAt').change(function(e) {
                 const izinAt = $(this).val();
                 $.ajax({
@@ -78,21 +115,14 @@
             });
 
             $('#form-pengajuan-izin').submit(function() {
-                const izinAt = $('#izinAt').val();
-                const status = $('#status').val();
+                const fromDate = $('#from_date').val();
+                const toDate = $('#to_date').val();
                 const keterangan = $('#keterangan').val();
 
-                if(izinAt === '') {
+                if(fromDate === '' || toDate === '') {
                     Swal.fire({
                         title: 'Oops!',
                         text: 'Tanggal harus diisi',
-                        icon: 'warning',
-                    });
-                    return false;
-                } else if(status === '') {
-                    Swal.fire({
-                        title: 'Oops!',
-                        text: 'Jenis pengajuan harus diisi',
                         icon: 'warning',
                     });
                     return false;

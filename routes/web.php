@@ -103,9 +103,15 @@ Route::middleware(['auth:employee'])->group(function() {
 
         Route::controller(PengajuanIzinController::class)->group(function() {
             Route::get('/pengajuan-izin', 'index')->name('pengajuan-izin');
+            Route::get('/pengajuan-izin/absen', 'createAbsen');
+            Route::post('/pengajuan-izin/absen/store', 'storeAbsen');
+
+            Route::get('/pengajuan-izin/sakit', 'createSakit');
+            Route::post('/pengajuan-izin/sakit/store', 'storeSakit');
+
             Route::get('/pengajuan-izin/create', 'create')->name('pengajuan-izin.create');
             Route::post('/pengajuan-izin/store', 'store')->name('pengajuan-izin.store');
-            Route::post('/pengajuan-izin/cek', 'cekPengajuanIzin');
+            Route::post('/pengajuan-izin/check', 'cekPengajuanIzin');
         });
     });
 });

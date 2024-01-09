@@ -9,7 +9,7 @@
             @if (!empty(Auth::guard('employee')->user()->photo))
                 <img src="{{ asset('storage/uploads/employee/' . Auth::guard('employee')->user()->photo) }}" alt="avatar" class="imaged w64" style="height: 60px">
             @else
-                <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
+                <img src="assets/img/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
             @endif
         </div>
         <div id="user-info">

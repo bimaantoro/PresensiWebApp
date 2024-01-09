@@ -19,7 +19,7 @@ class DashboardAdminController extends Controller
 
         $dataIzin = DB::table('pengajuan_izin')
         ->selectRaw('SUM(IF(status="i", 1, 0)) as jmlh_izin, SUM(IF(status="s", 1, 0)) as jmlh_sakit')
-        ->where('izin_at', $today)
+        ->where('from_date_at', $today)
         ->where('status_approved', 1)
         ->first();
 
