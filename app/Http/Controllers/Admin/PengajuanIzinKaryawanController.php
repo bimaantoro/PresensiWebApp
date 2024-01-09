@@ -13,13 +13,13 @@ class PengajuanIzinKaryawanController extends Controller
     public function index(Request $request) {
 
         $query = PengajuanIzin::query();
-        $query->select('id', 'izin_at', 'pengajuan_izin.employee_id', 'fullname', 'position', 'status', 'keterangan', 'status_approved');
+        $query->select('id', 'from_date_at', 'pengajuan_izin.employee_id', 'fullname', 'position', 'status', 'keterangan', 'status_approved');
         $query->join('employees', 'pengajuan_izin.employee_id', '=', 'employees.id_employee');
-        $query->orderBy('izin_at', 'desc');
+        $query->orderBy('from_date_at', 'desc');
 
 
         if(!empty($request->from) && !empty($request->to)) {
-            $query->whereBetween('izin_at', [$request->from, $request->to]);
+            $query->whereBetween('from_date_at', [$request->from, $request->to]);
         }
 
         if(!empty($request->employee_id)) {

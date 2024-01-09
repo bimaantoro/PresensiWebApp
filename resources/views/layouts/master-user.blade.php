@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     @stack('map-style')
+    @stack('pengajuan-izin-stylesheet')
     @stack('pengajuan-izin-style')
 </head>
 <body style="background-color:#e9ecef;">
