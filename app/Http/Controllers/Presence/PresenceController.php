@@ -29,64 +29,88 @@ class PresenceController extends Controller
         $presenceHour = date('H:i:s');
 
         $image = $request->image;
+        $latitudeKantor = 0.5560944233072398; 
+        $longitudeKantor = 123.13342749923635;
         $latitude = $request->latitude;
         $longitude = $request->longitude;
+
+        $distance = $this->distance($latitudeKantor, $longitudeKantor, $latitude, $longitude);
+        $radius = round($distance["meters"]);
 
         $checkIsPresence = DB::table('presences')
         ->where('presence_at', $presenceAt)
         ->where('employee_id', $idEmployee)
         ->count();
 
-        if($checkIsPresence > 0) {
-            $note = 'out'; 
+        if($distance >= 20) {
+            echo 'error|Anda berada diluar radius kantor';
         } else {
-            $note = 'in';
-        }
-
-        $folderPath = 'public/uploads/presence/';
-        $imageParts = explode(';base64', $image);
-        $decodeImage = base64_decode($imageParts[1]);
-
-        $formatName = $idEmployee . "-" . $presenceAt . '-' . $note;
-        $fileName = $formatName . '.png';
-        $file = $folderPath . $fileName;
-
-        if($checkIsPresence > 0) {
-            $dataCheckOut = [
-                'check_out' => $presenceHour,
-                'photo_out' => $fileName,
-                'latitude' => $latitude,
-                'longitude' => $longitude
-            ];
-            $update = DB::table('presences')
-            ->where('presence_at', $presenceAt)
-            ->where('employee_id', $idEmployee)
-            ->update($dataCheckOut);
-
-            if ($update) {
-                echo 'success|Berhasil melakukan absensi pulang';
-                Storage::put($file, $decodeImage);
+            if($checkIsPresence > 0) {
+                $note = 'out'; 
             } else {
-                echo 'error|gagal melakukan absensi pulang, Silahkan hubungi admin';
+                $note = 'in';
             }
-        } else  {
-            $dataCheckIn = [
-                'check_in' => $presenceHour,
-                'photo_in' => $fileName,
-                'latitude' => $latitude,
-                'longitude' => $longitude,
-                'presence_at' => $presenceAt,
-                'employee_id' => $idEmployee,
-            ];
     
-            $save = DB::table('presences')->insert($dataCheckIn);
+            $folderPath = 'public/uploads/presence/';
+            $imageParts = explode(';base64', $image);
+            $decodeImage = base64_decode($imageParts[1]);
     
-            if($save) {
-                echo 'success|Berhasil melakukan absensi masuk';
-                Storage::put($file, $decodeImage);
-            } else {
-                echo 'error|Gagal melakukan absensi masuk, Silahkan hubungi admin';
+            $formatName = $idEmployee . "-" . $presenceAt . '-' . $note;
+            $fileName = $formatName . '.png';
+            $file = $folderPath . $fileName;
+    
+            if($checkIsPresence > 0) {
+                $dataCheckOut = [
+                    'check_out' => $presenceHour,
+                    'photo_out' => $fileName,
+                    'latitude' => $latitude,
+                    'longitude' => $longitude
+                ];
+                $update = DB::table('presences')
+                ->where('presence_at', $presenceAt)
+                ->where('employee_id', $idEmployee)
+                ->update($dataCheckOut);
+    
+                if ($update) {
+                    echo 'success|Berhasil melakukan absensi pulang';
+                    Storage::put($file, $decodeImage);
+                } else {
+                    echo 'error|gagal melakukan absensi pulang, Silahkan hubungi admin';
+                }
+            } else  {
+                $dataCheckIn = [
+                    'check_in' => $presenceHour,
+                    'photo_in' => $fileName,
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
+                    'presence_at' => $presenceAt,
+                    'employee_id' => $idEmployee,
+                ];
+        
+                $save = DB::table('presences')->insert($dataCheckIn);
+        
+                if($save) {
+                    echo 'success|Berhasil melakukan absensi masuk';
+                    Storage::put($file, $decodeImage);
+                } else {
+                    echo 'error|Gagal melakukan absensi masuk, Silahkan hubungi admin';
+                }
             }
         }
+    }
+
+    // Menghitung jarak
+    function distance($lat1, $lon1, $lat2, $lon2)
+    {
+        $theta = $lon1 - $lon2;
+        $miles = (sin(deg2rad($lat1)) * sin(deg2rad($lat2))) + (cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta)));
+        $miles = acos($miles);
+        $miles = rad2deg($miles);
+        $miles = $miles * 60 * 1.1515;
+        $feet = $miles * 5280;
+        $yards = $feet / 3;
+        $kilometers = $miles * 1.609344;
+        $meters = $kilometers * 1000;
+        return compact('meters');
     }
 }
