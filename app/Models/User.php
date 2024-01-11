@@ -18,8 +18,11 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
+        'id',
+        'username',
+        'nama_lengkap',
+        'instansi',
+        'avatar',
         'password',
     ];
 
@@ -42,4 +45,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function presence() {
+        return $this->hasOne(Presence::class);
+    }
+
+    public function pengajuanIzinSiswa() {
+        return $this->hasOne(PengajuanIzin::class);
+    }
 }

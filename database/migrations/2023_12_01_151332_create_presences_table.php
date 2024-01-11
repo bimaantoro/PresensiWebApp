@@ -20,8 +20,9 @@ return new class extends Migration
             $table->string('latitude');
             $table->string('longitude');
             $table->date('presence_at');
-            $table->string('employee_id');
-            $table->foreign('employee_id')->references('id_employee')->on('employees')->onDelete('cascade');
+            $table->char('presence_status', 10);
+            $table->char('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

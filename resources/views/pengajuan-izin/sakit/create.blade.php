@@ -16,19 +16,19 @@
 <div class="section content-master-user">
     <div class="row">
         <div class="col">
-            <form action="/pengajuan-izin/sakit/store" method="POST" id="form-pengajuan-izin" enctype="multipart/form-data">
+            <form action="/pengajuan-izin/sakit/store" method="POST" id="form-izin-sakit" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
-                    <input type="text" class="form-control datepicker" placeholder="Dari Tanggal" id="from_date" name="from_date" autocomplete="off">
+                    <input type="text" class="form-control datepicker" placeholder="Dari Tanggal" id="start_date" name="start_date" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control datepicker" placeholder="Sampai Tanggal" id="to_date" name="to_date" autocomplete="off">
+                    <input type="text" class="form-control datepicker" placeholder="Sampai Tanggal" id="end_date" name="end_date" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Jumlah Hari" id="jumlah_hari" name="jumlah_hari" readonly>
+                    <input type="text" class="form-control" placeholder="Lama izin (dalam hari)" id="number_of_days" name="number_of_days" readonly>
                 </div>
                 <div class="custom-file-upload form-group" id="fileUpload1" style="height: 100px !important">
-                    <input type="file" name="file_sid" id="fileUploadInput" accept=".png, .jpg, .jpeg">
+                    <input type="file" name="file_surat_dokter" id="fileUploadInput" accept=".png, .jpg, .jpeg">
                     <label for="fileUploadInput">
                         <span>
                             <strong>
@@ -39,7 +39,7 @@
                     </label>
                 </div>
                 <div class="form-group">
-                    <textarea name="keterangan" id="keterangan" class="form-control" cols="30" rows="5" placeholder="Keterangan"></textarea>
+                    <input type="text" class="form-control" placeholder="Keterangan" id="keterangan" name="keterangan" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <button class="btn btn-success w-100">
@@ -52,12 +52,11 @@
 </div>
 @endsection
 
-@push('pengajuan-izin-stylesheet')
+@push('master-user-css')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
 @endpush
 
-@push('pengajuan-izin-script')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" integrity="sha512-NiWqa2rceHnN3Z5j6mSAvbwwg3tiwVNxiAQaaSMSXnRRDh5C2mk/+sKQRw8qjV1vN4nf8iK2a0b048PnHbyx+Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+@push('master-user-script')
 <script>
      $(document).ready(function() {
             $('.datepicker').datepicker({
@@ -65,10 +64,10 @@
             });
 
             function loadJumlahHari() {
-                const fromDate = $('#from_date').val();
-                const toDate = $('#to_date').val();
-                const date1 = new Date(fromDate);
-                const date2 = new Date(toDate);
+                const startDate = $('#start_date').val();
+                const endDate = $('#end_date').val();
+                const date1 = new Date(startDate);
+                const date2 = new Date(endDate);
 
                 // to calculate the time different of two dates
                 const differenceInTime = date2.getTime() - date1.getTime();
@@ -76,18 +75,18 @@
                 // to calculate the no of days between two dates
                 const differenceInDays = differenceInTime / (1000 * 3600 * 24);
 
-                let jumlahHari;
+                let numberOfDays;
 
-                if(fromDate === '' || toDate === '') {
-                    jumlahHari = 0;
+                if(startDate === '' || endDate === '') {
+                    numberOfDays = 0;
                 } else {
-                    jumlahHari = differenceInDays + 1;
+                    numberOfDays = differenceInDays + 1;
                 }
 
-                $('#jumlah_hari').val(jumlahHari + " Hari");
+                $('#number_of_days').val(numberOfDays + " Hari");
             }
 
-            $('#from_date, #to_date').change(function(e) {
+            $('#start_date, #end_date').change(function(e) {
                 loadJumlahHari(); 
             });
 
@@ -114,12 +113,12 @@
                 });
             });
 
-            $('#form-pengajuan-izin').submit(function() {
-                const fromDate = $('#from_date').val();
-                const toDate = $('#to_date').val();
+            $('#form-izin-sakit').submit(function() {
+                const startDate = $('#start_date').val();
+                const endDate = $('#end_date').val();
                 const keterangan = $('#keterangan').val();
 
-                if(fromDate === '' || toDate === '') {
+                if(startDate === '' || endDate === '') {
                     Swal.fire({
                         title: 'Oops!',
                         text: 'Tanggal harus diisi',

@@ -6,15 +6,15 @@
     </a>
     <div id="user-detail">
         <div class="avatar">
-            @if (!empty(Auth::guard('employee')->user()->photo))
-                <img src="{{ asset('storage/uploads/employee/' . Auth::guard('employee')->user()->photo) }}" alt="avatar" class="imaged w64" style="height: 60px">
+            @if (!empty(Auth::user()->photo))
+                <img src="{{ asset('storage/uploads/employee/' . Auth::user()->avatar) }}" alt="avatar" class="imaged w64" style="height: 60px">
             @else
-                <img src="assets/img/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
+                <img src="{{ asset('assets/img/avatar-default.jpg') }}" alt="avatar" class="imaged w64 rounded">
             @endif
         </div>
         <div id="user-info">
-            <h3 id="user-name">{{ Auth::guard('employee')->user()->fullname }}</h3>
-            <span id="user-role">{{ Auth::guard('employee')->user()->position }}</span>
+            <h3 id="user-name">{{ Auth::user()->nama_lengkap }}</h3>
+            <span id="user-role">{{ Auth::user()->instansi }}</span>
         </div>
     </div>
 </div>
@@ -36,7 +36,7 @@
                 <div class="item-menu text-center">
                     <div class="menu-icon">
                         <a href="{{ route('pengajuan-izin') }}" class="primary" style="font-size: 40px;">
-                            <ion-icon name="calendar-number-outline"></ion-icon>
+                            <ion-icon name="calendar-outline"></ion-icon>
                         </a>
                     </div>
                     <div class="menu-name">
@@ -83,7 +83,7 @@
                             </div>
                             <div class="presencedetail">
                                 <h4 class="presencetitle">Masuk</h4>
-                                <span>{{ $todayPresence != null ? $todayPresence->check_in : 'Belum Absen' }}</span>
+                                <span>{{ $todayPresence != null ? $todayPresence->check_in : 'Belum Presensi' }}</span>
                             </div>
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                             </div>
                             <div class="presencedetail">
                                 <h4 class="presencetitle">Pulang</h4>
-                                <span>{{ $todayPresence != null && $todayPresence->check_out != null ? $todayPresence->check_out : 'Belum absen' }}</span>
+                                <span>{{ $todayPresence != null && $todayPresence->check_out != null ? $todayPresence->check_out : 'Belum Presensi' }}</span>
                             </div>
                         </div>
                     </div>
@@ -196,11 +196,11 @@
                     @foreach ($leaderboardPresence as $l)
                     <li>
                         <div class="item">
-                            <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="image">
+                            <img src="assets/img/no-avatar.png" alt="image" class="image">
                             <div class="in">
                                 <div>
-                                    <b>{{ $l->fullname }}</b><br>
-                                    <small class="text-muted">{{ $l->position }}</small>
+                                    <b>{{ $l->nama_lengkap }}</b><br>
+                                    <small class="text-muted">{{ $l->instansi }}</small>
                                 </div>
                                 <span class="badge {{ $l->check_in < '07:00' ? 'bg-success' : 'bg-danger' }}">
                                     {{ $l->check_in }}

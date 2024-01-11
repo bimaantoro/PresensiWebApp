@@ -1,19 +1,24 @@
 <!doctype html>
-<html lang="id">
+<!--
+* Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
+* @version 1.0.0-beta19
+* @link https://tabler.io
+* Copyright 2018-2023 The Tabler Authors
+* Copyright 2018-2023 codecalm.net Paweł Kuna
+* Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
+-->
+<html lang="en">
   <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Admin - KOPINETGO</title>
+    <title>Admin - Dashboard</title>
     <!-- CSS files -->
-    <link href="{{ asset('assets/css/inc/tabler/tabler.min.css?1692870487') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/inc/tabler/tabler-flags.min.css?1692870487') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/inc/tabler/tabler-payments.min.css?1692870487') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/inc/tabler/tabler-vendors.min.css?1692870487') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/inc/tabler/demo.min.css?1692870487') }}" rel="stylesheet"/>
-    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
-    @stack('monitor-presence-style')
-    @stack('presence-map-style')
+    <link href="{{ asset('assets/css/tabler.min.css?1684106062') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/tabler-flags.min.css?1684106062') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/tabler-payments.min.css?1684106062') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/tabler-vendors.min.css?1684106062') }}" rel="stylesheet"/>
+    <link href="{{ asset('assets/css/demo.min.css?1684106062') }}" rel="stylesheet"/>
     <style>
       @import url('https://rsms.me/inter/inter.css');
       :root {
@@ -24,18 +29,28 @@
       }
     </style>
   </head>
-  <body>
-    <script src="{{ asset('assets/js/lib/demo-theme.min.js?1692870487') }}"></script>
+  <body >
+    <script src="{{ asset('assets/js/demo-theme.min.js?1684106062') }}"></script>
     <div class="page">
-      <!-- Sidebar -->
-      @include('partials.admin.sidebar')
       <!-- Navbar -->
-      @include('partials.admin.header')
+      @include('partials.admin.navbar')
       <div class="page-wrapper">
+
         <!-- Page header -->
-        <!-- Page body -->
+        <div class="page-header d-print-none">
+            <div class="container-xl">
+                <div class="row g-2 align-items-center">
+                    <div class="col">
+                        <h2 class="page-title">
+                            @yield('title')
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         @yield('content')
-        
+
         @include('partials.admin.footer')
       </div>
     </div>

@@ -56,6 +56,24 @@
     background-color: #ec4433 !important;
 }
 
+.pengajuan-izin-content {
+    display: flex;
+    gap: 1px;
+ }
+
+ .data-presence {
+    margin-left: 10px;
+ }
+
+ .status {
+    position: absolute;
+    right: 20px;
+ }
+
+#keterangan {
+    height: 5rem !important;
+}
+
 .logout {
     position: absolute;
     color: #fff;

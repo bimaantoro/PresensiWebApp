@@ -1,7 +1,7 @@
 @extends('layouts.master-user')
 @section('header')
 <!-- App Header -->
- <div class="appHeader bg-danger text-light">
+<div class="appHeader bg-danger text-light">
     <div class="pageTitle">Data Izin / Sakit</div>
     <div class="right"></div>
 </div>
@@ -26,6 +26,51 @@
 
     <div class="row">
         <div class="col">
+            <form action="{{ route('pengajuan-izin') }}" method="GET">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <select name="month" id="month" class="form-control selectmaterialize">
+                                <option value="">Bulan</option>
+                                @for ($i = 1; $i <= 12; $i++)
+                                <option {{ Request('month') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $months[$i] }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <select name="year" id="year" class="form-control selectmaterialize">
+                                <option value="">Tahun</option>
+                                @php
+                                    $initialYear = 2023 ;
+                                    $currentYear =  date('Y');
+                                    for ($i = $initialYear; $i <= $currentYear; $i++) { 
+                                        if(Request('year') == $i) {
+                                            $selected = 'selected';
+                                        } else {
+                                            $selected = '';
+                                        }
+                                        echo "<option $selected value='$i'>$i</option>";
+                                    }
+                                @endphp
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-success w-100">Cari Data</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
             @foreach ($dataIzin as $d)
             @php
                 if($d->status == 'i') {
@@ -36,24 +81,24 @@
                     $status = 'Not Found';
                 }
             @endphp
-                <div class="card mt-2">
+                <div class="card mt-2 card-izin" kode_izin="{{ $d->kode_izin }}"  data-toggle="modal" data-target="#actionSheetIconed">
                     <div class="card-body">
                         <div class="pengajuan-izin-content">
                             <div class="icon-presence">
                                 @if ($d->status == 'i')
-                                <ion-icon name="calendar-outline" style="font-size: 48px; color: red"></ion-icon>
+                                <ion-icon name="calendar-outline" style="font-size: 48px; color: blue"></ion-icon>
                                 @elseif($d->status == 's')
                                 <ion-icon name="medkit-outline" style="font-size: 48px; color: red"></ion-icon>
                                 @endif
                             </div>
                             <div class="data-presence">
-                                <h3 style="line-height: 30px">{{ date('d-m-Y', strtotime($d->from_date_at)) }}  ({{ $status }})
+                                <h3 style="line-height: 30px">{{ date('d-m-Y', strtotime($d->start_date)) }}  ({{ $status }})
                                 </h3>
-                                <small>{{ date('d-m-Y', strtotime($d->from_date_at)) }} s.d {{ date('d-m-Y', strtotime($d->to_date_at)) }}</small>
+                                <small>{{ date('d-m-Y', strtotime($d->start_date)) }} s.d {{ date('d-m-Y', strtotime($d->end_date)) }}</small>
                                 <p>
                                     {{ $d->keterangan }}
                                     <br>
-                                    @if (!empty($d->file_sid))
+                                    @if (!empty($d->file_surat_dokter))
                                         <span style="color: blue">
                                             <ion-icon name="document-attach-outline"></ion-icon>
                                             Lihat Surat Izin Dokter
@@ -62,11 +107,11 @@
                                 </p>
                             </div>
                             <div class="status">
-                                @if ($d->status_approved == 0)
+                                @if ($d->status_code == 0)
                                     <span class="badge bg-warning">Pending</span>
-                                @elseif ($d->status_approved == 1)
+                                @elseif ($d->status_code == 1)
                                     <span class="badge bg-success">Approved</span>
-                                @elseif($d->status_approved == 2)
+                                @elseif($d->status_code == 2)
                                     <span class="badge bg-danger">Decline</span>
                                 @endif
                             </div>
@@ -95,23 +140,48 @@
         </div>
     </div>
 
+    <div class="modal fade action-sheet" id="actionSheetIconed" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Aksi</h5>
+                </div>
+
+                <div class="modal-body" id="showact"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade dialogbox" id="deleteConfirm" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Yakin Ingin Menghapus?</h5>
+                </div>
+                <div class="modal-body">
+                    Data Pengajuan Izin akan Dihapus
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-inline">
+                        <a href="#" class="btn btn-text-secondary" data-dismiss="modal">Batal</a>
+                        <a href="" class="btn btn-text-primary" id="hapus-pengajuan">
+                            Hapus
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 
-@push('pengajuan-izin-style')
-<style>
-     .pengajuan-izin-content {
-        display: flex;
-        gap: 1px;
-     }
-
-     .data-presence {
-        margin-left: 10px;
-     }
-
-     .status {
-        position: absolute;
-        right: 20px;
-     }
-</style>
+@push('master-user-script')
+    <script>
+        $(function() {
+            $('.card-izin').click(function(e) {
+                const kodeIzin = $(this).attr("kode_izin");
+                $("#showact").load("/pengajuan-izin/" + kodeIzin + "/showact");
+            });
+        });
+    </script>
 @endpush

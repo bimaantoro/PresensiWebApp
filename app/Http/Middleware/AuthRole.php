@@ -16,15 +16,15 @@ class AuthRole {
     public function handle(Request $request, Closure $next, string $role): Response
     {
 
-        if($role == 'manager' && Auth::guard('employee')->user()->role != 'manager') {
+        if($role == 'manager' && Auth::user()->role != 'manager') {
             abort(403);
         }
 
-        if($role == 'admin' && Auth::guard('employee')->user()->role != 'admin') {
+        if($role == 'admin' && Auth::user()->role != 'admin') {
             abort(403);
         }
 
-        if($role == 'user' && Auth::guard('employee')->user()->role != 'user') {
+        if($role == 'student' && Auth::user()->role != 'student') {
             abort(403);
         }
 

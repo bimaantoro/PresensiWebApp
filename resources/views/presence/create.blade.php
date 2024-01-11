@@ -11,8 +11,8 @@
 <div class="section content-master-user">
     <div class="row">
         <div class="col">
-            <input type="hidden" id="latitude">
-            <input type="hidden" id="longitude">
+            <input type="text" id="latitude">
+            <input type="text" id="longitude">
             <div id="my_camera"></div>
         </div>
     </div>
@@ -20,11 +20,11 @@
         <div class="col">
         @if ($checkIsPresence > 0)
             <button id="btn-check-in" class="btn btn-danger btn-block">
-                <ion-icon name="camera-outline"></ion-icon> Absen Pulang
+                <ion-icon name="camera-outline"></ion-icon> Preensi Pulang
             </button>
         @else
             <button id="btn-check-in" class="btn btn-success btn-block">
-                <ion-icon name="camera-outline"></ion-icon> Absen Masuk
+                <ion-icon name="camera-outline"></ion-icon> Presensi Masuk
             </button>
         @endif
         </div>
@@ -36,7 +36,7 @@
     </div>
 </div>
 @endsection
-@push('map-style')
+@push('master-user-css')
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
 crossorigin=""/>
@@ -44,7 +44,7 @@ crossorigin=""/>
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
 @endpush
-@push('webcam-script')
+@push('master-user-script')
 <script language="JavaScript">
     Webcam.set({
         width: 320,
@@ -67,14 +67,20 @@ crossorigin=""/>
         const longitude = position.coords.longitude;
         getLatitude.value = latitude;
         getLongitude.value = longitude;
-        const map = L.map('map').setView([latitude, longitude], 13);
+        const map = L.map('map').setView([latitude, longitude], 18);
 
         L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
         maxZoom: 20,
         subdomains:['mt0','mt1','mt2','mt3']
         }).addTo(map);
 
-        const marker = L.marker([latitude, longitude]).addTo(map)
+        const marker = L.marker([latitude, longitude]).addTo(map);
+        const circle = L.circle([1.4876672, 124.8526336], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 20
+        }).addTo(map);
     }
 
     function showError() {}

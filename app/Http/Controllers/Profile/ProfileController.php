@@ -12,34 +12,34 @@ class ProfileController extends Controller
 {
     //
     public function edit() {
-        $idEmployee = Auth::guard('employee')->user()->id_employee;
+        $idStudent = Auth::user()->id;
 
-        $employee = DB::table('employees')
-        ->where('id_employee', $idEmployee)
+        $employee = DB::table('users')
+        ->where('id', $idStudent)
         ->first();
 
         return view('profile.edit', compact('employee'));
     }
 
     public function update(Request $request) {
-        $idEmployee = Auth::guard('employee')->user()->id_employee;
+        $idStudent = Auth::user()->id_employee;
         $fullname = $request->fullname;
         $password = Hash::make($request->password);
 
-        $employee = DB::table('employees')
-        ->where('id_employee', $idEmployee)
+        $employee = DB::table('users')
+        ->where('id', $idStudent)
         ->first();
 
         if($request->hasFile('photo')) {
-            $photo = $idEmployee . "." . $request->file('photo')->getClientOriginalExtension();
+            $photo = $idStudent . "." . $request->file('photo')->getClientOriginalExtension();
         } else {
             $photo = $employee->photo;
         }
         
         if(empty($request->password)) {
             $data = [
-                'fullname' => $fullname,
-                'photo'=> $photo
+                'nama_lengkap' => $fullname,
+                'avatar'=> $photo
             ];
         } else {
             $data = [
@@ -50,7 +50,7 @@ class ProfileController extends Controller
         }
 
         $update = DB::table('employees')
-        ->where('id_employee', $idEmployee)
+        ->where('id_employee', $idStudent)
         ->update($data);
 
         if($update) {
