@@ -28,6 +28,7 @@
       	font-feature-settings: "cv03", "cv04", "cv11";
       }
     </style>
+    @stack('master-admin-css')
   </head>
   <body >
     <script src="{{ asset('assets/js/demo-theme.min.js?1684106062') }}"></script>

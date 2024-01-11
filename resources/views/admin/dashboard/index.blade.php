@@ -166,3 +166,40 @@
   </div>
 </div>
 @endsection
+
+@push('master-admin-css')
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
+@endpush
+@push('master-admin-script')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
+<script>
+    $(function() {
+            $("#date").datepicker({ 
+                autoclose: true, 
+                todayHighlight: true,
+                format: "yyyy-mm-dd",
+            });
+
+            function loadPresence() {
+                const date = $("#date").val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/admin/dashboard',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        date: date,
+                    },
+                    success: (response) => {
+                        $("#load-presence").html(response);
+                    }
+                });
+            }
+
+            $("#date").change(function(e) {
+                loadPresence();
+            });
+
+            loadPresence();
+        });
+</script>
+@endpush

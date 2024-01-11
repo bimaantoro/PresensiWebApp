@@ -25,7 +25,7 @@ class PengajuanIzinSakitController extends Controller
         $year = date('Y', strtotime($startDate));
         $formatYear = substr($year, 2, 2);
 
-        $latestIzin = DB::table('pengajuan_izin_siswa')
+        $latestIzin = DB::table('pengajuan_izin')
         ->whereRaw('MONTH(start_date)="' . $month . '"')
         ->whereRaw('YEAR(start_date)="' . $year . '"')
         ->orderBy('kode_izin', 'desc')
@@ -51,7 +51,7 @@ class PengajuanIzinSakitController extends Controller
             'user_id' => $idStudent,
         ];
 
-        $save = DB::table('pengajuan_izin_siswa')->insert($data);
+        $save = DB::table('pengajuan_izin')->insert($data);
 
         if($save) {
             if($request->hasFile('file_surat_dokter')) {
@@ -67,7 +67,7 @@ class PengajuanIzinSakitController extends Controller
     }
 
     public function edit($kodeIzin) {
-        $dataIzin =  DB::table('pengajuan_izin_siswa')
+        $dataIzin =  DB::table('pengajuan_izin')
         ->where('kode_izin', $kodeIzin)
         ->first();
 
@@ -93,7 +93,7 @@ class PengajuanIzinSakitController extends Controller
         ];       
 
         try {
-            DB::table('pengajuan_izin_siswa')
+            DB::table('pengajuan_izin')
             ->where('kode_izin', $kodeIzin)
             ->update($data);
 
