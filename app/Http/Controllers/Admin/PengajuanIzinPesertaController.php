@@ -13,25 +13,25 @@ class PengajuanIzinPesertaController extends Controller
     public function index(Request $request) {
 
         $query = PengajuanIzin::query();
-        $query->select('id', 'from_date_at', 'pengajuan_izin.employee_id', 'fullname', 'position', 'status', 'keterangan', 'status_approved');
-        $query->join('employees', 'pengajuan_izin.employee_id', '=', 'employees.id_employee');
-        $query->orderBy('from_date_at', 'desc');
+        $query->select('id', 'start_date', 'pengajuan_izin.user_id', 'nama_lengkap', 'instansi', 'status', 'keterangan', 'status_code');
+        $query->join('users', 'pengajuan_izin.user_id', '=', 'users.id');
+        $query->orderBy('start_date', 'desc');
 
 
         if(!empty($request->from) && !empty($request->to)) {
-            $query->whereBetween('from_date_at', [$request->from, $request->to]);
+            $query->whereBetween('start_date', [$request->from, $request->to]);
         }
 
-        if(!empty($request->employee_id)) {
-            $query->where('pengajuan_izin.employee_id', $request->employee_id);
+        if(!empty($request->user_id)) {
+            $query->where('pengajuan_izin.user_id', $request->user_id);
         }
 
-        if(!empty($request->fullname)) {
-            $query->where('fullname', 'LIKE', '%' . $request->fullname . '%');
+        if(!empty($request->nama_lengkap)) {
+            $query->where('nama_lengkap', 'LIKE', '%' . $request->nama_lengkap . '%');
         } 
 
-        if($request->status_approved != '') {
-            $query->where('status_approved', $request->status_approved);
+        if($request->status_code != '') {
+            $query->where('status_code', $request->status_code);
         } 
 
         $dataIzin = $query->paginate(10);
@@ -45,9 +45,9 @@ class PengajuanIzinPesertaController extends Controller
         $id = $request->id;
 
         $update = DB::table('pengajuan_izin')
-        ->where('id', $id)
+        ->where('kode_izin', $id)
         ->update([
-            'status_approved' => $statusApproved
+            'status_code' => $statusApproved
         ]);
 
         if($update) {
@@ -59,9 +59,9 @@ class PengajuanIzinPesertaController extends Controller
 
     public function updateStatusApproved($id) {
         $update = DB::table('pengajuan_izin')
-        ->where('id', $id)
+        ->where('kode_izin', $id)
         ->update([
-            'status_approved' => 0
+            'status_code' => 0
         ]);
 
         if($update) {

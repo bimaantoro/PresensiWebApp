@@ -46,7 +46,7 @@ Route::middleware(['auth'])->group(function() {
             Route::get('/manager/dashboard', 'reportPresence')->name('dashboard-manager');
             Route::post('/manager/report-presence/print', 'printReportPresence');
             // Route::get('/manager/presence-employee/recap', 'recapPresence')->name('recap-presence');
-            // Route::post('/manager/recap-presence/print', 'printRecapPresence');
+            Route::post('/manager/recap-presence/print', 'printRecapPresence');
         });
     });
 
@@ -82,9 +82,9 @@ Route::middleware(['auth'])->group(function() {
         // });
 
         Route::controller(PengajuanIzinPesertaController::class)->group(function() {
-            Route::get('/admin/pengajuan-izin-peserta', 'index')->name('pengajuan-izin-admin');
-            Route::put('/admin/pengajuan-izin-peserta/update', 'update');
-            Route::get('/admin/pengajuan-izin-peserta/{id}', 'updateStatusApproved');
+            Route::get('/admin/pengajuan-izin', 'index')->name('pengajuan-izin-admin');
+            Route::put('/admin/pengajuan-izin/update', 'update');
+            Route::get('/admin/pengajuan-izin/{id}', 'updateStatusApproved');
         });
     });
 

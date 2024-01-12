@@ -13,7 +13,7 @@ class RedirectAuthenticatedUsersController extends Controller
             return redirect('manager/dashboard');
         } else if(Auth::user()->role == 'admin') {
             return redirect('admin/dashboard');
-        } else if(Auth::user()->role == 'manager') {
+        } else if(Auth::user()->role == 'student') {
             return redirect('dashboard');
         } else {
             return auth()->logout();

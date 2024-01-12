@@ -86,7 +86,7 @@ class DashboardManagerController extends Controller
             "Desember"
         ];
 
-        return view('admin.report-presence.recap-presence', compact('months'));
+        return view('manager.dashboard.report-presence', compact('months'));
     }
 
     public function printRecapPresence(Request $request) {
@@ -110,7 +110,7 @@ class DashboardManagerController extends Controller
         ];
 
         $recapPresence = DB::table('presences')
-        ->selectRaw('employee_id, fullname,
+        ->selectRaw('user_id, nama_lengkap,
         MAX(IF(DAY(presence_at) = 1, CONCAT(check_in, "-", IFNULL(check_out, "00:00:00")), "")) as tgl_1,
         MAX(IF(DAY(presence_at) = 2, CONCAT(check_in, "-", IFNULL(check_out, "00:00:00")), "")) as tgl_2,
         MAX(IF(DAY(presence_at) = 3, CONCAT(check_in, "-", IFNULL(check_out, "00:00:00")), "")) as tgl_3,
@@ -142,10 +142,10 @@ class DashboardManagerController extends Controller
         MAX(IF(DAY(presence_at) = 29, CONCAT(check_in, "-", IFNULL(check_out, "00:00:00")), "")) as tgl_29,
         MAX(IF(DAY(presence_at) = 30, CONCAT(check_in, "-", IFNULL(check_out, "00:00:00")), "")) as tgl_30,
         MAX(IF(DAY(presence_at) = 31, CONCAT(check_in, "-", IFNULL(check_out, "00:00:00")), "")) as tgl_31'
-        )->join('employees', 'presences.employee_id', '=', 'employees.id_employee')
+        )->join('users', 'presences.user_id', '=', 'users.id')
         ->whereRaw('MONTH(presence_at) = "' . $month . '"')
         ->whereRaw('YEAR(presence_at) = "' . $year . '"')
-        ->groupByRaw('employee_id, fullname')
+        ->groupByRaw('user_id, nama_lengkap')
         ->get();
 
 

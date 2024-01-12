@@ -105,7 +105,7 @@
         <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <form action="/admin/presence/cetak-rekap" target="_blank" method="POST">
+              <form action="/manager/recap-presence/print" target="_blank" method="POST">
                 @csrf
                 <div class="row">
                   <div class="col-12">
