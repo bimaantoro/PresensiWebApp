@@ -1,8 +1,9 @@
 @foreach ($presence as $p)
 <tr>
     <td>{{ $loop->iteration }}</td>
-    <td>{{ $p->employee_id }}</td>
-    <td>{{ $p->fullname }}</td>
+    <td>{{ $p->user_id }}</td>
+    <td>{{ $p->nama_lengkap }}</td>
+    <td>{{ $p->instansi }}</td>
     <td>
         <div class="d-flex py-1 align-items-center">
             <img src="{{ asset('storage/uploads/presence/' . $p->photo_in) }}" alt="" class="avatar me-2">
@@ -17,7 +18,7 @@
             <img src="{{ asset('storage/uploads/presence/' . $p->photo_out) }}" alt="" class="avatar me-2">
             @endif
             <div class="flex-fill">
-                <div class="font-weight-medium">{!! $p->check_out != null ? $p->check_out : '<span class="badge bg-danger text-light">Belum Absen</span>' !!}</div>
+                <div class="font-weight-medium">{!! $p->check_out != null ? $p->check_out : '<span class="badge bg-danger text-light">Belum Presensi</span>' !!}</div>
             </div>
         </div>
     </td>

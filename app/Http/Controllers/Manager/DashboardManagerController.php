@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Manager;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class ReportPresenceController extends Controller
+class DashboardManagerController extends Controller
 {
     //
     public function reportPresence() {
@@ -26,16 +26,16 @@ class ReportPresenceController extends Controller
             "Desember"
         ];
 
-        $employees = DB::table('employees')
-        ->where('role', 'user')
-        ->orderBy('fullname')
+        $users = DB::table('users')
+        ->where('role', 'student')
+        ->orderBy('nama_lengkap')
         ->get();
 
-        return view('admin.report-presence.laporan', compact('months', 'employees'));
+        return view('manager.dashboard.report-presence', compact('users', 'months'));
     }
 
     public function printReportPresence(Request $request) {
-        $idEmployee = $request->id_employee;
+        $idStudent = $request->id;
         $month = $request->month;
         $year = $request->year;
 
@@ -55,18 +55,18 @@ class ReportPresenceController extends Controller
             "Desember"
         ];
 
-        $employee = DB::table('employees')
-        ->where('id_employee', $idEmployee)
+        $student = DB::table('users')
+        ->where('id', $idStudent)
         ->first();
 
         $presence = DB::table('presences')
-        ->where('employee_id', $idEmployee)
+        ->where('user_id', $idStudent)
         ->whereRaw('MONTH(presence_at)="' . $month . '"')
         ->whereRaw('YEAR(presence_at)="' . $year . '"')
         ->orderBy('presence_at')
         ->get();
 
-        return view('admin.report-presence.print-presence', compact('months', 'month', 'year', 'employee', 'presence'));
+        return view('manager.dashboard.print-presence', compact('months', 'month', 'year', 'student', 'presence'));
     }
 
     public function recapPresence() {

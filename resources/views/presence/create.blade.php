@@ -75,7 +75,7 @@ crossorigin=""/>
         }).addTo(map);
 
         const marker = L.marker([latitude, longitude]).addTo(map);
-        const circle = L.circle([1.4876672, 124.8526336], {
+        const circle = L.circle([1.4811136, 124.84608], {
             color: 'red',
             fillColor: '#f03',
             fillOpacity: 0.5,

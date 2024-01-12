@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -28,41 +27,26 @@ class DashboardAdminController extends Controller
         return view('admin.dashboard.index', compact('dataPresence', 'dataIzin'));
     }
 
-    public function presenceStudent(Request $request) {
-        $query = User::query();
-        $query->select('users.*');
-        $query->where('role', 'student');
-        $query->orderBy('nama_lengkap');
+    public function getPresence(Request $request) {
+        $date = $request->date;
+        
+        $presence = DB::table('presences')
+        ->select('presences.*', 'nama_lengkap', 'instansi')
+        ->join('users', 'presences.user_id', '=', 'users.id')
+        ->where('presence_at', $date)
+        ->get();
 
-        if(!empty($request->nama_lengkap)) {
-            $query->where('nama_lengkap', 'like', '%' . $request->nama_lengkap . '%');
-        }
-
-        $student = $query->paginate(10);
-
-        return view('admin.dashboard.index', compact('student'));
+        return view('admin.dashboard.get-presence', compact('presence'));
     }
 
-    // public function getPresence(Request $request) {
-    //     $date = $request->date;
-
-    //     $presence = DB::table('presences')
-    //     ->select('presences.*', 'nama_lengkap')
-    //     ->join('users', 'presences.user_id', '=', 'users.id')
-    //     ->where('presence_at', $date)
-    //     ->get();
-
-    //     return view('admin.presence.get-presence', compact('presence'));
-    // }
-
-    // public function showMap(Request $request) {
-    //     $id = $request->id;
+    public function showMap(Request $request) {
+        $id = $request->id;
         
-    //     $presence = DB::table('presences')
-    //     ->join('users', 'presences.user_id', '=', 'users.id')
-    //     ->where('id', $id)
-    //     ->first();
+        $presence = DB::table('presences')
+        // ->where('user_id', $id)
+        ->join('users', 'presences.user_id', '=', 'users.id')
+        ->first();
 
-    //     return view('admin.presence.show-map', compact('presence'));
-    // }
+        return view('admin.dashboard.show-map', compact('presence'));
+    }
 }

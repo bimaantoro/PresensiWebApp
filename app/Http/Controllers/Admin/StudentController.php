@@ -67,68 +67,68 @@ class StudentController extends Controller
     }
 
     public function edit(Request $request) {
-        $idStudent = $request->idStudent;
+        $idStudent = $request->id;
 
-        $employee = DB::table('users')
+        $student = DB::table('users')
         ->where('id', $idStudent)
         ->first();
 
-        return view('admin.employee.edit', compact('employee'));
+        return view('admin.student.edit', compact('student'));
     }
 
-    public function update(Request $request, $idEmployee) {
-        $idEmployee = $request->id_employee;
+    public function update($idStudent, Request $request) {
+        $idStudent = $request->id;
         $username = $request->username;
         $password = Hash::make('12345678');
-        $fullname = $request->fullname;
-        $position = $request->position;
-        $oldPhoto = $request->old_photo;
+        $namaLengkap = $request->nama_lengkap;
+        $instansi = $request->instansi;
+        $avatar = $request->avatar;
+        $oldAvatar = $request->old_avatar;
 
-        if($request->hasFile('photo')) {
-            $photo = $idEmployee . "." . $request->file('photo')->getClientOriginalExtension();
+        if($request->hasFile('avatar')) {
+            $avatar = $idStudent . "." . $request->file('avatar')->getClientOriginalExtension();
         } else {
-            $photo = $oldPhoto;
+            $avatar = $oldAvatar;
         }
 
         try {
             $data = [
                 'username' => $username,
                 'password' => $password,
-                'fullname' => $fullname,
-                'position' => $position,
-                // 'gender' => $gender,
-                'photo' => $photo,
+                'nama_lengkap' => $namaLengkap,
+                'instansi' => $instansi,
+                'avatar' => $avatar,
             ];
 
-            $update = DB::table('employees')
-            ->where('id_employee', $idEmployee)
+            $update = DB::table('users')
+            ->where('id', $idStudent)
             ->update($data);
 
             if($update) {
-                if($request->hasFile('photo')) {
-                    $folderPath = 'public/uploads/employee/';
-                    $folderPathOld = 'public/uploads/employee/';
+                if($request->hasFile('avatar')) {
+                    $folderPath = 'public/uploads/student/';
+                    $folderPathOld = 'public/uploads/student/' . $oldAvatar;
                     Storage::delete($folderPathOld);
-                    $request->file('photo')->storeAs($folderPath, $photo);
+                    $request->file('avatar')->storeAs($folderPath, $avatar);
                 }
 
-                return redirect()->back()->with('success', 'Data karyawan berhasil diperbarui');
+                return redirect()->back()->with('success', 'Data peserta berhasil diperbarui');
             }
             
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Data karyawan gagal diperbarui');
+            return redirect()->back()->with('error', 'Data peserta gagal diperbarui');
         }
     }
 
-    public function destroy($idEmployee) {
-        $delete = DB::table('employees')
-        ->where('id_employee', $idEmployee)
+    public function destroy($idStudent) {
+        $delete = DB::table('users')
+        ->where('id', $idStudent)
         ->delete();
 
         if($delete) {
-            return redirect()->back()->with('success', 'Data karyawan berhasil dihapus');
+            return redirect()->back()->with('success', 'Data peserta berhasil dihapus');
         } else {
-            return redirect()->back()->with('error', 'Data karyawan gagal dihapus');
+            return redirect()->back()->with('error', 'Data peserta gagal dihapus');
         }
     }
 }

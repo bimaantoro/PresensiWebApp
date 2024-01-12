@@ -62,7 +62,7 @@
     <table style="width: 100%">
         <tr>
             <td style="width: 30px">
-                <img src="{{ asset('assets/img/icon_telkom.png') }}" alt="" width="100" height="100">
+                <img src="{{ asset('assets/img/icon/192x192.png') }}" alt="" width="100" height="100">
             </td>
             <td>
                 <span id="title">
@@ -76,29 +76,29 @@
     </table>
 
     <table class="table-data-employee">
-        <tr>
+        {{-- <tr>
             <td rowspan="4">
-              @if ($employee->photo != null)
-                <img src="{{ asset('storage/uploads/employee/' . $employee->photo) }}" alt="" width="120" height="150">
+              @if ($student->avatar != null)
+                <img src="{{ asset('storage/uploads/student/' . $student->avatar) }}" alt="" width="120" height="150">
               @else
                 <img src="{{ asset('assets/img/no-image.png') }}" alt="" width="120" height="150">
               @endif
             </td>
+        </tr> --}}
+        <tr>
+            <td>ID Peserta</td>
+            <td>:</td>
+            <td>{{ $student->id }}</td>
         </tr>
         <tr>
-            <td>ID</td>
+            <td>Nama Lengkap</td>
             <td>:</td>
-            <td>{{ $employee->id_employee }}</td>
+            <td>{{ $student->nama_lengkap }}</td>
         </tr>
         <tr>
-            <td>Nama</td>
+            <td>Asal Instansi</td>
             <td>:</td>
-            <td>{{ $employee->fullname }}</td>
-        </tr>
-        <tr>
-            <td>Asal</td>
-            <td>:</td>
-            <td>{{ $employee->position }}</td>
+            <td>{{ $student->instansi }}</td>
         </tr>
     </table>
 

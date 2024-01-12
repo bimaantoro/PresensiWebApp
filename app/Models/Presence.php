@@ -17,10 +17,10 @@ class Presence extends Model
         'latitude',
         'longitude',
         'presence_at',
-        'employee_id'
+        'user_id'
     ];
 
-    public function employee() {
-        return $this->belongsTo(Employee::class);
+    public function user() {
+        return $this->belongsTo(User::class);
     }
 }

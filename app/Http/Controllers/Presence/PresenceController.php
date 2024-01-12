@@ -31,8 +31,8 @@ class PresenceController extends Controller
         $latitude = $request->latitude;
         $longitude = $request->longitude;
 
-        $latitudeKantor = 1.4876672; 
-        $longitudeKantor = 124.8526336;
+        $latitudeKantor = 1.4811136; 
+        $longitudeKantor = 124.84608;
         $distance = $this->distance($latitudeKantor, $longitudeKantor, $latitude, $longitude);
         $radius = round($distance["meters"]);
 

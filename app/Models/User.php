@@ -17,6 +17,9 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+     protected $primaryKey = 'id';
+
     protected $fillable = [
         'id',
         'username',
@@ -50,7 +53,7 @@ class User extends Authenticatable
         return $this->hasOne(Presence::class);
     }
 
-    public function pengajuanIzinSiswa() {
+    public function pengajuanIzin() {
         return $this->hasOne(PengajuanIzin::class);
     }
 }

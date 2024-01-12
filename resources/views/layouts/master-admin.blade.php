@@ -18,7 +18,8 @@
     <link href="{{ asset('assets/css/tabler-flags.min.css?1684106062') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/tabler-payments.min.css?1684106062') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/tabler-vendors.min.css?1684106062') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/demo.min.css?1684106062') }}" rel="stylesheet"/>
+    {{-- <link href="{{ asset('assets/css/demo.min.css?1684106062') }}" rel="stylesheet"/> --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     <style>
       @import url('https://rsms.me/inter/inter.css');
       :root {
@@ -28,10 +29,13 @@
       	font-feature-settings: "cv03", "cv04", "cv11";
       }
     </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
     @stack('master-admin-css')
   </head>
-  <body >
-    <script src="{{ asset('assets/js/demo-theme.min.js?1684106062') }}"></script>
+  <body>
+    {{-- <script src="{{ asset('assets/js/demo-theme.min.js?1684106062') }}"></script> --}}
     <div class="page">
       <!-- Navbar -->
       @include('partials.admin.navbar')

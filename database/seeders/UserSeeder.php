@@ -27,10 +27,20 @@ class UserSeeder extends Seeder
 
         // $user->assignRole('user');
 
+        $manager = User::create([
+            'id' => '111',
+            'username' => 'manager',
+            'nama_lengkap' => 'General Manager Telkom',
+            'instansi' => 'Telkom Witel Gorontalo',
+            'password' => bcrypt('12345678'),
+            'role' => 'manager'
+        ]);
+
         $admin = User::create([
-            'id' => 'TLKM01',
+            'id' => '222',
             'username' => 'admin',
-            'nama_lengkap' => 'Admin Presensi Telkom',
+            'nama_lengkap' => 'Admin Telkom',
+            'instansi' => 'Telkom Witel Gorontalo',
             'password' => bcrypt('12345678'),
             'role' => 'admin'
         ]);

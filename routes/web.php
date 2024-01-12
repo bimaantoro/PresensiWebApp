@@ -1,16 +1,14 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardAdminController;
-use App\Http\Controllers\Admin\EmployeeAdminController;
-use App\Http\Controllers\Admin\PengajuanIzinKaryawanController;
 use App\Http\Controllers\Admin\PengajuanIzinPesertaController;
-use App\Http\Controllers\Admin\PresenceEmployeeController;
-use App\Http\Controllers\Admin\ReportPresenceController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RedirectAuthenticatedUsersController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\History\HistoryController;
+use App\Http\Controllers\Manager\DashboardManagerController;
+use App\Http\Controllers\Manager\ReportPresenceController;
 use App\Http\Controllers\Pengajuan\PengajuanIzinAbsenController;
 use App\Http\Controllers\Pengajuan\PengajuanIzinController;
 use App\Http\Controllers\Pengajuan\PengajuanIzinSakitController;
@@ -40,18 +38,17 @@ Route::middleware(['auth'])->group(function() {
 
     Route::get('/redirectAuthenticatedUsers', [RedirectAuthenticatedUsersController::class, 'home']);
 
-    // // Manager
-    // Route::middleware(['authRole:manager'])->group(function() {
+    // Manager
+    Route::middleware(['authRole:manager'])->group(function() {
+        Route::get('/manager/logout', [LoginController::class, 'logout']);
 
-    //     Route::get('/manager/logout', [LoginController::class, 'logout']);
-
-    //     Route::controller(ReportPresenceController::class)->group(function() {
-    //         Route::get('/manager/presence-employee/report', 'reportPresence')->name('report-presence');
-    //         Route::get('/manager/presence-employee/recap', 'recapPresence')->name('recap-presence');
-    //         Route::post('/manager/report-presence/print', 'printReportPresence');
-    //         Route::post('/manager/recap-presence/print', 'printRecapPresence');
-    //     });
-    // });
+        Route::controller(DashboardManagerController::class)->group(function() {
+            Route::get('/manager/dashboard', 'reportPresence')->name('dashboard-manager');
+            Route::post('/manager/report-presence/print', 'printReportPresence');
+            // Route::get('/manager/presence-employee/recap', 'recapPresence')->name('recap-presence');
+            // Route::post('/manager/recap-presence/print', 'printRecapPresence');
+        });
+    });
 
     // Admin
     Route::middleware(['authRole:admin'])->group(function() {
@@ -59,15 +56,14 @@ Route::middleware(['auth'])->group(function() {
 
         Route::controller(DashboardAdminController::class)->group(function() {
             Route::get('/admin/dashboard', 'index')->name('dashboard-admin');
-            Route::post('/admin/dashboard', 'getPresence');
-            Route::post('/admin/dashboard/map', 'showMap');
+            Route::post('/admin/presences', 'getPresence');
+            Route::post('/admin/presence/map', 'showMap');
         });
 
         Route::controller(StudentController::class)->group(function() {
             Route::get('/admin/students', 'index')->name('student-admin');
             Route::post('/admin/student/store', 'store')->name('student.store');
             Route::post('/admin/student/edit', 'edit')->name('student.edit');
-
             Route::put('/admin/student/{id_student}/update', 'update');
             Route::delete('/admin/student/{id_student}/delete', 'destroy');
         });
@@ -78,12 +74,12 @@ Route::middleware(['auth'])->group(function() {
         //     Route::post('/admin/presence/map', 'showMap')->name('presence-admin.show-map');
         // });
 
-        Route::controller(ReportPresenceController::class)->group(function() {
-            Route::get('/admin/presence-student/report', 'reportPresence')->name('report-presence-admin');
-            Route::get('/admin/presence-student/recap', 'recapPresence')->name('recap-presence-admin');
-            Route::post('/admin/report-presence/print', 'printReportPresence');
-            Route::post('/admin/recap-presence/print', 'printRecapPresence');
-        });
+        // Route::controller(ReportPresenceController::class)->group(function() {
+        //     Route::get('/admin/presence-student/report', 'reportPresence')->name('report-presence-admin');
+        //     Route::get('/admin/presence-student/recap', 'recapPresence')->name('recap-presence-admin');
+        //     Route::post('/admin/report-presence/print', 'printReportPresence');
+        //     Route::post('/admin/recap-presence/print', 'printRecapPresence');
+        // });
 
         Route::controller(PengajuanIzinPesertaController::class)->group(function() {
             Route::get('/admin/pengajuan-izin-peserta', 'index')->name('pengajuan-izin-admin');
@@ -144,97 +140,3 @@ Route::middleware(['auth'])->group(function() {
         });
     });
 });
-
-// Route::middleware(['auth:employee'])->group(function() {
-
-//     Route::get('/redirectAuthenticatedUsers', [RedirectAuthenticatedUsersController::class, 'home']);
-
-//     // // Manager
-//     // Route::middleware(['authRole:manager'])->group(function() {
-
-//     //     Route::get('/manager/logout', [LoginController::class, 'logout']);
-
-//     //     Route::controller(ReportPresenceController::class)->group(function() {
-//     //         Route::get('/manager/presence-employee/report', 'reportPresence')->name('report-presence');
-//     //         Route::get('/manager/presence-employee/recap', 'recapPresence')->name('recap-presence');
-//     //         Route::post('/manager/report-presence/print', 'printReportPresence');
-//     //         Route::post('/manager/recap-presence/print', 'printRecapPresence');
-//     //     });
-//     // });
-
-//     // Admin
-//     Route::middleware(['authRole:admin'])->group(function() {
-//         Route::get('/admin/logout', [LoginController::class, 'logout']);
-
-//         Route::controller(DashboardAdminController::class)->group(function() {
-//             Route::get('/admin/dashboard', 'index')->name('dashboard-admin');
-//         });
-
-//         Route::controller(EmployeeAdminController::class)->group(function() {
-//             Route::get('/admin/employees', 'index')->name('employee-admin');
-//             Route::post('/admin/employee/store', 'store')->name('employee.store');
-//             Route::post('/admin/employee/edit', 'edit')->name('employee.edit');
-//             Route::put('/admin/employee/{id_employee}', 'update');
-//             Route::delete('/admin/employee/{id_employee}/delete', 'destroy');
-//         });
-
-//         Route::controller(PresenceEmployeeController::class)->group(function() {
-//             Route::get('/admin/presences', 'index')->name('presence-admin');
-//             Route::post('/admin/presences', 'getPresence')->name('presence-admin.get-presence');
-//             Route::post('/admin/presence/map', 'showMap')->name('presence-admin.show-map');
-//         });
-
-//         Route::controller(ReportPresenceController::class)->group(function() {
-//             Route::get('/admin/presence-student/report', 'reportPresence')->name('report-presence-admin');
-//             Route::get('/admin/presence-student/recap', 'recapPresence')->name('recap-presence-admin');
-//             Route::post('/admin/report-presence/print', 'printReportPresence');
-//             Route::post('/admin/recap-presence/print', 'printRecapPresence');
-//         });
-
-//         Route::controller(PengajuanIzinKaryawanController::class)->group(function() {
-//             Route::get('/admin/pengajuan-izin-karyawan', 'index')->name('pengajuan-izin-admin');
-//             Route::put('/admin/pengajuan-izin-karyawan/update', 'update');
-//             Route::get('/admin/pengajuan-izin-karyawan/{id}', 'updateStatusApproved');
-//         });
-//     });
-
-//     // User
-//     Route::middleware(['authRole:user'])->group(function() {
-//         Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-
-//         Route::controller(DashboardController::class)->group(function() {
-//             Route::get('/dashboard', 'index')->name('dashboard');
-//         });
-
-//         Route::controller(PresenceController::class)->group(function() {
-//             Route::get('/presence/create', 'create')->name('presence.create');
-//             Route::post('/presence/store', 'store')->name('presence.store');
-//         });
-
-//         Route::controller(ProfileController::class)->group(function() {
-//             Route::get('/profile', 'edit')->name('profile');
-//             Route::put('/profile/{id_employee}', 'update');
-//         });
-
-//         Route::controller(HistoryController::class)->group(function() {
-//             Route::get('/history', 'index')->name('history');
-//             Route::post('/history', 'search');
-//         });
-
-//         Route::controller(PengajuanIzinController::class)->group(function() {
-//             Route::get('/pengajuan-izin', 'index')->name('pengajuan-izin');
-
-//             Route::get('/pengajuan-izin/{id}/showact', 'showAct');
-
-//             Route::get('/pengajuan-izin/absen', 'createAbsen');
-//             Route::post('/pengajuan-izin/absen/store', 'storeAbsen');
-
-//             Route::get('/pengajuan-izin/sakit', 'createSakit');
-//             Route::post('/pengajuan-izin/sakit/store', 'storeSakit');
-
-//             Route::get('/pengajuan-izin/create', 'create')->name('pengajuan-izin.create');
-//             Route::post('/pengajuan-izin/store', 'store')->name('pengajuan-izin.store');
-//             Route::post('/pengajuan-izin/check', 'cekPengajuanIzin');
-//         });
-//     });
-// });
