@@ -74,16 +74,16 @@ class PengajuanIzinController extends Controller
         }
     }
 
-    public function cekPengajuanIzin(Request $request) {
-        $izinAt = $request->izinAt;
-        $idStudent = Auth::user()->id_employee;
+    public function check(Request $request) {
+        $izinAt = $request->izin_at;
+        $idStudent = Auth::user()->id;
 
-        $cek = DB::table('pengajuan_izin')
-        ->where('employee_id', $idStudent)
-        ->where('from_date_at', $izinAt)
+        $check = DB::table('pengajuan_izin')
+        ->where('user_id', $idStudent)
+        ->where('start_date', $izinAt)
         ->count();
 
-        return $cek;
+        return $check;
     }
 
     public function showAct($kodeIzin) {

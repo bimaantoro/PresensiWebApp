@@ -48,7 +48,7 @@
             </div>
             <div class="form-group boxed">
                 <div class="input-wrapper">
-                    <button type="submit" class="btn btn-success btn-block">
+                    <button type="submit" class="btn btn-danger btn-block">
                         <ion-icon name="refresh-outline"></ion-icon>
                         Update
                     </button>

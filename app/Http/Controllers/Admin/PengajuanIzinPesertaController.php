@@ -13,17 +13,17 @@ class PengajuanIzinPesertaController extends Controller
     public function index(Request $request) {
 
         $query = PengajuanIzin::query();
-        $query->select('id', 'start_date', 'pengajuan_izin.user_id', 'nama_lengkap', 'instansi', 'status', 'keterangan', 'status_code');
+        $query->select('id', 'start_date', 'user_id', 'nama_lengkap', 'instansi', 'status', 'keterangan', 'status_code');
         $query->join('users', 'pengajuan_izin.user_id', '=', 'users.id');
         $query->orderBy('start_date', 'desc');
 
 
-        if(!empty($request->from) && !empty($request->to)) {
-            $query->whereBetween('start_date', [$request->from, $request->to]);
+        if(!empty($request->start_date) && !empty($request->end_date)) {
+            $query->whereBetween('start_date', [$request->start_date, $request->end_date]);
         }
 
         if(!empty($request->user_id)) {
-            $query->where('pengajuan_izin.user_id', $request->user_id);
+            $query->where('user_id', $request->user_id);
         }
 
         if(!empty($request->nama_lengkap)) {
@@ -41,13 +41,13 @@ class PengajuanIzinPesertaController extends Controller
     }
 
     public function update(Request $request) {
-        $statusApproved = $request->status_approved;
-        $id = $request->id;
+        $statusCode = $request->status_code;
+        $id = $request->id_pengajuan_izin_form;
 
         $update = DB::table('pengajuan_izin')
         ->where('kode_izin', $id)
         ->update([
-            'status_code' => $statusApproved
+            'status_code' => $statusCode
         ]);
 
         if($update) {
@@ -57,7 +57,7 @@ class PengajuanIzinPesertaController extends Controller
         }
     }
 
-    public function updateStatusApproved($id) {
+    public function decline($id) {
         $update = DB::table('pengajuan_izin')
         ->where('kode_izin', $id)
         ->update([

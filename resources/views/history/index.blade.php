@@ -40,7 +40,7 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <button class="btn btn-success btn-block"  id="search-history-presence">
+                <button class="btn btn-danger btn-block"  id="search-history-presence">
                     <ion-icon name="search-outline"></ion-icon>Search
                 </button>
             </div>

@@ -43,8 +43,8 @@ class DashboardAdminController extends Controller
         $id = $request->id;
         
         $presence = DB::table('presences')
-        // ->where('user_id', $id)
         ->join('users', 'presences.user_id', '=', 'users.id')
+        ->where('presences.id', $id)
         ->first();
 
         return view('admin.dashboard.show-map', compact('presence'));

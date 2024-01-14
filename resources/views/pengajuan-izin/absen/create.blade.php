@@ -18,6 +18,9 @@
         <div class="col">
             <form action="/pengajuan-izin/absen/store" method="POST" id="form-izin-absen">
                 @csrf
+                {{-- <div class="form-group">
+                    <input type="text" id="izin-at" name="izin_at" class="form-control datepicker" placeholder="Tanggal">
+                </div> --}}
                 <div class="form-group">
                     <input type="text" class="form-control datepicker" placeholder="Dari Tanggal" id="start_date" name="start_date" autocomplete="off">
                 </div>
@@ -79,7 +82,7 @@
                 loadJumlahHari(); 
             });
 
-            $('#izinAt').change(function(e) {
+            $('#izin-at').change(function(e) {
                 const izinAt = $(this).val();
                 $.ajax({
                     type: 'POST',
@@ -95,7 +98,7 @@
                                 text: 'Anda sudah melakukan pengajuan izin pada tanggal tersebut',
                                 icon: 'warning',
                             }).then((result) => {
-                                $('#izinAt').val('');
+                                $('#izin-at').val('');
                             });
                         }
                     }

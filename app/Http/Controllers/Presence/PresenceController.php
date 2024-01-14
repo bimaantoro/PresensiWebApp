@@ -28,11 +28,12 @@ class PresenceController extends Controller
         $presenceAt = date('Y-m-d');
         $presenceHour = date('H:i:s');
 
+        $latitudeKantor = 1.4712832; 
+        $longitudeKantor = 124.862464;
+        
         $latitude = $request->latitude;
         $longitude = $request->longitude;
 
-        $latitudeKantor = 1.4811136; 
-        $longitudeKantor = 124.84608;
         $distance = $this->distance($latitudeKantor, $longitudeKantor, $latitude, $longitude);
         $radius = round($distance["meters"]);
 

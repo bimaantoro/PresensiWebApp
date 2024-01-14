@@ -56,6 +56,7 @@ class DashboardManagerController extends Controller
         ];
 
         $student = DB::table('users')
+        ->where('role', 'student')
         ->where('id', $idStudent)
         ->first();
 
@@ -110,7 +111,7 @@ class DashboardManagerController extends Controller
         ];
 
         $recapPresence = DB::table('presences')
-        ->selectRaw('user_id, nama_lengkap,
+        ->selectRaw('presences.user_id, nama_lengkap, instansi,
         MAX(IF(DAY(presence_at) = 1, CONCAT(check_in, "-", IFNULL(check_out, "00:00:00")), "")) as tgl_1,
         MAX(IF(DAY(presence_at) = 2, CONCAT(check_in, "-", IFNULL(check_out, "00:00:00")), "")) as tgl_2,
         MAX(IF(DAY(presence_at) = 3, CONCAT(check_in, "-", IFNULL(check_out, "00:00:00")), "")) as tgl_3,
@@ -145,10 +146,9 @@ class DashboardManagerController extends Controller
         )->join('users', 'presences.user_id', '=', 'users.id')
         ->whereRaw('MONTH(presence_at) = "' . $month . '"')
         ->whereRaw('YEAR(presence_at) = "' . $year . '"')
-        ->groupByRaw('user_id, nama_lengkap')
+        ->groupByRaw('presences.user_id, nama_lengkap, instansi')
         ->get();
 
-
-        return view('admin.report-presence.print-recap-presence', compact('month', 'year', 'months', 'recapPresence'));
+        return view('manager.dashboard.print-recap-presence', compact('month', 'year', 'months', 'recapPresence'));
     }
 }

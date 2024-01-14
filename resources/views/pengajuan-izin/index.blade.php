@@ -10,7 +10,7 @@
 @section('content')
 <div class="section content-master-user">
     <div class="row">
-        <div class="col">
+        <div class="col mb-3">
             @if (session()->has('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}
@@ -25,7 +25,7 @@
     </div>
 
     <div class="row">
-        <div class="col">
+        <div class="col mb-3">
             <form action="{{ route('pengajuan-izin') }}" method="GET">
                 <div class="row">
                     <div class="col-6">
@@ -61,7 +61,7 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <button class="btn btn-success w-100">Cari Data</button>
+                        <button class="btn btn-danger w-100">Cari Data</button>
                     </div>
                 </div>
 

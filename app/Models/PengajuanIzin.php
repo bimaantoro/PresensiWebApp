@@ -12,11 +12,13 @@ class PengajuanIzin extends Model
     protected $table = 'pengajuan_izin';
     
     protected $fillable = [
-        'izin_at',
-        'status',
+        'start_date',
+        'end_date',
         'keterangan',
-        'status_approved',
-        'employee_id'
+        'file_surat_dokter',
+        'status',
+        'status_code',
+        'user_id'
     ];
 
     public function user() {
