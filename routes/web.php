@@ -33,7 +33,7 @@ Route::middleware(['auth:employee'])->group(function() {
 
     Route::get('/redirectAuthenticatedUsers', [RedirectAuthenticatedUsersController::class, 'home']);
 
-    // Route::post('/logout', [LoginController::class, 'logout']);
+    Route::post('/logout', [LoginController::class, 'logout']);
 
     // Admin
     Route::middleware(['authRole:admin'])->group(function() {

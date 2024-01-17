@@ -28,9 +28,8 @@ class PresenceController extends Controller
         $presenceAt = date('Y-m-d');
         $presenceHour = date('H:i:s');
 
-        $image = $request->image;
-        $latitudeKantor = 0.5560944233072398; 
-        $longitudeKantor = 123.13342749923635;
+        $latitudeKantor = 0.5595137; 
+        $longitudeKantor = 123.1011089;
         $latitude = $request->latitude;
         $longitude = $request->longitude;
 
@@ -42,23 +41,23 @@ class PresenceController extends Controller
         ->where('employee_id', $idEmployee)
         ->count();
 
-        if($distance >= 20) {
+        if($checkIsPresence > 0) {
+            $note = 'out'; 
+        } else {
+            $note = 'in';
+        }
+
+        $image = $request->image;
+        $folderPath = 'public/uploads/presence/';
+        $imageParts = explode(';base64', $image);
+        $decodeImage = base64_decode($imageParts[1]);
+        $formatName = $idEmployee . "-" . $presenceAt . '-' . $note;
+        $fileName = $formatName . '.png';
+        $file = $folderPath . $fileName;
+
+        if($radius >= 20) {
             echo 'error|Anda berada diluar radius kantor';
         } else {
-            if($checkIsPresence > 0) {
-                $note = 'out'; 
-            } else {
-                $note = 'in';
-            }
-    
-            $folderPath = 'public/uploads/presence/';
-            $imageParts = explode(';base64', $image);
-            $decodeImage = base64_decode($imageParts[1]);
-    
-            $formatName = $idEmployee . "-" . $presenceAt . '-' . $note;
-            $fileName = $formatName . '.png';
-            $file = $folderPath . $fileName;
-    
             if($checkIsPresence > 0) {
                 $dataCheckOut = [
                     'check_out' => $presenceHour,

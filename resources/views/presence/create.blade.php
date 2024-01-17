@@ -11,8 +11,8 @@
 <div class="section content-master-user">
     <div class="row">
         <div class="col">
-            <input type="hidden" id="latitude">
-            <input type="hidden" id="longitude">
+            <input type="text" id="latitude">
+            <input type="text" id="longitude">
             <div id="my_camera"></div>
         </div>
     </div>
@@ -67,7 +67,7 @@ crossorigin=""/>
         const longitude = position.coords.longitude;
         getLatitude.value = latitude;
         getLongitude.value = longitude;
-        const map = L.map('map').setView([latitude, longitude], 13);
+        const map = L.map('map').setView([latitude, longitude], 18);
         
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
@@ -75,7 +75,7 @@ crossorigin=""/>
         }).addTo(map);
 
         const marker = L.marker([latitude, longitude]).addTo(map);
-        const circle = L.circle([0.5560944233072398, 123.13342749923635], {
+        const circle = L.circle([0.5595137, 123.1011089], {
             color: 'red',
             fillColor: '#f03',
             fillOpacity: 0.5,

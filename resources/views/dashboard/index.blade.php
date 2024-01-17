@@ -1,9 +1,9 @@
 @extends('layouts.master-user')
 @section('content')
 <div class="section" id="user-section">
-    {{-- <a href="{{ route('logout') }}" >
+    <a href="{{ route('logout') }}" class="logout">
         <ion-icon name="log-out-outline"></ion-icon>
-    </a> --}}
+    </a>
     <div id="user-detail">
         <div class="avatar">
             @if (!empty(Auth::guard('employee')->user()->photo))
