@@ -5,3 +5,10 @@ function kodeIzin($lastNumber, $key, $characterCount) {
     $result = $key .  $newNumber;
     return $result;
 }
+
+function calculateDay($startDate, $endDate) {
+    $date1 = date_create($startDate);
+    $date2 = date_create($endDate);
+    $diff = date_diff($date1, $date2);
+    return $diff->days + 1;
+}

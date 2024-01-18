@@ -76,53 +76,81 @@
             <th rowspan="2">ID</th>
             <th rowspan="2">Nama</th>
             <th rowspan="2">Asal Instansi</th>
-            <th colspan="31">Tanggal</th>
-            <th rowspan="2">TH</th>
-            <th rowspan="2">TT</th>
+            <th colspan="{{ $totalDays }}">Bulan {{ $months[$month] }} {{ $year }}</th>
+            <th rowspan="2">H</th>
+            <th rowspan="2">I</th>
+            <th rowspan="2">S</th>
+            <th rowspan="2">A</th>
         </tr>
         <tr>
-            <?php
-            for($i= 1; $i <= 31; $i++) {
-            ?>
-            <th>{{ $i }}</th>
-            <?php
-            }
-            ?>
+          @foreach ($rangeDate as $rd)
+            @if ($rd != NULL)
+              <th>{{ date('d', strtotime($rd)) }}</th>
+            @endif
+          @endforeach
         </tr>
         @foreach ($recapPresence as $rp)
         <tr>
-                <td>{{ $rp->user_id }}</td>
-                <td>{{ $rp->nama_lengkap }}</td>
-                <td>{{ $rp->instansi }}</td>
-                
-                <?php
-                    $totalPresence = 0;
-                    $totalTerlambat = 0;
-                    for($i=1; $i <= 31; $i++) {
-                        $tgl = "tgl_" . $i;
+          <td>{{ $rp->id }}</td>
+          <td>{{ $rp->nama_lengkap }}</td>
+          <td>{{ $rp->instansi }}</td>
+          <?php
+            $totalPresence = 0;
+            $totalAlpa = 0;
+            $totalAbsen = 0;
+            $totalSakit = 0;
+            $color = "";
+            for ($i=1; $i <= $totalDays; $i++) { 
+              $date = "tgl_" . $i;
+              $dataPresence = explode("|", $rp->$date);
 
-                        if(empty($rp->$tgl)) {
-                            $presence = ['', ''];
-                            $totalPresence += 0;
-                        } else {
-                            $presence = explode("-", $rp->$tgl);
-                            $totalPresence += 1;
+              if($rp->$date != NULL) {
+                $statusPresence = $dataPresence[2];
+              } else {
+                $statusPresence = "";
+              }
 
-                            if($presence[0] >= "07:00:00") {
-                                $totalTerlambat += 1;
-                            }
-                        }
-                ?>
-                <td>
-                    <span style="color: {{ $presence[0] >= '07:00:00' ? 'red' : '' }}">{{ $presence[0] }}</span><br>
-                    <span style="color: {{ $presence[1] <= '16:00:00' ? 'red' : '' }}">{{ $presence[1] }}</span>
-                </td>
-                <?php
-                }
-                ?>
-                <td>{{ $totalPresence }}</td>
-                <td>{{ $totalTerlambat }}</td>
-            </tr>
+              if($statusPresence == 'H') {
+                 $totalPresence += 1;
+                 $color = "white";
+              }
+
+              if($statusPresence == 'I') {
+                $totalAbsen += 1;
+                $color = "#ffbb00";
+              }
+
+              if($statusPresence == 'S') {
+                $totalSakit += 1;
+                 $color = "#34a1eb";
+              }
+
+              if(empty($statusPresence)) {
+                $totalAlpa += 1;
+                $color = "red";
+              } else {
+                $color = "";
+              }
+          ?>
+          <td style="background-color: {{ $color }}">            
+            {{ $statusPresence }}
+          </td>
+          <?php
+          }
+          ?>
+          <td>
+            {{ !empty($totalPresence) ? $totalPresence : "" }}
+          </td>
+          <td>
+            {{ !empty($totalAbsen) ? $totalAbsen : "" }}
+          </td>
+          <td>
+            {{ !empty($totalSakit) ? $totalSakit : "" }}
+          </td>
+          <td>
+            {{ !empty($totalAlpa) ? $totalAlpa : "" }}
+          </td>
+        </tr>
         @endforeach
     </table>
 

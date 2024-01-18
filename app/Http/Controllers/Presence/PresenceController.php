@@ -28,8 +28,8 @@ class PresenceController extends Controller
         $presenceAt = date('Y-m-d');
         $presenceHour = date('H:i:s');
 
-        $latitudeKantor = 1.4712832; 
-        $longitudeKantor = 124.862464;
+        $latitudeKantor = 0.5703323; 
+        $longitudeKantor = 123.1037019;
         
         $latitude = $request->latitude;
         $longitude = $request->longitude;
@@ -56,7 +56,7 @@ class PresenceController extends Controller
         $fileName = $formatName . '.png';
         $file = $folderPath . $fileName;
 
-        if($radius >= 20) {
+        if($radius >= 40) {
             echo 'error|Anda berada diluar radius kantor, Jarak Anda ' . $radius . ' meter dari kantor';
         } else {
             if($checkIsPresence > 0) {

@@ -118,32 +118,55 @@
         <th>Foto Presensi Masuk</th>
         <th>Presensi pulang</th>
         <th>Foto Presensi Pulang</th>
+        <th>Status</th>
         <th>Keterangan</th>
       </tr>
       @foreach ($presence as $p)
-        <tr>
-          <td>{{ $loop->iteration }}</td>
-          <td>{{ date('d-m-Y', strtotime($p->presence_at)) }}</td>
-          <td>{{ $p->check_in }}</td>
-          <td>
-            <img src="{{ asset('storage/uploads/presence/' . $p->photo_in) }}" alt="" class="photo">
-          </td>
-          <td>{{ $p->check_out != null ? $p->check_out : 'Belum Presensi' }}</td>
-          <td>
-            @if ($p->photo_out != null)
-            <img src="{{ asset('storage/uploads/presence/' . $p->photo_out) }}" alt="" class="photo">
-            @else
-            -
-            @endif
-          </td>
-          <td>
-            @if ($p->check_in >= "07:00")
-                Terlambat
-            @else
-                Tepat waktu
-            @endif
-          </td>
-        </tr>
+      @if ($p->presence_status == 'H')
+      <tr>
+        <td>{{ $loop->iteration }}</td>
+        <td>{{ date('d-m-Y', strtotime($p->presence_at)) }}</td>
+        <td>{{ $p->check_in }}</td>
+        <td>
+          <img src="{{ asset('storage/uploads/presence/' . $p->photo_in) }}" alt="" class="photo">
+        </td>
+        <td>{{ $p->check_out != null ? $p->check_out : 'Belum Presensi' }}</td>
+        <td>
+          @if ($p->photo_out != null)
+          <img src="{{ asset('storage/uploads/presence/' . $p->photo_out) }}" alt="" class="photo">
+          @else
+          -
+          @endif
+        </td>
+        <td style="text-align: center">{{ $p->presence_status }}</td>
+        <td>
+          @if ($p->check_in >= "07:00")
+              Terlambat
+          @else
+              Tepat waktu
+          @endif
+        </td>
+      </tr>
+      @else
+      <tr>
+        <td>{{ $loop->iteration }}</td>
+        <td>{{ date('d-m-Y', strtotime($p->presence_at)) }}</td>
+        <td>-</td>
+        <td>
+          -
+        </td>
+        <td>-</td>
+        <td>
+         -
+        </td>
+        <td>
+          -
+        </td>
+        <td>{{ $p->status_presence }}</td>
+        <td>{{ $p->keterangan }}</td>
+        <td></td>
+      </tr>
+      @endif
       @endforeach
     </table>
 

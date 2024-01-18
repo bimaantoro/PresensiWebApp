@@ -63,6 +63,31 @@
                 format: 'yyyy-mm-dd'    
             });
 
+            $('#start_date, #end_date').change(function(e) {
+                const startDate = $('#start_date').val();
+                const endDate = $('#end_date').val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/pengajuan-izin/check',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        start_date: startDate,
+                        end_date: endDate,
+                    },
+                    success: (response) => {
+                        if(response == 1) {
+                            Swal.fire({
+                                title: 'Oops!',
+                                text: 'Anda sudah melakukan pengajuan izin pada tanggal tersebut',
+                                icon: 'warning',
+                            }).then((result) => {
+                                $('#start_date, #end_date').val('');
+                            });
+                        }
+                    }
+                });
+            });
+
             function loadJumlahHari() {
                 const startDate = $('#start_date').val();
                 const endDate = $('#end_date').val();
@@ -88,29 +113,6 @@
 
             $('#start_date, #end_date').change(function(e) {
                 loadJumlahHari(); 
-            });
-
-            $('#izinAt').change(function(e) {
-                const izinAt = $(this).val();
-                $.ajax({
-                    type: 'POST',
-                    url: '/pengajuan-izin/check',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        izinAt: izinAt
-                    },
-                    success: (response) => {
-                        if(response == 1) {
-                            Swal.fire({
-                                title: 'Oops!',
-                                text: 'Anda sudah melakukan pengajuan izin pada tanggal tersebut',
-                                icon: 'warning',
-                            }).then((result) => {
-                                $('#izinAt').val('');
-                            });
-                        }
-                    }
-                });
             });
 
             $('#form-izin-sakit').submit(function() {

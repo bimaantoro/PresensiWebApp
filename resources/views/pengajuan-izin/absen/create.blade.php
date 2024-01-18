@@ -18,9 +18,6 @@
         <div class="col">
             <form action="/pengajuan-izin/absen/store" method="POST" id="form-izin-absen">
                 @csrf
-                {{-- <div class="form-group">
-                    <input type="text" id="izin-at" name="izin_at" class="form-control datepicker" placeholder="Tanggal">
-                </div> --}}
                 <div class="form-group">
                     <input type="text" class="form-control datepicker" placeholder="Dari Tanggal" id="start_date" name="start_date" autocomplete="off">
                 </div>
@@ -28,7 +25,7 @@
                     <input type="text" class="form-control datepicker" placeholder="Sampai Tanggal" id="end_date" name="end_date" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Lama izin (dalam hari)" id="number_of_days" name="number_of_days" readonly>
+                    <input type="text" class="form-control" placeholder="Lama izin (dalam hari)" id="jumlah_hari" name="jumlah_hari" readonly>
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Keterangan" id="keterangan" name="keterangan" autocomplete="off">
@@ -75,34 +72,11 @@
                     numberOfDays = differenceInDays + 1;
                 }
 
-                $('#number_of_days').val(numberOfDays + " Hari");
+                $('#jumlah_hari').val(numberOfDays);
             }
 
             $('#start_date, #end_date').change(function(e) {
                 loadJumlahHari(); 
-            });
-
-            $('#izin-at').change(function(e) {
-                const izinAt = $(this).val();
-                $.ajax({
-                    type: 'POST',
-                    url: '/pengajuan-izin/check',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        izinAt: izinAt
-                    },
-                    success: (response) => {
-                        if(response == 1) {
-                            Swal.fire({
-                                title: 'Oops!',
-                                text: 'Anda sudah melakukan pengajuan izin pada tanggal tersebut',
-                                icon: 'warning',
-                            }).then((result) => {
-                                $('#izin-at').val('');
-                            });
-                        }
-                    }
-                });
             });
 
             $('#form-izin-absen').submit(function() {

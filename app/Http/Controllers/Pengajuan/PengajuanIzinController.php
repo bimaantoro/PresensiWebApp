@@ -75,12 +75,14 @@ class PengajuanIzinController extends Controller
     }
 
     public function check(Request $request) {
-        $izinAt = $request->izin_at;
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
         $idStudent = Auth::user()->id;
 
         $check = DB::table('pengajuan_izin')
         ->where('user_id', $idStudent)
-        ->where('start_date', $izinAt)
+        ->where('start_date', $startDate)
+        ->where('end_date', $endDate)
         ->count();
 
         return $check;

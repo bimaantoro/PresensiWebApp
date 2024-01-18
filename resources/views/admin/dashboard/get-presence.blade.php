@@ -1,4 +1,6 @@
 @foreach ($presence as $p)
+
+@if ($p->presence_status == 'H')
 <tr>
     <td>{{ $loop->iteration }}</td>
     <td>{{ $p->user_id }}</td>
@@ -36,6 +38,25 @@
         </a>
     </td>
 </tr>
+@else
+<tr>
+    
+    <td>{{ $loop->iteration }}</td>
+    <td>{{ $p->user_id }}</td>
+    <td>{{ $p->nama_lengkap }}</td>
+    <td>{{ $p->instansi }}</td>
+    <td>-</td>
+    <td>-</td>
+    <td>
+        @if ($p->status_presence == 'I')
+            <span class="badge bg-warning">Izin</span>
+        @elseif($p->status_presence == 'S')
+        <span class="badge bg-info">Sakit</span>      
+        @endif
+    </td>
+</tr>
+
+@endif
 @endforeach
 
 <script>

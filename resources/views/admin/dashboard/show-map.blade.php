@@ -12,7 +12,7 @@
 
     let marker = L.marker([getLatitude, getLongitude]).addTo(map);
     // ubah dengan lat dan longitude kantor
-    let circle = L.circle([1.4712832, 124.862464], {
+    let circle = L.circle([0.5560125, 123.1332792], {
             color: 'red',
             fillColor: '#f03',
             fillOpacity: 0.5,

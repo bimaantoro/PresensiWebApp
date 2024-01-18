@@ -20,10 +20,13 @@ class DashboardController extends Controller
         ->where('presence_at', $today)->first();
         
         $presenceHistoryOfMonth = DB::table('presences')
-        ->where('user_id', $idStudent)
+        ->select('presences.*', 'keterangan', 'file_surat_dokter')
+        ->leftJoin('pengajuan_izin', 'presences.kode_izin', '=', 'pengajuan_izin.kode_izin')
+        ->where('presences.user_id', $idStudent)
         ->whereRaw('MONTH(presence_at)="'. $thisMonth. '"')
         ->whereRaw('YEAR(presence_at)="' . $thisYear . '"')
-        ->orderBy('presence_at')->get();
+        ->orderBy('presence_at')
+        ->get();
 
         $months = [
             "",

@@ -31,7 +31,8 @@ class DashboardAdminController extends Controller
         $date = $request->date;
         
         $presence = DB::table('presences')
-        ->select('presences.*', 'nama_lengkap', 'instansi')
+        ->select('presences.*', 'nama_lengkap', 'instansi', 'keterangan')
+        ->leftJoin('pengajuan_izin', 'presences.kode_izin', '=', 'pengajuan_izin.kode_izin')
         ->join('users', 'presences.user_id', '=', 'users.id')
         ->where('presence_at', $date)
         ->get();

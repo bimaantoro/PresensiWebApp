@@ -73,21 +73,21 @@
         <div class="col">
             @foreach ($dataIzin as $d)
             @php
-                if($d->status == 'i') {
+                if($d->status == 'I') {
                     $status = 'Izin';
-                } else if ($d->status == 's') {
+                } else if ($d->status == 'S') {
                     $status = 'Sakit';
                 } else {
                     $status = 'Not Found';
                 }
             @endphp
-                <div class="card mt-2 card-izin" kode_izin="{{ $d->kode_izin }}"  data-toggle="modal" data-target="#actionSheetIconed">
+                <div class="card mt-2 card-izin" status_code="{{ $d->status_code }}" kode_izin="{{ $d->kode_izin }}"  data-toggle="modal" data-target="#actionSheetIconed">
                     <div class="card-body">
                         <div class="pengajuan-izin-content">
                             <div class="icon-presence">
-                                @if ($d->status == 'i')
+                                @if ($d->status == 'I')
                                 <ion-icon name="calendar-outline" style="font-size: 48px; color: blue"></ion-icon>
-                                @elseif($d->status == 's')
+                                @elseif($d->status == 'S')
                                 <ion-icon name="medkit-outline" style="font-size: 48px; color: red"></ion-icon>
                                 @endif
                             </div>
@@ -180,7 +180,17 @@
         $(function() {
             $('.card-izin').click(function(e) {
                 const kodeIzin = $(this).attr("kode_izin");
-                $("#showact").load("/pengajuan-izin/" + kodeIzin + "/showact");
+                const statusCode = $(this).attr("status_code");
+
+                if(statusCode == 1) {
+                    Swal.fire({
+                        title: 'Oops!',
+                        text: 'Data sudah disetujui, Tidak dapat diubah!',
+                        icon: 'warning',
+                    });
+                } else  {
+                    $("#showact").load("/pengajuan-izin/" + kodeIzin + "/showact");
+                }
             });
         });
     </script>

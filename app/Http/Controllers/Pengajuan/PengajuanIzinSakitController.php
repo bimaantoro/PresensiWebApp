@@ -18,7 +18,7 @@ class PengajuanIzinSakitController extends Controller
         $idStudent = Auth::user()->id;
         $startDate = $request->start_date;
         $endDate = $request->end_date;
-        $status = "s";
+        $status = "S";
         $keterangan = $request->keterangan;
 
         $month = date('m', strtotime($startDate));
@@ -51,18 +51,37 @@ class PengajuanIzinSakitController extends Controller
             'user_id' => $idStudent,
         ];
 
-        $save = DB::table('pengajuan_izin')->insert($data);
+        $checkIsPresence = DB::table('presences')
+        ->whereBetween('presence_at', [$startDate, $endDate]);
 
-        if($save) {
-            if($request->hasFile('file_surat_dokter')) {
-                $fileSuratDokter = $kodeIzin . '.' . $request->file('file_surat_dokter')->getClientOriginalExtension();
-                $folderPath = 'public/uploads/suratDokter';
-                $request->file('file_surat_dokter')->storeAs($folderPath, $fileSuratDokter);
+        // cek pengajuan izin
+        $checkPengajuanIzin = DB::table('pengajuan_izin')
+        ->whereRaw('"' . $startDate . '" BETWEEN start_date AND end_date');
+
+        $dataPresence = $checkIsPresence->get();
+
+        if($checkIsPresence->count() > 0) {
+            $blacklistDate = "";
+            foreach($dataPresence as $dp) {
+                $blacklistDate .= date('d-m-Y', strtotime($dp->presence_at)) . "," ;
             }
-
-            return redirect()->route('pengajuan-izin')->with(['success' => 'Data berhasil disimpan']);
+            return redirect()->route('pengajuan-izin')->with(['error' => 'Tidak bisa melakukan pengajuan pada tanggal ' . $blacklistDate . 'karena tanggal sudah melakukan presensi, Silahkan ganti periode tanggal pengajuan.']);
+        } elseif($checkPengajuanIzin->count() > 0) {
+            return redirect()->route('pengajuan-izin')->with(['error' => 'Anda sudah melakukan pengajuan izin Sakit pada tanggal tersebut']);
         } else {
-            return redirect()->route('pengajuan-izin')->with(['error' => 'Data gagal disimpan']);
+            $save = DB::table('pengajuan_izin')->insert($data);
+
+            if($save) {
+                if($request->hasFile('file_surat_dokter')) {
+                    $fileSuratDokter = $kodeIzin . '.' . $request->file('file_surat_dokter')->getClientOriginalExtension();
+                    $folderPath = 'public/uploads/suratDokter';
+                    $request->file('file_surat_dokter')->storeAs($folderPath, $fileSuratDokter);
+                }
+    
+                return redirect()->route('pengajuan-izin')->with(['success' => 'Data berhasil disimpan']);
+            } else {
+                return redirect()->route('pengajuan-izin')->with(['error' => 'Data gagal disimpan']);
+            }
         }
     }
 
@@ -108,6 +127,21 @@ class PengajuanIzinSakitController extends Controller
         }catch(\Exception $e) {
             return redirect()->route('pengajuan-izin')->with(['error' => 'Data gagal diperbarui']);
         }
+    }
+
+    public function check(Request $request) {
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        $idStudent = Auth::user()->id;
+
+        $check = DB::table('pengajuan_izin')
+        ->where('user_id', $idStudent)
+        ->where('start_date', $startDate)
+        ->where('end_date', $endDate)
+        ->count();
+
+        return $check;
     }
 
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\Calculation\Database\DVar;
 
 class PengajuanIzinAbsenController extends Controller
 {
@@ -18,7 +19,8 @@ class PengajuanIzinAbsenController extends Controller
         $idStudent = Auth::user()->id;
         $startDate = $request->start_date;
         $endDate = $request->end_date;
-        $status = "i";
+        $jumlahHari = $request->jumlah_hari;
+        $status = "I";
         $keterangan = $request->keterangan;
 
         $month = date('m', strtotime($startDate));
@@ -41,15 +43,57 @@ class PengajuanIzinAbsenController extends Controller
             'end_date' => $endDate,
             'status' => $status,
             'keterangan' => $keterangan,
+            'jumlah_hari' => $jumlahHari,
             'user_id' => $idStudent,
         ];
 
-        $save = DB::table('pengajuan_izin')->insert($data);
+        // cek sudah presensi / belum
+        $checkIsPresence = DB::table('presences')
+        ->whereBetween('presence_at', [$startDate, $endDate]);
 
-        if($save) {
-            return redirect()->route('pengajuan-izin')->with(['success' => 'Data berhasil disimpan']);
-        } else {
-            return redirect()->route('pengajuan-izin')->with(['error' => 'Data gagal disimpan']);
+        // cek pengajuan izin
+        $checkPengajuanIzin = DB::table('pengajuan_izin')
+        ->whereRaw('"' . $startDate . '" BETWEEN start_date AND end_date');
+
+        // Hitung jumlah hari yang digunakan
+        $jumlahHari = calculateDay($startDate, $endDate);
+
+        // cek jumlah maksimal izin absen
+        // $checkIzinAbsen = DB::table('pengajuan_izin')
+        // ->where('jumlah_hari', $jumlahHari)
+        // ->first();
+
+        $jumlahMaxAbsen = 3;
+
+        $absenDigunakan = DB::table('presences')
+        ->whereRaw('MONTH(presence_at)="' . $month . '"')
+        ->where('presence_status', 'I')
+        ->where('user_id', $idStudent)
+        ->count();
+
+        // sisa izin absen
+        $sisaIzinAbsen = $jumlahMaxAbsen - $absenDigunakan;
+
+        $dataPresence = $checkIsPresence->get();
+
+        if($jumlahHari > $sisaIzinAbsen) {
+            return redirect()->route('pengajuan-izin')->with(['error' => 'Jumlah Izin Absen melebihi batas maksimal yang ditentukan oleh Admin yaitu, ' . $sisaIzinAbsen . ' Hari']);
+        } else if($checkIsPresence->count() > 0) {
+            $blacklistDate = "";
+            foreach($dataPresence as $dp) {
+                $blacklistDate .= date('d-m-Y', strtotime($dp->presence_at)) . "," ;
+            }
+            return redirect()->route('pengajuan-izin')->with(['error' => 'Tidak bisa melakukan pengajuan pada tanggal ' . $blacklistDate . ' karena tanggal sudah melakukan presensi, Silahkan ganti periode tanggal pengajuan.']);
+        } else if($checkPengajuanIzin->count() > 0) {
+            return redirect()->route('pengajuan-izin')->with(['error' => 'Anda sudah melakukan pengajuan izin Absen pada tanggal tersebut']);
+        }  else {
+            $save = DB::table('pengajuan_izin')->insert($data);
+
+            if($save) {
+                return redirect()->route('pengajuan-izin')->with(['success' => 'Data berhasil disimpan']);
+            } else {
+                return redirect()->route('pengajuan-izin')->with(['error' => 'Data gagal disimpan']);
+            }
         }
     }
 
@@ -82,5 +126,20 @@ class PengajuanIzinAbsenController extends Controller
         } catch(\Exception $e) {
             return redirect()->route('pengajuan-izin')->with(['error' => 'Data gagal diperbarui']);
         }
+    }
+
+    public function check(Request $request) {
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        $idStudent = Auth::user()->id;
+
+        $check = DB::table('pengajuan_izin')
+        ->where('user_id', $idStudent)
+        ->where('start_date', $startDate)
+        ->where('end_date', $endDate)
+        ->count();
+
+        return $check;
     }
 }

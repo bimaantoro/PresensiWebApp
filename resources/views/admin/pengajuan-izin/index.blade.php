@@ -88,6 +88,7 @@
                     <thead>
                         <tr>
                         <th>No</th>
+                        <th>Kode Pengajuan Izin</th>
                         <th>Tanggal</th>
                         <th>ID Peserta</th>
                         <th>Nama</th>
@@ -102,8 +103,9 @@
                         @foreach ($dataIzin as $di)
                             <tr>
                                 <td>{{ $loop->iteration + $dataIzin->firstItem() - 1 }}</td>
-                                <td>{{  date('d-m-Y', strtotime( $di->start_date)) }}</td>
-                                <td>{{ $di->id }}</td>
+                                <td>{{ $di->kode_izin }}</td>
+                                <td>{{  date('d-m-Y', strtotime( $di->start_date)) }} s.d {{  date('d-m-Y', strtotime( $di->end_date)) }}</td>
+                                <td>{{ $di->user_id }}</td>
                                 <td>
                                 {{ $di->nama_lengkap }}
                                 </td>
@@ -124,11 +126,11 @@
                                 <td>
                                 <div class="btn-list flex-nowrap">
                                     @if ($di->status_code == 0)
-                                    <a href="#" class="btn-primary btn btn-sm" id="validate" id_pengajuan_izin="{{ $di->id }}">
+                                    <a href="#" class="btn-primary btn btn-sm validate" kode_izin="{{ $di->kode_izin }}">
                                         Validasi
                                     </a>
                                     @else
-                                    <a href="/admin/pengajuan-izin/{{ $di->id }}/decline" class="btn btn-danger btn-sm">
+                                    <a href="/admin/pengajuan-izin/{{ $di->kode_izin }}/decline" class="btn btn-danger btn-sm">
                                         Batalkan
                                     </a>
                                     @endif
@@ -159,13 +161,16 @@
               <form action="/admin/pengajuan-izin/approve" id="form-add-student" method="POST">
                 @method('PUT')
                 @csrf
-                <input type="hidden" name="id_pengajuan_izin_form" id="id-pengajuan-izin-form" class="form-control">
+                <input type="hidden" id="kode-izin-form" name="kode_izin_form">
                 <div class="mb-3">
                     <select class="form-select" name="status_code" id="status-code">
                         <option value="1">Setujui</option>
                         <option value="2">Tolak</option>
                     </select>
                 </div>
+                <div class="mb-3">
+                  <input type="text" class="form-control" name="keterangan_penolakan" id="keterangan-penolakan" placeholder="Tulis catatan tolak pengajuan">
+              </div>
                 <div class="mb-3">
                   <button class="btn btn-primary w-100 ms-auto" type="submit">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" /><path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M14 4l0 4l-6 0l0 -4" /></svg>
@@ -177,48 +182,14 @@
           </div>
         </div>
       </div>
-
-    {{-- <div class="modal modal-blur fade" id="modal-izin-student" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Izin / Sakit</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="/admin/pengajuan-izin/update" method="POST">
-                    @method('PUT')
-                    @csrf
-                    <input type="hidden" name="id" id="id-pengajuan-izin-form">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="mb-3">
-                                <select class="form-select" name="status_code" id="status-code">
-                                    <option value="1">Setujui</option>
-                                    <option value="2">Tolak</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <button class="btn btn-primary w-100" type="submit">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-device-floppy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2" /><path d="M12 14m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M14 4l0 4l-6 0l0 -4" /></svg>
-                            Simpan
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-          </div>
-        </div>
-      </div> --}}
 @endsection
 @push('master-admin-script')
     <script>
         $(function() {
-            $("#validate").click(function(e) {
+            $(".validate").click(function(e) {
                 e.preventDefault();
-                const id = $(this).attr("id_pengajuan_izin");
-                $("#id-pengajuan-izin-form").val(id);
+                const kodeIzin = $(this).attr("kode_izin");
+                $("#kode-izin-form").val(kodeIzin);
                 $("#modal-izin-student").modal("show");
             });
 

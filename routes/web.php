@@ -69,7 +69,7 @@ Route::middleware(['auth'])->group(function() {
         Route::controller(PengajuanIzinPesertaController::class)->group(function() {
             Route::get('/admin/pengajuan-izin', 'index')->name('pengajuan-izin-admin');
             Route::put('/admin/pengajuan-izin/approve', 'update');
-            Route::get('/admin/pengajuan-izin/{id}/decline', 'decline');
+            Route::get('/admin/pengajuan-izin/{kode_izin}/decline', 'decline');
         });
     });
 
@@ -101,16 +101,17 @@ Route::middleware(['auth'])->group(function() {
 
             Route::get('/pengajuan-izin/{kode_izin}/showact', 'showAct');
 
+            // Route::post('/pengajuan-izin/check', 'check');
+
             Route::get('/pengajuan-izin/create', 'create')->name('pengajuan-izin.create');
             Route::post('/pengajuan-izin/store', 'store')->name('pengajuan-izin.store');
-            Route::post('/pengajuan-izin/check', 'check');
-
             Route::get('/pengajuan-izin/{kode_izin}/delete', 'destroy');
         });
 
         Route::controller(PengajuanIzinAbsenController::class)->group(function() {
             Route::get('/pengajuan-izin/absen', 'create');
             Route::post('/pengajuan-izin/absen/store', 'store');
+            Route::post('/pengajuan-izin/absen/check', 'check');
 
             Route::get('/pengajuan-izin/absen/{kode_izin}/edit', 'edit');
             Route::put('/pengajuan-izin/absen/{kode_izin}/update', 'update');
@@ -119,6 +120,7 @@ Route::middleware(['auth'])->group(function() {
         Route::controller(PengajuanIzinSakitController::class)->group(function() {
             Route::get('/pengajuan-izin/sakit', 'create');
             Route::post('/pengajuan-izin/sakit/store', 'store');
+            Route::post('/pengajuan-izin/sakit/check', 'check');
 
             Route::get('/pengajuan-izin/sakit/{kode_izin}/edit', 'edit');
             Route::put('/pengajuan-izin/sakit/{kode_izin}/update', 'update');

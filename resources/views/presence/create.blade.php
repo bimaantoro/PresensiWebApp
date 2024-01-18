@@ -11,8 +11,8 @@
 <div class="section content-master-user">
     <div class="row">
         <div class="col">
-            <input type="text" id="latitude">
-            <input type="text" id="longitude">
+            <input type="hidden" id="latitude">
+            <input type="hidden" id="longitude">
             <div id="my_camera"></div>
         </div>
     </div>
@@ -75,11 +75,11 @@ crossorigin=""/>
         }).addTo(map);
 
         const marker = L.marker([latitude, longitude]).addTo(map);
-        const circle = L.circle([1.4712832, 124.862464], {
+        const circle = L.circle([0.5703323, 123.1037019], {
             color: 'red',
             fillColor: '#f03',
             fillOpacity: 0.5,
-            radius: 20
+            radius: 40
         }).addTo(map);
     }
 

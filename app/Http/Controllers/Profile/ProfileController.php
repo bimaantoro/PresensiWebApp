@@ -30,6 +30,10 @@ class ProfileController extends Controller
         ->where('id', $idStudent)
         ->first();
 
+        $request->validate([
+            'avatar' => 'image|mimes:png, jpg|max:500'
+        ]);
+
         if($request->hasFile('avatar')) {
             $avatar = $idStudent . "." . $request->file('avatar')->getClientOriginalExtension();
         } else {
