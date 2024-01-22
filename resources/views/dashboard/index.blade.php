@@ -83,7 +83,7 @@
                             </div>
                             <div class="presencedetail">
                                 <h4 class="presencetitle">Masuk</h4>
-                                <span>{{ $todayPresence != null ? $todayPresence->check_in : 'Belum Absen' }}</span>
+                                <span>{{ $todayPresence != null ? $todayPresence->check_in : 'Belum Presensi' }}</span>
                             </div>
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                             </div>
                             <div class="presencedetail">
                                 <h4 class="presencetitle">Pulang</h4>
-                                <span>{{ $todayPresence != null && $todayPresence->check_out != null ? $todayPresence->check_out : 'Belum absen' }}</span>
+                                <span>{{ $todayPresence != null && $todayPresence->check_out != null ? $todayPresence->check_out : 'Belum Presensi' }}</span>
                             </div>
                         </div>
                     </div>

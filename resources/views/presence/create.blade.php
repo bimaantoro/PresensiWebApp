@@ -20,11 +20,11 @@
         <div class="col">
         @if ($checkIsPresence > 0)
             <button id="btn-check-in" class="btn btn-danger btn-block">
-                <ion-icon name="camera-outline"></ion-icon> Absen Pulang
+                <ion-icon name="camera-outline"></ion-icon> Presensi Pulang
             </button>
         @else
             <button id="btn-check-in" class="btn btn-success btn-block">
-                <ion-icon name="camera-outline"></ion-icon> Absen Masuk
+                <ion-icon name="camera-outline"></ion-icon> Presensi Masuk
             </button>
         @endif
         </div>

@@ -76,28 +76,30 @@
                     PERIODE {{ strtoupper($months[$month]) }} {{ $year }}<br>
                     PT. KOPERASI INTERNET NETWORK GORONTALO<br>
                 </span>
-                <span>H4H2+XHM, Permata, Tilongkabila, Bone Bolango Regency, Gorontalo 96127</span>
+                <span>
+                  <i>H4H2+XHM, Permata, Tilongkabila, Bone Bolango Regency, Gorontalo 96127</i>
+                 </span>
             </td>
         </tr>
     </table>
 
     <table class="table-data-employee">
-        <tr>
+        {{-- <tr>
             <td rowspan="4">
-              @if ($employee->photo != null)
-                <img src="{{ asset('storage/uploads/employee/' . $employee->photo) }}" alt="" width="120" height="150">
+              @if ($student->avatar != null)
+                <img src="{{ asset('storage/uploads/student/' . $student->avatar) }}" alt="" width="120" height="150">
               @else
                 <img src="{{ asset('assets/img/no-image.png') }}" alt="" width="120" height="150">
               @endif
             </td>
-        </tr>
+        </tr> --}}
         <tr>
-            <td>ID Karyawan</td>
+            <td>ID karyawan</td>
             <td>:</td>
-            <td>{{ $employee->id_employee }}</td>
+            <td>{{ $employee->id }}</td>
         </tr>
         <tr>
-            <td>Nama Karyawan</td>
+            <td>Nama Lengkap</td>
             <td>:</td>
             <td>{{ $employee->fullname }}</td>
         </tr>
@@ -113,9 +115,7 @@
         <th>No</th>
         <th>Tanggal</th>
         <th>Presensi masuk</th>
-        <th>Foto Presensi Masuk</th>
         <th>Presensi pulang</th>
-        <th>Foto Presensi Pulang</th>
         <th>Status</th>
         <th>Keterangan</th>
       </tr>
@@ -125,17 +125,7 @@
         <td>{{ $loop->iteration }}</td>
         <td>{{ date('d-m-Y', strtotime($p->presence_at)) }}</td>
         <td>{{ $p->check_in }}</td>
-        <td>
-          <img src="{{ asset('storage/uploads/presence/' . $p->photo_in) }}" alt="" class="photo">
-        </td>
         <td>{{ $p->check_out != null ? $p->check_out : 'Belum Presensi' }}</td>
-        <td>
-          @if ($p->photo_out != null)
-          <img src="{{ asset('storage/uploads/presence/' . $p->photo_out) }}" alt="" class="photo">
-          @else
-          -
-          @endif
-        </td>
         <td style="text-align: center">{{ $p->presence_status }}</td>
         <td>
           @if ($p->check_in >= "07:00")

@@ -15,23 +15,19 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
-    public function authenticate(LoginRequest $request) {
-        $request->authenticate();
+    public function authenticate(Request $request) {
 
-        $request->session()->regenerate();
-        return redirect()->intended(RouteServiceProvider::HOME);
-        // $credentials = $request->validate([
-        //     'username' => 'required',
-        //     'password' => 'required',
-        // ]);
+        $credentials = $request->validate([
+            'username' => ['required', 'string'],
+            'password' => ['required', 'string'],
+        ]);
 
-        // if(Auth::guard('employee')->attempt($credentials)) {
-        //     $request->session()->regenerate();
-
-        //     return redirect()->intended('dashboard');
-        // }
-
-        // return back()->with('loginError', 'Username / Kata sandi salah. Silakan cek kembali');
+        if(Auth::guard('employee')->attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended(RouteServiceProvider::HOME);
+        } else {
+            return redirect('/')->with(['error' => 'Maaf, Username / Password Anda salah.']);
+        }
     }
 
     public function logout(Request $request) {

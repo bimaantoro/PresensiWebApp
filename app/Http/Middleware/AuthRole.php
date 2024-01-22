@@ -24,7 +24,7 @@ class AuthRole {
             abort(403);
         }
 
-        if($role == 'user' && Auth::guard('employee')->user()->role != 'user') {
+        if($role == 'karyawan' && Auth::guard('employee')->user()->role != 'karyawan') {
             abort(403);
         }
 

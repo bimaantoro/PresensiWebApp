@@ -64,10 +64,10 @@ class PresenceController extends Controller
             ->update($dataCheckOut);
 
             if ($update) {
-                echo 'success|Berhasil melakukan absensi pulang';
+                echo 'success|Berhasil melakukan presensi pulang';
                 Storage::put($file, $decodeImage);
             } else {
-                echo 'error|gagal melakukan absensi pulang, Silahkan hubungi admin';
+                echo 'error|gagal melakukan presensi pulang, Silahkan hubungi admin';
             }
         } else  {
             $dataCheckIn = [
@@ -77,15 +77,16 @@ class PresenceController extends Controller
                 'longitude' => $longitude,
                 'presence_at' => $presenceAt,
                 'employee_id' => $idEmployee,
+                'presence_status' => 'H' 
             ];
     
             $save = DB::table('presences')->insert($dataCheckIn);
     
             if($save) {
-                echo 'success|Berhasil melakukan absensi masuk';
+                echo 'success|Berhasil melakukan presensi masuk';
                 Storage::put($file, $decodeImage);
             } else {
-                echo 'error|Gagal melakukan absensi masuk, Silahkan hubungi admin';
+                echo 'error|Gagal melakukan presensi masuk, Silahkan hubungi admin';
             }
         }
     }

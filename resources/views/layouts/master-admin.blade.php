@@ -23,9 +23,13 @@
       	font-feature-settings: "cv03", "cv04", "cv11";
       }
     </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+    @stack('master-admin-css')
   </head>
   <body>
-    <script src="{{ asset('assets/js/lib/demo-theme.min.js?1692870487') }}"></script>
+    {{-- <script src="{{ asset('assets/js/lib/demo-theme.min.js?1692870487') }}"></script> --}}
     <div class="page">
       <!-- Sidebar -->
       @include('partials.admin.sidebar')

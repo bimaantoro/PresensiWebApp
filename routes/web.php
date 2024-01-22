@@ -42,8 +42,7 @@ Route::middleware(['auth:employee'])->group(function() {
         Route::get('/direktur/logout', [LoginController::class, 'logout']);
 
         Route::controller(ReportPresenceController::class)->group(function() {
-            Route::get('/direktur/presence-employee/report', 'reportPresence')->name('report-presence');
-            Route::get('/direktur/presence-employee/recap', 'recapPresence')->name('recap-presence');
+            Route::get('direktur/dashboard', 'reportPresence')->name('dashboard-direktur');
             Route::post('/direktur/report-presence/print', 'printReportPresence');
             Route::post('/direktur/recap-presence/print', 'printRecapPresence');
         });
@@ -67,21 +66,19 @@ Route::middleware(['auth:employee'])->group(function() {
             Route::get('/admin/presences', 'index')->name('presence-admin');
             Route::post('/admin/presences', 'getPresence')->name('presence-admin.get-presence');
             Route::post('/admin/presence/map', 'showMap')->name('presence-admin.show-map');
-            // Route::get('/admin/presence/report', 'report')->name('report-presence-admin');
-            // Route::post('/admin/presence/cetak-laporan', 'printReportPresence');
-            // Route::get('/admin/presence/rekap', 'rekap')->name('rekap-presence-admin');
-            // Route::post('/admin/presence/cetak-rekap', 'printRecapPresence');
         });
 
         Route::controller(PengajuanIzinKaryawanController::class)->group(function() {
             Route::get('/admin/pengajuan-izin-karyawan', 'index')->name('pengajuan-izin-admin');
-            Route::put('/admin/pengajuan-izin-karyawan/update', 'update');
-            Route::get('/admin/pengajuan-izin-karyawan/{id}', 'updateStatusApproved');
+            Route::put('/admin/pengajuan-izin/approve', 'update');
+            Route::get('/admin/pengajuan-izin/{kode_izin}/decline', 'decline');
+            // Route::put('/admin/pengajuan-izin-karyawan/update', 'update');
+            // Route::get('/admin/pengajuan-izin-karyawan/{id}', 'updateStatusApproved');
         });
     });
 
     // User
-    Route::middleware(['authRole:user'])->group(function() {
+    Route::middleware(['authRole:karyawan'])->group(function() {
         Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -103,15 +100,16 @@ Route::middleware(['auth:employee'])->group(function() {
 
         Route::controller(PengajuanIzinController::class)->group(function() {
             Route::get('/pengajuan-izin', 'index')->name('pengajuan-izin');
+            
             Route::get('/pengajuan-izin/absen', 'createAbsen');
             Route::post('/pengajuan-izin/absen/store', 'storeAbsen');
 
             Route::get('/pengajuan-izin/sakit', 'createSakit');
             Route::post('/pengajuan-izin/sakit/store', 'storeSakit');
 
-            Route::get('/pengajuan-izin/create', 'create')->name('pengajuan-izin.create');
-            Route::post('/pengajuan-izin/store', 'store')->name('pengajuan-izin.store');
-            Route::post('/pengajuan-izin/check', 'cekPengajuanIzin');
+            // Route::get('/pengajuan-izin/create', 'create')->name('pengajuan-izin.create');
+            // Route::post('/pengajuan-izin/store', 'store')->name('pengajuan-izin.store');
+            // Route::post('/pengajuan-izin/check', 'cekPengajuanIzin');
         });
     });
 });

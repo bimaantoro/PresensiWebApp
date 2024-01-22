@@ -20,11 +20,20 @@ class DashboardController extends Controller
         ->where('employee_id', $idEmployee)
         ->where('presence_at', $today)->first();
         
+        // $presenceHistoryOfMonth = DB::table('presences')
+        // ->where('employee_id', $idEmployee)
+        // ->whereRaw('MONTH(presence_at)="'. $thisMonth. '"')
+        // ->whereRaw('YEAR(presence_at)="' . $thisYear . '"')
+        // ->orderBy('presence_at')->get();
+
         $presenceHistoryOfMonth = DB::table('presences')
-        ->where('employee_id', $idEmployee)
+        ->select('presences.*', 'keterangan_izin', 'file_surat_dokter')
+        ->leftJoin('pengajuan_izin', 'presences.kode_izin', '=', 'pengajuan_izin.kode_izin')
+        ->where('presences.employee_id', $idEmployee)
         ->whereRaw('MONTH(presence_at)="'. $thisMonth. '"')
         ->whereRaw('YEAR(presence_at)="' . $thisYear . '"')
-        ->orderBy('presence_at')->get();
+        ->orderBy('presence_at')
+        ->get();
 
         $months = [
             "",
@@ -55,12 +64,20 @@ class DashboardController extends Controller
         ->orderBy('check_in')
         ->get();
 
+        // $dataIzin = DB::table('pengajuan_izin')
+        // ->selectRaw('SUM(IF(status="i", 1, 0)) as jmlh_izin, SUM(IF(status="s", 1, 0)) as jmlh_sakit')
+        // ->where('employee_id', $idEmployee)
+        // ->whereRaw('MONTH(from_date_at)="' . $thisMonth . '"')
+        // ->whereRaw('YEAR(from_date_at)="' . $thisYear . '"')
+        // ->where('status_approved', 1)
+        // ->first();
+
         $dataIzin = DB::table('pengajuan_izin')
         ->selectRaw('SUM(IF(status="i", 1, 0)) as jmlh_izin, SUM(IF(status="s", 1, 0)) as jmlh_sakit')
-        ->where('employee_id', $idEmployee)
-        ->whereRaw('MONTH(from_date_at)="' . $thisMonth . '"')
-        ->whereRaw('YEAR(from_date_at)="' . $thisYear . '"')
-        ->where('status_approved', 1)
+        ->where('kode_izin', $idEmployee)
+        ->whereRaw('MONTH(start_date)="' . $thisMonth . '"')
+        ->whereRaw('YEAR(start_date)="' . $thisYear . '"')
+        ->where('status_code', 1)
         ->first();
         
         return view('dashboard.index',

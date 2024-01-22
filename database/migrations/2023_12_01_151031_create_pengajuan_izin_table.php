@@ -12,13 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pengajuan_izin', function (Blueprint $table) {
-            $table->id();
-            $table->date('from_date_at');
-            $table->date('to_date_at');
+            $table->char('kode_izin', 50)->primary();
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->string('file_surat_dokter')->nullable();
             $table->string('status', 10);
-            $table->string('keterangan');
-            $table->string('file_sid')->nullable();
-            $table->string('status_approved', 10)->default(0);
+            $table->string('status_code', 5)->default(0);
+            $table->smallInteger('jumlah_hari')->nullable();
+            $table->string('keterangan_izin')->nullable();
+            $table->string('keterangan_penolakan')->nullable();
             $table->string('employee_id');
             $table->foreign('employee_id')->references('id_employee')->on('employees')->onDelete('cascade');
             $table->timestamps();

@@ -11,9 +11,9 @@
     </div>
     <div class="section mt-1 mb-5">
 
-        @if(session()->has('loginError'))
-            <div class="alert alert-outline-warning">
-                {{ session('loginError') }}
+        @if(session()->has('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
             </div>
         @endif
 
