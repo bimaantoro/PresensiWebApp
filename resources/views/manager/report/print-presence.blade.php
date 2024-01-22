@@ -148,7 +148,7 @@
       @else
       <tr>
         <td>{{ $loop->iteration }}</td>
-        <td>{{ date('d-m-Y', strtotime($p->presence_at)) }}</td>
+        {{-- <td>{{ date('d-m-Y', strtotime($p->presence_at)) }}</td> --}}
         <td>-</td>
         <td>
           -
