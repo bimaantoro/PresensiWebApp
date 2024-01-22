@@ -49,8 +49,8 @@ class UserSeeder extends Seeder
 
         $user = Employee::create([
             'id_employee' => '331',
-            'username' => 'loremipsum',
-            'fullname' => 'mas lorem ipsum',
+            'username' => 'deanthalib',
+            'fullname' => 'Dean Thalib',
             'position' => 'Software Engineering',
             'password' => bcrypt('12345678'),
             'role' => 'user'
