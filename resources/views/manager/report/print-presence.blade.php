@@ -163,6 +163,7 @@
         {{-- <td>{{ $p->status_presence }}</td> --}}
         {{-- <td>{{ $p->keterangan }}</td> --}}
         <td></td>
+        <td></td>
       </tr>
       @endif
       @endforeach
