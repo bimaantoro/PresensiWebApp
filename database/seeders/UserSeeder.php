@@ -31,11 +31,11 @@ class UserSeeder extends Seeder
 
         $manager = Employee::create([
             'id_employee' => '111',
-            'username' => 'manager',
-            'fullname' => 'Manager KOPINETGO',
-            'position' => 'manager',
+            'username' => 'direktur',
+            'fullname' => 'direktur KOPINETGO',
+            'position' => 'direktur',
             'password' => bcrypt('12345678'),
-            'role' => 'manager'
+            'role' => 'direktur'
         ]);
 
         $admin = Employee::create([

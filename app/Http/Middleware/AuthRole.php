@@ -16,7 +16,7 @@ class AuthRole {
     public function handle(Request $request, Closure $next, string $role): Response
     {
 
-        if($role == 'manager' && Auth::guard('employee')->user()->role != 'manager') {
+        if($role == 'direktur' && Auth::guard('employee')->user()->role != 'direktur') {
             abort(403);
         }
 

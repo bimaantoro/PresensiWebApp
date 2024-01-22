@@ -37,15 +37,15 @@ Route::middleware(['auth:employee'])->group(function() {
     Route::get('/redirectAuthenticatedUsers', [RedirectAuthenticatedUsersController::class, 'home']);
 
     // Manager
-    Route::middleware(['authRole:manager'])->group(function() {
+    Route::middleware(['authRole:direktur'])->group(function() {
 
-        Route::get('/manager/logout', [LoginController::class, 'logout']);
+        Route::get('/direktur/logout', [LoginController::class, 'logout']);
 
         Route::controller(ReportPresenceController::class)->group(function() {
-            Route::get('/manager/presence-employee/report', 'reportPresence')->name('report-presence');
-            Route::get('/manager/presence-employee/recap', 'recapPresence')->name('recap-presence');
-            Route::post('/manager/report-presence/print', 'printReportPresence');
-            Route::post('/manager/recap-presence/print', 'printRecapPresence');
+            Route::get('/direktur/presence-employee/report', 'reportPresence')->name('report-presence');
+            Route::get('/direktur/presence-employee/recap', 'recapPresence')->name('recap-presence');
+            Route::post('/direktur/report-presence/print', 'printReportPresence');
+            Route::post('/direktur/recap-presence/print', 'printRecapPresence');
         });
     });
 
