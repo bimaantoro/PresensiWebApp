@@ -160,7 +160,7 @@
         <td>
           -
         </td>
-        <td>{{ $p->status_presence }}</td>
+        {{-- <td>{{ $p->status_presence }}</td> --}}
         <td>{{ $p->keterangan }}</td>
         <td></td>
       </tr>
