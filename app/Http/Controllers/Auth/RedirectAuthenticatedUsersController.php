@@ -11,7 +11,7 @@ class RedirectAuthenticatedUsersController extends Controller
     public function home() {
         if(Auth::guard('employee')->user()->role == 'direktur') {
             echo "ini manager";
-            return redirect('manager/presence-employee/report');
+            return redirect('direktur/presence-employee/report');
         } else if(Auth::guard('employee')->user()->role == 'admin') {
             echo "ini admin";
             return redirect('admin/dashboard');
