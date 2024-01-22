@@ -17,7 +17,7 @@
       <div class="col-6">
         <div class="card">
           <div class="card-body">
-            <form action="/manager/recap-presence/print" target="_blank" method="POST">
+            <form action="/direktur/recap-presence/print" target="_blank" method="POST">
               @csrf
               <div class="row">
                 <div class="col-12">
