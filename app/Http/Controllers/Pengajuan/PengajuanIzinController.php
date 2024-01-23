@@ -86,10 +86,12 @@ class PengajuanIzinController extends Controller
 
         // cek sudah presensi / belum
         $checkIsPresence = DB::table('presences')
-        ->whereBetween('presence_at', [$startDate, $endDate]);
+        ->whereBetween('presence_at', [$startDate, $endDate])
+        ->where('employee_id', $idEmployee);
 
         // cek pengajuan izin
         $checkPengajuanIzin = DB::table('pengajuan_izin')
+        ->where('employee_id', $idEmployee)
         ->whereRaw('"' . $startDate . '" BETWEEN start_date AND end_date');
 
 
@@ -155,11 +157,14 @@ class PengajuanIzinController extends Controller
             'employee_id' => $idEmployee,
         ];
 
+        // cek sudah presensi / belum
         $checkIsPresence = DB::table('presences')
-        ->whereBetween('presence_at', [$startDate, $endDate]);
+        ->whereBetween('presence_at', [$startDate, $endDate])
+        ->where('employee_id', $idEmployee);
 
         // cek pengajuan izin
         $checkPengajuanIzin = DB::table('pengajuan_izin')
+        ->where('employee_id', $idEmployee)
         ->whereRaw('"' . $startDate . '" BETWEEN start_date AND end_date');
 
         $dataPresence = $checkIsPresence->get();
