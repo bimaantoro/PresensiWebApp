@@ -12,7 +12,7 @@
                 <ion-icon name="finger-print-outline" style="font-size: 48px;" class="text-success"></ion-icon>
             </div>
             <div class="data-presence">
-                <h3 style="margin: 0px !important">{{ date('d-m-Y', strtotime($h->presence_at)) }}</h3>
+                <h3 style="margin: 0px !important; line-height: 3px">{{ date('d-m-Y', strtotime($h->presence_at)) }}</h3>
                 <span>
                     {!! $h->check_in != null ? date('H:i', strtotime($h->check_in)) : '<span class="text-danger"> Belum Presensi</span>' !!}
                 </span>

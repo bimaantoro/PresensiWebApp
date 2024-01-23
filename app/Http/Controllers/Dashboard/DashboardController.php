@@ -20,11 +20,6 @@ class DashboardController extends Controller
         ->where('employee_id', $idEmployee)
         ->where('presence_at', $today)->first();
         
-        // $presenceHistoryOfMonth = DB::table('presences')
-        // ->where('employee_id', $idEmployee)
-        // ->whereRaw('MONTH(presence_at)="'. $thisMonth. '"')
-        // ->whereRaw('YEAR(presence_at)="' . $thisYear . '"')
-        // ->orderBy('presence_at')->get();
 
         $presenceHistoryOfMonth = DB::table('presences')
         ->select('presences.*', 'keterangan_izin', 'file_surat_dokter')
@@ -52,7 +47,10 @@ class DashboardController extends Controller
         ];
 
         $dataPresence = DB::table('presences')
-        ->selectRaw('COUNT(employee_id) as jmlh_hadir, SUM(IF(check_in > "07:00", 1, 0)) as jmlh_terlambat')
+        ->selectRaw('SUM(IF(presence_status="H", 1, 0)) as jmlh_hadir,
+        SUM(IF(presence_status="I", 1, 0)) as jmlh_izin,
+        SUM(IF(presence_status="S", 1, 0)) as jmlh_sakit,
+        SUM(IF(check_in > "07:00", 1, 0)) as jmlh_terlambat')
         ->where('employee_id', $idEmployee)
         ->whereRaw('MONTH(presence_at)="' . $thisMonth . '"')
         ->whereRaw('YEAR(presence_at)="'  . $thisYear . '"')
@@ -82,7 +80,6 @@ class DashboardController extends Controller
             'thisYear',
             'dataPresence',
             'leaderboardPresence',
-            'dataIzin',
             )
         );
     }

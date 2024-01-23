@@ -137,7 +137,7 @@
             <div class="col-3">
                 <div class="card">
                     <div class="card-body text-center card-rekap-presence">
-                        <span class="badge bg-danger badge-rekap-presence">{{ $dataIzin->jmlh_izin }}</span>
+                        <span class="badge bg-danger badge-rekap-presence">{{ $dataPresence->jmlh_izin }}</span>
                         <ion-icon name="calendar-number-outline" class="text-primary mb-1 icon-rekap-presence"></ion-icon>
                         <br>
                         <span class="txt-rekap-presence">Izin</span>
@@ -147,7 +147,7 @@
             <div class="col-3">
                 <div class="card">
                     <div class="card-body text-center card-rekap-presence">
-                        <span class="badge bg-danger badge-rekap-presence">{{ $dataIzin->jmlh_sakit }}</span>
+                        <span class="badge bg-danger badge-rekap-presence">{{ $dataPresence->jmlh_sakit }}</span>
                         <ion-icon name="medkit-outline" class="text-danger mb-1 icon-rekap-presence"></ion-icon>
                         <br>
                         <span class="txt-rekap-presence">Sakit</span>
