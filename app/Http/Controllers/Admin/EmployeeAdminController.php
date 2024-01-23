@@ -15,7 +15,7 @@ class EmployeeAdminController extends Controller
     public function index(Request $request) {
         $query = Employee::query();
         $query->select('employees.*');
-        $query->where('role', 'user');
+        $query->where('role', 'karyawan');
         $query->orderBy('fullname');
 
         if(!empty($request->fullname)) {
