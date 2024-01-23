@@ -64,16 +64,9 @@ class DashboardController extends Controller
         ->orderBy('check_in')
         ->get();
 
-        // $dataIzin = DB::table('pengajuan_izin')
-        // ->selectRaw('SUM(IF(status="i", 1, 0)) as jmlh_izin, SUM(IF(status="s", 1, 0)) as jmlh_sakit')
-        // ->where('employee_id', $idEmployee)
-        // ->whereRaw('MONTH(from_date_at)="' . $thisMonth . '"')
-        // ->whereRaw('YEAR(from_date_at)="' . $thisYear . '"')
-        // ->where('status_approved', 1)
-        // ->first();
 
         $dataIzin = DB::table('pengajuan_izin')
-        ->selectRaw('SUM(IF(status="i", 1, 0)) as jmlh_izin, SUM(IF(status="s", 1, 0)) as jmlh_sakit')
+        ->selectRaw('SUM(IF(status="I", 1, 0)) as jmlh_izin, SUM(IF(status="S", 1, 0)) as jmlh_sakit')
         ->where('kode_izin', $idEmployee)
         ->whereRaw('MONTH(start_date)="' . $thisMonth . '"')
         ->whereRaw('YEAR(start_date)="' . $thisYear . '"')

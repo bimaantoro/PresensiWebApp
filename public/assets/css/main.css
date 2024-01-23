@@ -55,6 +55,7 @@
 .pengajuan-izin-content {
     display: flex;
     gap: 1px;
+    margin-top: 15px;
  }
 
  .data-presence {

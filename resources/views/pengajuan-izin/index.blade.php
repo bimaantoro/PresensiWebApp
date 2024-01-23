@@ -69,7 +69,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" style="">
         <div class="col">
             @foreach ($dataIzin as $d)
             @php

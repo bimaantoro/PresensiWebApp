@@ -10,29 +10,32 @@
 @section('content')
 <div class="section content-master-user">
     <div class="row">
-        <div class="col-12">
+        <div class="col-6">
             <div class="form-group">
-                <select name="month" id="month" class="form-control">
+                <select name="month" id="month" class="form-control selectmaterialize">
                     <option value="">Bulan</option>
                     @for ($i = 1; $i <= 12; $i++)
-                    <option value="{{ $i }}" {{ date('m') == $i ? 'selected' : '' }}>{{ $months[$i] }}</option>
+                    <option {{ Request('month') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $months[$i] }}</option>
                     @endfor
                 </select>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
+        <div class="col-6">
             <div class="form-group">
-                <select name="year" id="year" class="form-control">
+                <select name="year" id="year" class="form-control selectmaterialize">
                     <option value="">Tahun</option>
                     @php
-                        $startYear = 2023;
-                        $currentYear = date('Y');
+                        $initialYear = 2023 ;
+                        $currentYear =  date('Y');
+                        for ($i = $initialYear; $i <= $currentYear; $i++) { 
+                            if(Request('year') == $i) {
+                                $selected = 'selected';
+                            } else {
+                                $selected = '';
+                            }
+                            echo "<option $selected value='$i'>$i</option>";
+                        }
                     @endphp
-                    @for ($year = $startYear; $year <= $currentYear; $year++)
-                    <option value="{{ $year }}" {{ date('Y') == $year ? 'selected' : '' }}>{{ $year }}</option>
-                    @endfor
                 </select>
             </div>
         </div>
@@ -46,14 +49,14 @@
             </div>
         </div>
     </div>
-    <div class="row">
+    <div class="row mt-2">
         <div class="col" id="show-history">
 
         </div>
     </div>
 </div>
 @endsection
-@push('history-presence-script')
+@push('master-user-script')
     <script>
         $(function() {
             $("#search-history-presence").click(function(e) {
