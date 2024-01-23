@@ -15,7 +15,7 @@ class PengajuanIzinController extends Controller
         
         if(!empty($request->month) && !empty($request->year)) {
             $dataIzin = DB::table('pengajuan_izin')
-            ->orderBy('from_date', 'desc')
+            ->orderBy('start_date', 'desc')
             ->where('employee_id', $idEmployee)
             ->whereRaw('MONTH(start_date)="' . $request->month . '"')
             ->whereRaw('YEAR(start_date)="' . $request->year . '"')
