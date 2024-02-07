@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ConfigWorkingHourController;
 use App\Http\Controllers\Admin\DashboardAdminController;
 use App\Http\Controllers\Admin\PengajuanIzinPesertaController;
 use App\Http\Controllers\Admin\StudentController;
@@ -71,6 +72,18 @@ Route::middleware(['auth'])->group(function() {
             Route::put('/admin/pengajuan-izin/approve', 'update');
             Route::get('/admin/pengajuan-izin/{kode_izin}/decline', 'decline');
         });
+
+        Route::controller(ConfigWorkingHourController::class)->group(function() {
+            Route::get('/admin/config/work-hours', 'index');
+            Route::post('/admin/config/work-hour/store', 'store');
+            Route::post('/admin/config/work-hour/edit', 'edit');
+            Route::put('/admin/config/work-hour/{id}/update', 'update');
+            Route::delete('/admin/config/work-hour/{id}/delete', 'destroy');
+            
+            Route::get('admin/config/{id}/set-work-hour', 'setWorkHourStudent');
+            Route::post('admin/config/set-work-hour/store', 'storeWorkHourStudent');
+            Route::post('admin/config/set-work-hour/update', 'updateWorkHourStudent');
+        });
     });
 
     // User
@@ -88,7 +101,7 @@ Route::middleware(['auth'])->group(function() {
 
         Route::controller(ProfileController::class)->group(function() {
             Route::get('/profile', 'edit')->name('profile');
-            Route::put('/profile/{id_employee}', 'update');
+            Route::put('/profile/{id}', 'update');
         });
 
         Route::controller(HistoryController::class)->group(function() {
@@ -98,14 +111,9 @@ Route::middleware(['auth'])->group(function() {
 
         Route::controller(PengajuanIzinController::class)->group(function() {
             Route::get('/pengajuan-izin', 'index')->name('pengajuan-izin');
-
             Route::get('/pengajuan-izin/{kode_izin}/showact', 'showAct');
-
-            // Route::post('/pengajuan-izin/check', 'check');
-
-            Route::get('/pengajuan-izin/create', 'create')->name('pengajuan-izin.create');
-            Route::post('/pengajuan-izin/store', 'store')->name('pengajuan-izin.store');
             Route::get('/pengajuan-izin/{kode_izin}/delete', 'destroy');
+            // Route::post('/pengajuan-izin/check', 'check');
         });
 
         Route::controller(PengajuanIzinAbsenController::class)->group(function() {

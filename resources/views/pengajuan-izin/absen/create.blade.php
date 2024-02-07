@@ -28,7 +28,7 @@
                     <input type="text" class="form-control" placeholder="Lama izin (dalam hari)" id="jumlah_hari" name="jumlah_hari" readonly>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Keterangan" id="keterangan" name="keterangan" autocomplete="off">
+                    <input type="text" class="form-control" placeholder="Keterangan" id="keterangan" name="keterangan_izin" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <button class="btn btn-success w-100">

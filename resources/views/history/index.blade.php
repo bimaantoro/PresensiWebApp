@@ -27,10 +27,10 @@
                 <select name="year" id="year" class="form-control">
                     <option value="">Tahun</option>
                     @php
-                        $startYear = 2023;
+                        $initialYear = 2023;
                         $currentYear = date('Y');
                     @endphp
-                    @for ($year = $startYear; $year <= $currentYear; $year++)
+                    @for ($year = $initialYear; $year <= $currentYear; $year++)
                     <option value="{{ $year }}" {{ date('Y') == $year ? 'selected' : '' }}>{{ $year }}</option>
                     @endfor
                 </select>
@@ -47,13 +47,12 @@
         </div>
     </div>
     <div class="row">
-        <div class="col" id="show-history">
-
+        <div class="col-12" id="show-history">
         </div>
     </div>
 </div>
 @endsection
-@push('history-presence-script')
+@push('master-user-script')
     <script>
         $(function() {
             $("#search-history-presence").click(function(e) {

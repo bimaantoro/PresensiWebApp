@@ -18,7 +18,7 @@ class DashboardAdminController extends Controller
         ->first();
 
         $dataIzin = DB::table('pengajuan_izin')
-        ->selectRaw('SUM(IF(status="i", 1, 0)) as jmlh_izin, SUM(IF(status="s", 1, 0)) as jmlh_sakit')
+        ->selectRaw('SUM(IF(status="I", 1, 0)) as jmlh_izin, SUM(IF(status="S", 1, 0)) as jmlh_sakit')
         ->where('start_date', $today)
         ->where('status_code', 1)
         ->first();
@@ -31,7 +31,7 @@ class DashboardAdminController extends Controller
         $date = $request->date;
         
         $presence = DB::table('presences')
-        ->select('presences.*', 'nama_lengkap', 'instansi', 'keterangan')
+        ->select('presences.*', 'nama_lengkap', 'instansi', 'keterangan_izin')
         ->leftJoin('pengajuan_izin', 'presences.kode_izin', '=', 'pengajuan_izin.kode_izin')
         ->join('users', 'presences.user_id', '=', 'users.id')
         ->where('presence_at', $date)

@@ -1,5 +1,4 @@
 @foreach ($presence as $p)
-
 @if ($p->presence_status == 'H')
 <tr>
     <td>{{ $loop->iteration }}</td>
@@ -8,7 +7,10 @@
     <td>{{ $p->instansi }}</td>
     <td>
         <div class="d-flex py-1 align-items-center">
-            <img src="{{ asset('storage/uploads/presence/' . $p->photo_in) }}" alt="" class="avatar me-2">
+            <img src="{{ asset('storage/uploads/presence/' . $p->photo_in) }}" alt="" class="me-2" width="180">
+            {{-- <a href="#" class="btn" data-bs-toggle="modal" data-bs-target="#modal-show-photo-in">
+                Lihat Foto
+            </a> --}}
             <div class="flex-fill">
                 <div class="font-weight-medium">{{ $p->check_in }}</div>
             </div>
@@ -17,7 +19,7 @@
     <td>
         <div class="d-flex py-1 align-items-center">
             @if ($p->check_out != null)
-            <img src="{{ asset('storage/uploads/presence/' . $p->photo_out) }}" alt="" class="avatar me-2">
+            <img src="{{ asset('storage/uploads/presence/' . $p->photo_out) }}" alt="" class="me-2" width="150">
             @endif
             <div class="flex-fill">
                 <div class="font-weight-medium">{!! $p->check_out != null ? $p->check_out : '<span class="badge bg-danger text-light">Belum Presensi</span>' !!}</div>
@@ -40,7 +42,6 @@
 </tr>
 @else
 <tr>
-    
     <td>{{ $loop->iteration }}</td>
     <td>{{ $p->user_id }}</td>
     <td>{{ $p->nama_lengkap }}</td>
@@ -55,9 +56,26 @@
         @endif
     </td>
 </tr>
-
 @endif
 @endforeach
+
+<div class="modal modal-blur fade" id="modal-show-photo-in" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn me-auto" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>
+        </div>
+      </div>
+    </div>
+</div>
 
 <script>
     $(function() {

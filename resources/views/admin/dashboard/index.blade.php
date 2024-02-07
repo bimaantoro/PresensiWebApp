@@ -174,8 +174,8 @@
             format: 'yyyy-mm-dd'
       });
 
-      $("#date").change(function(e) {
-        const date = $(this).val();
+      function loadPresence() {
+        const date = $("#date").val();
         $.ajax({
           type: 'POST',
           url: '/admin/presences',
@@ -187,7 +187,13 @@
             $("#loadpresence").html(response);
           }
         });
+      }
+
+      $("#date").change(function(e) {
+        loadPresence();
       });
+
+      loadPresence();
     });
   </script>
 @endpush

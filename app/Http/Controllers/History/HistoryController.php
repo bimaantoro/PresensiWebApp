@@ -30,7 +30,7 @@ class HistoryController extends Controller
     }
 
     public function search(Request $request) {
-        $idEmployee = Auth::guard('employee')->user()->id_employee;
+        $idStudent = Auth::user()->id;
 
         $month = $request->month;
         $year = $request->year;
@@ -38,7 +38,7 @@ class HistoryController extends Controller
         $history = DB::table('presences')
         ->whereRaw('MONTH(presence_at)="'. $month . '"')
         ->whereRaw('YEAR(presence_at)="' . $year . '"')
-        ->where('employee_id', $idEmployee)
+        ->where('user_id', $idStudent)
         ->orderBy('presence_at')
         ->get();
 

@@ -11,10 +11,19 @@
 <div class="section content-master-user">
     <div class="row">
         <div class="col">
-            <input type="hidden" id="latitude">
-            <input type="hidden" id="longitude">
-            <div id="my_camera"></div>
+            <input type="text" id="latitude">
+            <input type="text" id="longitude">
+            <div class="my_camera"></div>
         </div>
+    </div>
+    <div class="jam-digital-malasngoding">
+        <p>{{ date('d-m-Y') }}</p>
+        <p id="jam"></p>
+        <p>{{ $workingHour->name }}</p>
+        <p>Mulai Presensi: {{ date('H:i', strtotime($workingHour->start_check_in))  }}</p>
+        <p>Jam Masuk: {{ date('H:i', strtotime($workingHour->check_in)) }}</p>
+        <p>Akhir Presensi: {{ date('H:i', strtotime($workingHour->end_check_in)) }}</p>
+        <p>Jam Pulang: {{ date('H:i', strtotime($workingHour->check_out)) }}</p>
     </div>
     <div class="row mt-2">
         <div class="col">
@@ -45,6 +54,29 @@ crossorigin=""/>
      crossorigin=""></script>
 @endpush
 @push('master-user-script')
+<script type="text/javascript">
+    window.onload = function() {
+        jam();
+    }
+
+    function jam() {
+        let e = document.getElementById('jam')
+        , d = new Date()
+        , h, m, s;
+        h = d.getHours();
+        m = set(d.getMinutes());
+        s = set(d.getSeconds());
+
+        e.innerHTML = h + ':' + m + ':' + s;
+
+        setTimeout('jam()', 1000);
+    }
+
+    function set(e) {
+        e = e < 10 ? '0' + e : e;
+        return e;
+    }
+</script>
 <script language="JavaScript">
     Webcam.set({
         width: 320,
@@ -53,29 +85,29 @@ crossorigin=""/>
         jpeg_quality: 90,
     });
     
-    Webcam.attach('#my_camera');
+    Webcam.attach('.my_camera');
 
-    const getLatitude = document.getElementById('latitude');
-    const getLongitude = document.getElementById('longitude');
+    let getLatitude = document.getElementById('latitude');
+    let getLongitude = document.getElementById('longitude');
 
     if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showLocation, showError)
     }
 
     function showLocation(position) {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
         getLatitude.value = latitude;
         getLongitude.value = longitude;
-        const map = L.map('map').setView([latitude, longitude], 18);
+        let map = L.map('map').setView([latitude, longitude], 18);
 
         L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
         maxZoom: 20,
         subdomains:['mt0','mt1','mt2','mt3']
         }).addTo(map);
 
-        const marker = L.marker([latitude, longitude]).addTo(map);
-        const circle = L.circle([0.5703323, 123.1037019], {
+        let marker = L.marker([latitude, longitude]).addTo(map);
+        let circle = L.circle([0.5592349, 123.1351417], {
             color: 'red',
             fillColor: '#f03',
             fillOpacity: 0.5,

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use PhpOffice\PhpSpreadsheet\Calculation\Database\DVar;
 
 class PengajuanIzinAbsenController extends Controller
 {
@@ -21,7 +20,7 @@ class PengajuanIzinAbsenController extends Controller
         $endDate = $request->end_date;
         $jumlahHari = $request->jumlah_hari;
         $status = "I";
-        $keterangan = $request->keterangan;
+        $keterangan = $request->keterangan_izin;
 
         $month = date('m', strtotime($startDate));
         $year = date('Y', strtotime($startDate));
@@ -30,7 +29,7 @@ class PengajuanIzinAbsenController extends Controller
         $latestIzin = DB::table('pengajuan_izin')
         ->whereRaw('MONTH(start_date)="' . $month . '"')
         ->whereRaw('YEAR(start_date)="' . $year . '"')
-        ->orderBy('kode_izin', 'desc')
+        ->orderBy('id', 'desc')
         ->first();
 
         $latestKodeIzin = $latestIzin != null ? $latestIzin->kode_izin : "";
@@ -38,11 +37,11 @@ class PengajuanIzinAbsenController extends Controller
         $kodeIzin = kodeIzin($latestKodeIzin, $formatKey, 3);
 
         $data = [
-            'kode_izin' => $kodeIzin,
+            'id' => $kodeIzin,
             'start_date' => $startDate,
             'end_date' => $endDate,
             'status' => $status,
-            'keterangan' => $keterangan,
+            'keterangan_izin' => $keterangan,
             'jumlah_hari' => $jumlahHari,
             'user_id' => $idStudent,
         ];
@@ -57,12 +56,6 @@ class PengajuanIzinAbsenController extends Controller
 
         // Hitung jumlah hari yang digunakan
         $jumlahHari = calculateDay($startDate, $endDate);
-
-        // cek jumlah maksimal izin absen
-        // $checkIzinAbsen = DB::table('pengajuan_izin')
-        // ->where('jumlah_hari', $jumlahHari)
-        // ->first();
-
         $jumlahMaxAbsen = 3;
 
         $absenDigunakan = DB::table('presences')
@@ -83,9 +76,9 @@ class PengajuanIzinAbsenController extends Controller
             foreach($dataPresence as $dp) {
                 $blacklistDate .= date('d-m-Y', strtotime($dp->presence_at)) . "," ;
             }
-            return redirect()->route('pengajuan-izin')->with(['error' => 'Tidak bisa melakukan pengajuan pada tanggal ' . $blacklistDate . ' karena tanggal sudah melakukan presensi, Silahkan ganti periode tanggal pengajuan.']);
+            return redirect()->route('pengajuan-izin')->with(['error' => 'Tidak bisa melakukan pengajuan pada tanggal ' . $blacklistDate . ' karena tanggal tersebut sudah melakukan presensi.']);
         } else if($checkPengajuanIzin->count() > 0) {
-            return redirect()->route('pengajuan-izin')->with(['error' => 'Anda sudah melakukan pengajuan izin Absen pada tanggal tersebut']);
+            return redirect()->route('pengajuan-izin')->with(['error' => 'Anda sudah melakukan pengajuan izin pada tanggal tersebut']);
         }  else {
             $save = DB::table('pengajuan_izin')->insert($data);
 

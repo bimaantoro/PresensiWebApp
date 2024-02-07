@@ -50,6 +50,8 @@ class UserSeeder extends Seeder
             'username' => 'bimantoro',
             'nama_lengkap' => 'Muhammad Amirul Bimantoro',
             'instansi' => 'Universitas Negeri Gorontalo',
+            'start_internship' => 'Januari',
+            'end_internship' => 'Maret',
             'password' => bcrypt('12345678'),
             'role' => 'student'
         ]);

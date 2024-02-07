@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('username', 50)->unique();
             $table->string('nama_lengkap');
             $table->string('instansi', 100)->nullable();
+            $table->string('start_internship')->nullable();
+            $table->string('end_internship')->nullable();
             $table->string('role', 10)->default('student');
             $table->string('password');
             $table->rememberToken();

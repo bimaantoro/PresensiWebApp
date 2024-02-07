@@ -81,7 +81,7 @@
                     $status = 'Not Found';
                 }
             @endphp
-                <div class="card mt-2 card-izin" status_code="{{ $d->status_code }}" kode_izin="{{ $d->kode_izin }}"  data-toggle="modal" data-target="#actionSheetIconed">
+                <div class="card mt-2 card-izin" status_code="{{ $d->status_code }}" id_izin="{{ $d->id }}"  data-toggle="modal" data-target="#actionSheetIconed">
                     <div class="card-body">
                         <div class="pengajuan-izin-content">
                             <div class="icon-presence">
@@ -96,7 +96,7 @@
                                 </h3>
                                 <small>{{ date('d-m-Y', strtotime($d->start_date)) }} s.d {{ date('d-m-Y', strtotime($d->end_date)) }}</small>
                                 <p>
-                                    {{ $d->keterangan }}
+                                    {{ $d->keterangan_izin }}
                                     <br>
                                     @if (!empty($d->file_surat_dokter))
                                         <span style="color: blue">
@@ -179,7 +179,7 @@
     <script>
         $(function() {
             $('.card-izin').click(function(e) {
-                const kodeIzin = $(this).attr("kode_izin");
+                const idIzin = $(this).attr("id_izin");
                 const statusCode = $(this).attr("status_code");
 
                 if(statusCode == 1) {
@@ -189,7 +189,7 @@
                         icon: 'warning',
                     });
                 } else  {
-                    $("#showact").load("/pengajuan-izin/" + kodeIzin + "/showact");
+                    $("#showact").load("/pengajuan-izin/" + idIzin + "/showact");
                 }
             });
         });

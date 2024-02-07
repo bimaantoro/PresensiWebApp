@@ -36,6 +36,13 @@
                           <input type="text" class="form-control" name="nama_lengkap" placeholder="Nama Peserta" value="{{ Request('nama_lengkap') }}">
                         </div>
                       </div>
+                      {{-- <div class="col-6">
+                        <div class="form-group">
+                          <select class="form-select" name="kode_dept" id="kode-dept">
+                                <option value="">Unit</option>
+                          </select>
+                        </div>
+                      </div> --}}
                       <div class="col-6">
                         <div class="form-group">
                           <button type="submit" class="btn btn-primary">
@@ -57,6 +64,7 @@
                         <th>ID Peserta</th>
                         <th>Nama</th>
                         <th>Asal Instansi</th>
+                        <th>Periode PKL / Magang</th>
                         <th class="w-1">Aksi</th>
                       </tr>
                     </thead>
@@ -80,8 +88,13 @@
                           <td>
                               {{ $std->instansi }}
                           </td>
+                          <td>{{ $std->start_internship }} S.d {{ $std->end_internship }}</td>
                           <td>
                             <div class="btn-list flex-nowrap">
+                              <a href="/admin/config/{{ $std->id }}/set-work-hour" class="btn-success btn btn-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /></svg>
+                                Setting
+                              </a>
                               <a href="#" class="edit btn-primary btn btn-sm" id_student="{{ $std->id }}" >
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /><path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /><path d="M16 5l3 3" /></svg>
                                 Edit
@@ -137,6 +150,42 @@
                 <input type="text" class="form-control" id="instansi" name="instansi">
               </div>
               <div class="mb-3">
+                <div class="form-label">Dari Bulan (Periode PKL / Magang)</div>
+                <select class="form-select" name="start_internship" id="start-internship">
+                  <option disabled selected>Bulan</option>
+                  <option value="Januari">Januari</option>
+                  <option value="Februari">Februari</option>
+                  <option value="Maret">Maret</option>
+                  <option value="April">April</option>
+                  <option value="Mei">Mei</option>
+                  <option value="Juni">Juni</option>
+                  <option value="Juli">Juli</option>
+                  <option value="Agustus">Agustus</option>
+                  <option value="September">September</option>
+                  <option value="Oktober">Oktober</option>
+                  <option value="November">November</option>
+                  <option value="Desember">Desember</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <div class="form-label">Sampai Bulan (Periode PKL / Magang)</div>
+                <select class="form-select" name="end_internship" id="end-internship">
+                  <option disabled selected>Bulan</option>
+                  <option value="Januari">Januari</option>
+                  <option value="Februari">Februari</option>
+                  <option value="Maret">Maret</option>
+                  <option value="April">April</option>
+                  <option value="Mei">Mei</option>
+                  <option value="Juni">Juni</option>
+                  <option value="Juli">Juli</option>
+                  <option value="Agustus">Agustus</option>
+                  <option value="September">September</option>
+                  <option value="Oktober">Oktober</option>
+                  <option value="November">November</option>
+                  <option value="Desember">Desember</option>
+                </select>
+              </div>
+              <div class="mb-3">
                 <div class="form-label">Foto</div>
                   <input type="file" name="avatar" class="form-control" accept=".png, .jpg, .jpeg" />
               </div>
@@ -180,6 +229,8 @@
           const username = $("#username").val();
           const namaLengkap = $("#nama-lengkap").val();
           const instansi = $("#instansi").val();
+          const startInternship = $("#start-internship").val();
+          const endInternship = $("#end-internship").val();
 
           if(idStudent === "") {
             Swal.fire({
@@ -211,7 +262,7 @@
               $("#nama-lengkap").focus();
             });
             return false;
-          } else if(instasi === "") {
+          } else if(instansi === "") {
             Swal.fire({
               icon: "warning",
               title: 'Warning!',

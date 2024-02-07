@@ -22,7 +22,7 @@
         @endif
     </div>
     <form action="/profile/{{ $student->id }}" method="POST" enctype="multipart/form-data">
-        @method('put')
+        @method('PUT')
         @csrf
         <div class="col">
             <div class="form-group boxed">
@@ -50,7 +50,7 @@
                 <div class="input-wrapper">
                     <button type="submit" class="btn btn-danger btn-block">
                         <ion-icon name="refresh-outline"></ion-icon>
-                        Update
+                        Update Profil
                     </button>
                 </div>
             </div>

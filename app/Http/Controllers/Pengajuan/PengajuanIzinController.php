@@ -16,7 +16,7 @@ class PengajuanIzinController extends Controller
         
         if(!empty($request->month) && !empty($request->year)) {
             $dataIzin = DB::table('pengajuan_izin')
-            ->orderBy('from_date', 'desc')
+            ->orderBy('start_date', 'desc')
             ->where('user_id', $idStudent)
             ->whereRaw('MONTH(start_date)="' . $request->month . '"')
             ->whereRaw('YEAR(start_date)="' . $request->year . '"')
@@ -46,32 +46,6 @@ class PengajuanIzinController extends Controller
         ];
 
         return view('pengajuan-izin.index', compact('dataIzin', 'months'));
-    }
-
-    public function create() {
-        return view('pengajuan-izin.create');
-    }
-    
-    public function store(Request $request) {
-        $idStudent = Auth::guard('employee')->user()->id_employee;
-        $izinAt = $request->izinAt;
-        $status = $request->status;
-        $keterangan = $request->keterangan;
-
-        $data = [
-            'izin_at' => $izinAt,
-            'status' => $status,
-            'keterangan' => $keterangan,
-            'employee_id' => $idStudent,
-        ];
-
-        $save = DB::table('pengajuan_izin')->insert($data);
-
-        if($save) {
-            return redirect()->route('pengajuan-izin')->with(['success' => 'Data berhasil disimpan']);
-        } else {
-            return redirect()->route('pengajuan-izin')->with(['error' => 'Data gagal disimpan']);
-        }
     }
 
     public function check(Request $request) {

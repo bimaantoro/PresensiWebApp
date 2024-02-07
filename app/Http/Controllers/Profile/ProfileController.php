@@ -59,10 +59,9 @@ class ProfileController extends Controller
 
         if($update) {
             if($request->hasFile('avatar')) {
-                $folderPath = 'public/uploads/employee/';
+                $folderPath = 'public/uploads/student/';
                 $request->file('avatar')->storeAs($folderPath, $avatar);
             }
-
             return redirect()->back()->with('success', 'Data berhasil di perbarui');
         } else {
             return redirect()->back()->with('error', 'Data gagal di perbarui');

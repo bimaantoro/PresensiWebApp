@@ -108,6 +108,11 @@
             <td>:</td>
             <td>{{ $student->instansi }}</td>
         </tr>
+        <tr>
+          <td>Periode PKL / Magang</td>
+          <td>:</td>
+          <td>{{ $student->start_internship_month }} S.d {{ $student->end_internship_month }}</td>
+      </tr>
     </table>
 
     <table class="table-presence">
@@ -159,12 +164,10 @@
         <td>
          -
         </td>
+        <td style="text-align: center">{{ $p->presence_status }}</td>
         <td>
-          -
+          {{ $p->keterangan_izin }}
         </td>
-        <td>{{ $p->status_presence }}</td>
-        <td>{{ $p->keterangan }}</td>
-        <td></td>
       </tr>
       @endif
       @endforeach

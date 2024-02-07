@@ -33,6 +33,8 @@ class StudentController extends Controller
         $password = Hash::make('12345678');
         $namaLengkap = $request->nama_lengkap;
         $instansi = $request->instansi;
+        $startInternship = $request->start_internship;
+        $endInternship = $request->end_internship;
 
         if($request->hasFile('avatar')) {
             $avatar = $idStudent . "." . $request->file('avatar')->getClientOriginalExtension();
@@ -47,6 +49,8 @@ class StudentController extends Controller
                 'password' => $password,
                 'nama_lengkap' => $namaLengkap,
                 'instansi' => $instansi,
+                'start_internship' => $startInternship,
+                'end_internship' => $endInternship,
                 'avatar' => $avatar,
             ];
 
@@ -64,6 +68,7 @@ class StudentController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Data Peserta gagal ditambahkan');
         }
+
     }
 
     public function edit(Request $request) {
@@ -82,6 +87,8 @@ class StudentController extends Controller
         $password = Hash::make('12345678');
         $namaLengkap = $request->nama_lengkap;
         $instansi = $request->instansi;
+        $startInternship = $request->start_internship;
+        $endInternship = $request->end_internship;
         $avatar = $request->avatar;
         $oldAvatar = $request->old_avatar;
 
@@ -97,6 +104,8 @@ class StudentController extends Controller
                 'password' => $password,
                 'nama_lengkap' => $namaLengkap,
                 'instansi' => $instansi,
+                'start_internship' => $startInternship,
+                'end_internship' => $endInternship,
                 'avatar' => $avatar,
             ];
 

@@ -6,8 +6,8 @@
     </a>
     <div id="user-detail">
         <div class="avatar">
-            @if (!empty(Auth::user()->photo))
-                <img src="{{ asset('storage/uploads/employee/' . Auth::user()->avatar) }}" alt="avatar" class="imaged w64" style="height: 60px">
+            @if (!empty(Auth::user()->avatar))
+                <img src="{{ asset('storage/uploads/student/' . Auth::user()->avatar) }}" alt="avatar" class="imaged w64" style="height: 60px">
             @else
                 <img src="{{ asset('assets/img/avatar-default.jpg') }}" alt="avatar" class="imaged w64 rounded">
             @endif
@@ -53,7 +53,7 @@
                         <span class="text-center">Riwayat</span>
                     </div>
                 </div>
-                <div class="item-menu text-center">
+                {{-- <div class="item-menu text-center">
                     <div class="menu-icon">
                         <a href="" class="orange" style="font-size: 40px;">
                             <ion-icon name="location"></ion-icon>
@@ -62,7 +62,7 @@
                     <div class="menu-name">
                         Lokasi
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -111,6 +111,7 @@
         </div>
     </div>
 
+    {{-- Rekap Presensi --}}
     <div id="rekap-presence">
         <h3>Rekap Presensi {{ $months[$thisMonth] }} {{ $thisYear }}</h3>
         <div class="row">
@@ -137,8 +138,8 @@
             <div class="col-3">
                 <div class="card">
                     <div class="card-body text-center card-rekap-presence">
-                        <span class="badge bg-danger badge-rekap-presence">{{ $dataIzin->jmlh_izin }}</span>
-                        <ion-icon name="calendar-number-outline" class="text-primary mb-1 icon-rekap-presence"></ion-icon>
+                        <span class="badge bg-danger badge-rekap-presence">{{ $dataPresence->jmlh_izin }}</span>
+                        <ion-icon name="calendar-outline" class="text-primary mb-1 icon-rekap-presence"></ion-icon>
                         <br>
                         <span class="txt-rekap-presence">Izin</span>
                     </div>
@@ -147,7 +148,7 @@
             <div class="col-3">
                 <div class="card">
                     <div class="card-body text-center card-rekap-presence">
-                        <span class="badge bg-danger badge-rekap-presence">{{ $dataIzin->jmlh_sakit }}</span>
+                        <span class="badge bg-danger badge-rekap-presence">{{ $dataPresence->jmlh_sakit }}</span>
                         <ion-icon name="medkit-outline" class="text-danger mb-1 icon-rekap-presence"></ion-icon>
                         <br>
                         <span class="txt-rekap-presence">Sakit</span>
@@ -203,7 +204,7 @@
                                 <h3 style="line-height: 3px">Izin - {{ $h->kode_izin }}</h3>
                                 <h4 style="margin: 0px !important">{{ date('d-m-Y', strtotime($h->presence_at)) }}</h4>
                                 <span>
-                                   {{ $h->keterangan }}
+                                   {{ $h->keterangan_izin }}
                                 </span>
                             </div>
                         </div>
@@ -220,7 +221,7 @@
                                 <h3 style="line-height: 3px">Izin - {{ $h->kode_izin }}</h3>
                                 <h4 style="margin: 0px !important">{{ date('d-m-Y', strtotime($h->presence_at)) }}</h4>
                                 <span>
-                                   {{ $h->keterangan }}
+                                   {{ $h->keterangan_izin }}
                                 </span>
                             </div>
                         </div>
@@ -237,7 +238,7 @@
                                 <h3 style="line-height: 3px">Sakit - {{ $h->kode_izin }}</h3>
                                 <h4 style="margin: 0px !important">{{ date('d-m-Y', strtotime($h->presence_at)) }}</h4>
                                 <span>
-                                   {{ $h->keterangan }}
+                                   {{ $h->keterangan_izin }}
                                 </span>
                                 <br>
                                 @if (!empty($d->file_surat_dokter))

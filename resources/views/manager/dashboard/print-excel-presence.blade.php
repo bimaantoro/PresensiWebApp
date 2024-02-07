@@ -19,15 +19,16 @@
   }
 
   #title {
-    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
     font-weight: bold;
   }
 
-  .table-data-employee {
+  .table-data-student {
     margin-top: 40px;
   }
 
-  .table-data-employee td {
+  .table-data-student td {
     padding: 5px;
   }
 
@@ -48,6 +49,11 @@
     padding: 5px;
     font-size: 12px;
   }
+
+  .photo {
+    width: 50px;
+    height: 50px;
+  }
   
   </style>
 </head>
@@ -62,43 +68,45 @@
     <table style="width: 100%">
         <tr>
             <td style="width: 30px">
-                <img src="{{ asset('assets/img/icon/192x192.png') }}" alt="" width="100" height="100">
+                <img src="{{ asset('assets/img/logo-telkom.png') }}" alt="" width="100" height="100">
             </td>
             <td>
                 <span id="title">
-                    LAPORAN PRESENSI KARYAWAN<br>
+                    LAPORAN PRESENSI PKL / MAGANG<br>
                     PERIODE {{ strtoupper($months[$month]) }} {{ $year }}<br>
-                    PT. KOPERASI INTERNET NETWORK GORONTALO
+                    PT. TELKOM WITEL GORONTALO<br>
                 </span>
-                <span>H4H2+XHM, Permata, Tilongkabila, Bone Bolango Regency, Gorontalo 96127</span>
+                <span>
+                  <i>Jl. Jaksa Agung Suprapto No.22, Limba U Dua, Kota Sel., Kota Gorontalo, Gorontalo</i>
+                 </span>
             </td>
         </tr>
     </table>
 
-    <table class="table-data-employee">
-        <tr>
+    <table class="table-data-student">
+        {{-- <tr>
             <td rowspan="4">
-              @if ($employee->photo != null)
-                <img src="{{ asset('storage/uploads/employee/' . $employee->photo) }}" alt="" width="120" height="150">
+              @if ($student->avatar != null)
+                <img src="{{ asset('storage/uploads/student/' . $student->avatar) }}" alt="" width="120" height="150">
               @else
                 <img src="{{ asset('assets/img/no-image.png') }}" alt="" width="120" height="150">
               @endif
             </td>
+        </tr> --}}
+        <tr>
+            <td>ID Peserta</td>
+            <td>:</td>
+            <td>{{ $student->id }}</td>
         </tr>
         <tr>
-            <td>ID Karyawan</td>
+            <td>Nama Lengkap</td>
             <td>:</td>
-            <td>{{ $employee->id_employee }}</td>
+            <td>{{ $student->nama_lengkap }}</td>
         </tr>
         <tr>
-            <td>Nama Karyawan</td>
+            <td>Asal Instansi</td>
             <td>:</td>
-            <td>{{ $employee->fullname }}</td>
-        </tr>
-        <tr>
-            <td>Jabatan</td>
-            <td>:</td>
-            <td>{{ $employee->position }}</td>
+            <td>{{ $student->instansi }}</td>
         </tr>
     </table>
 
@@ -108,22 +116,45 @@
         <th>Tanggal</th>
         <th>Presensi masuk</th>
         <th>Presensi pulang</th>
+        <th>Status</th>
         <th>Keterangan</th>
       </tr>
       @foreach ($presence as $p)
-        <tr>
-          <td>{{ $loop->iteration }}</td>
-          <td>{{ date('d-m-Y', strtotime($p->presence_at)) }}</td>
-          <td>{{ $p->check_in }}</td>
-          <td>{{ $p->check_out != null ? $p->check_out : 'Belum absen' }}</td>
-          <td>
-            @if ($p->check_in >= "07:00")
-                Terlambat
-            @else
-                Tepat waktu
-            @endif
-          </td>
-        </tr>
+      @if ($p->presence_status == 'H')
+      <tr>
+        <td>{{ $loop->iteration }}</td>
+        <td>{{ date('d-m-Y', strtotime($p->presence_at)) }}</td>
+        <td>{{ $p->check_in }}</td>
+        <td>{{ $p->check_out != null ? $p->check_out : 'Belum Presensi' }}</td>
+        <td style="text-align: center">{{ $p->presence_status }}</td>
+        <td>
+          @if ($p->check_in >= "07:00")
+              Terlambat
+          @else
+              Tepat waktu
+          @endif
+        </td>
+      </tr>
+      @else
+      <tr>
+        <td>{{ $loop->iteration }}</td>
+        <td>{{ date('d-m-Y', strtotime($p->presence_at)) }}</td>
+        <td>-</td>
+        <td>
+          -
+        </td>
+        <td>-</td>
+        <td>
+         -
+        </td>
+        <td>
+          -
+        </td>
+        <td>{{ $p->status_presence }}</td>
+        <td>{{ $p->keterangan }}</td>
+        <td></td>
+      </tr>
+      @endif
       @endforeach
     </table>
 
@@ -133,8 +164,8 @@
       </tr>
       <tr>
         <td style="text-align: right; vertical-align:bottom" height="100px">
-          <u>Name</u><br>
-          <i><b>Jabatan</b></i>
+          <u>Sabar Siswanto</u><br>
+          <i><b>GM Witel Gorontalo</b></i>
         </td>
       </tr>
     </table>

@@ -18,7 +18,6 @@
     <link href="{{ asset('assets/css/tabler-flags.min.css?1684106062') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/tabler-payments.min.css?1684106062') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/tabler-vendors.min.css?1684106062') }}" rel="stylesheet"/>
-    {{-- <link href="{{ asset('assets/css/demo.min.css?1684106062') }}" rel="stylesheet"/> --}}
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     <style>
       @import url('https://rsms.me/inter/inter.css');
@@ -35,7 +34,6 @@
     @stack('master-admin-css')
   </head>
   <body>
-    {{-- <script src="{{ asset('assets/js/demo-theme.min.js?1684106062') }}"></script> --}}
     <div class="page">
       <!-- Navbar -->
       @include('partials.admin.navbar')

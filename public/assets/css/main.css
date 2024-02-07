@@ -1,13 +1,32 @@
-#my_camera, #my_camera video {
+.my_camera, .my_camera video {
     display: inline-block;
     width: 100% !important;
-    /* margin: auto; */
-    /* height: auto !important; */
+    margin: auto;
+    height: auto !important;
     border-radius: 15px; 
 }
 
 #map {
     height: 200px;
+}
+
+.jam-digital-malasngoding {
+    background-color: #27272783;
+    position: absolute;
+    top: 70px;
+    right: 25px;
+    z-index: 500;
+    width: 150px;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.jam-digital-malasngoding p {
+    color: #fff;
+    font-size: 16px;
+    text-align: left;
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 .card-rekap-presence {

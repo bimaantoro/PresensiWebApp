@@ -23,6 +23,8 @@ class LoginController extends Controller
         if(Auth::attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->intended(RouteServiceProvider::HOME);
+        } else {
+            return redirect('/')->with(['error' => 'Maaf, Username / Password Anda salah.']);
         }
     }
 

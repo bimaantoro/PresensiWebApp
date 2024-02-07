@@ -39,7 +39,7 @@
                     </label>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Keterangan" id="keterangan" name="keterangan" autocomplete="off">
+                    <input type="text" class="form-control" placeholder="Keterangan" id="keterangan" name="keterangan_izin" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <button class="btn btn-success w-100">
@@ -62,32 +62,7 @@
             $('.datepicker').datepicker({
                 format: 'yyyy-mm-dd'    
             });
-
-            $('#start_date, #end_date').change(function(e) {
-                const startDate = $('#start_date').val();
-                const endDate = $('#end_date').val();
-                $.ajax({
-                    type: 'POST',
-                    url: '/pengajuan-izin/check',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        start_date: startDate,
-                        end_date: endDate,
-                    },
-                    success: (response) => {
-                        if(response == 1) {
-                            Swal.fire({
-                                title: 'Oops!',
-                                text: 'Anda sudah melakukan pengajuan izin pada tanggal tersebut',
-                                icon: 'warning',
-                            }).then((result) => {
-                                $('#start_date, #end_date').val('');
-                            });
-                        }
-                    }
-                });
-            });
-
+            
             function loadJumlahHari() {
                 const startDate = $('#start_date').val();
                 const endDate = $('#end_date').val();

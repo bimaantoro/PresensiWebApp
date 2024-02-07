@@ -62,13 +62,21 @@ class DashboardManagerController extends Controller
         ->first();
 
         $presence = DB::table('presences')
-        ->select('presences.*', 'keterangan')
+        ->select('presences.*', 'keterangan_izin')
         ->leftJoin('pengajuan_izin', 'presences.kode_izin', '=', 'pengajuan_izin.kode_izin')
         ->where('presences.user_id', $idStudent)
         ->whereRaw('MONTH(presence_at)="' . $month . '"')
         ->whereRaw('YEAR(presence_at)="' . $year . '"')
         ->orderBy('presence_at')
         ->get();
+
+        if(isset($_POST['export-excel'])) {
+            $time = date('d-M-Y H:i:s');
+            header("Content-type: application/vnd-ms-excel");
+            header("Content-Disposition: attachment; filename=Rekap Presensi Peserta $time.xls");
+
+            return view('manager.dashboard.print-excel-presence', compact('months', 'month', 'year', 'student', 'presence'));
+        }
 
         return view('manager.dashboard.print-presence', compact('months', 'month', 'year', 'student', 'presence'));
     }
@@ -169,6 +177,12 @@ class DashboardManagerController extends Controller
         $query->where('role', 'student');
         $query->orderBy('nama_lengkap');
         $recapPresence = $query->get();
+
+        if(isset($_POST['export-excel'])) {
+            $time = date('d-M-Y H:i:s');
+            header("Content-type: application/vnd-ms-excel");
+            header("Content-Disposition: attachment; filename=Rekap Presensi Peserta $time.xls");
+        }
 
         return view('manager.dashboard.print-recap-presence', compact('month', 'year', 'months', 'recapPresence', 'rangeDate', 'totalDays'));
     }

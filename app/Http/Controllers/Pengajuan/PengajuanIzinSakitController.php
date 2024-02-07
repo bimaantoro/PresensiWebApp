@@ -19,7 +19,7 @@ class PengajuanIzinSakitController extends Controller
         $startDate = $request->start_date;
         $endDate = $request->end_date;
         $status = "S";
-        $keterangan = $request->keterangan;
+        $keterangan = $request->keterangan_izin;
 
         $month = date('m', strtotime($startDate));
         $year = date('Y', strtotime($startDate));
@@ -28,12 +28,12 @@ class PengajuanIzinSakitController extends Controller
         $latestIzin = DB::table('pengajuan_izin')
         ->whereRaw('MONTH(start_date)="' . $month . '"')
         ->whereRaw('YEAR(start_date)="' . $year . '"')
-        ->orderBy('kode_izin', 'desc')
+        ->orderBy('id', 'desc')
         ->first();
 
-        $latestKodeIzin = $latestIzin != null ? $latestIzin->kode_izin : "";
+        $latestIdIzin = $latestIzin != null ? $latestIzin->id : "";
         $formatKey = "IZ" . $month . $formatYear;
-        $kodeIzin = kodeIzin($latestKodeIzin, $formatKey, 3);
+        $kodeIzin = kodeIzin($latestIdIzin, $formatKey, 3);
 
         if($request->hasFile('file_surat_dokter')) {
             $fileSuratDokter = $kodeIzin . '.' . $request->file('file_surat_dokter')->getClientOriginalExtension();
@@ -42,11 +42,11 @@ class PengajuanIzinSakitController extends Controller
         }
 
         $data = [
-            'kode_izin' => $kodeIzin,
+            'id' => $kodeIzin,
             'start_date' => $startDate,
             'end_date' => $endDate,
             'status' => $status,
-            'keterangan' => $keterangan,
+            'keterangan_izin' => $keterangan,
             'file_surat_dokter' => $fileSuratDokter,
             'user_id' => $idStudent,
         ];
@@ -65,9 +65,9 @@ class PengajuanIzinSakitController extends Controller
             foreach($dataPresence as $dp) {
                 $blacklistDate .= date('d-m-Y', strtotime($dp->presence_at)) . "," ;
             }
-            return redirect()->route('pengajuan-izin')->with(['error' => 'Tidak bisa melakukan pengajuan pada tanggal ' . $blacklistDate . 'karena tanggal sudah melakukan presensi, Silahkan ganti periode tanggal pengajuan.']);
+            return redirect()->route('pengajuan-izin')->with(['error' => 'Tidak bisa melakukan pengajuan pada tanggal ' . $blacklistDate . 'karena tanggal tersebut sudah melakukan presensi.']);
         } elseif($checkPengajuanIzin->count() > 0) {
-            return redirect()->route('pengajuan-izin')->with(['error' => 'Anda sudah melakukan pengajuan izin Sakit pada tanggal tersebut']);
+            return redirect()->route('pengajuan-izin')->with(['error' => 'Anda sudah melakukan pengajuan izin pada tanggal tersebut']);
         } else {
             $save = DB::table('pengajuan_izin')->insert($data);
 

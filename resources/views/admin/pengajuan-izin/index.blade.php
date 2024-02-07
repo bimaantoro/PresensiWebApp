@@ -94,6 +94,9 @@
                         <th>Nama</th>
                         <th>Asal Instansi</th>
                         <th>Status</th>
+                        <th>
+                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-paperclip" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" /></svg>
+                        </th>
                         <th>Keterangan</th>
                         <th>Status Persetujuan</th>
                         <th class="w-1">Aksi</th>
@@ -112,7 +115,18 @@
                                 <td>
                                     {{ $di->instansi }}
                                 </td>
-                                <td>{{ $di->status == 'i' ? "Izin" : "Sakit" }}</td>
+                                <td>{{ $di->status == 'I' ? "Izin" : "Sakit" }}</td>
+                                <td>
+                                  @if(!empty($di->file_surat_dokter))
+                                  @php
+                                      $path = Storage::url('/uploads/suratDokter/' . $di->file_surat_dokter)
+                                  @endphp
+                                  <a href="{{ url($path) }}" target="_blank">
+                                    {{ $di->file_surat_dokter }}
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-paperclip" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" /></svg>
+                                  </a>
+                                  @endif
+                                </td>
                                 <td>{{ $di->keterangan }}</td>
                                 <td>
                                     @if ($di->status_code == 1)

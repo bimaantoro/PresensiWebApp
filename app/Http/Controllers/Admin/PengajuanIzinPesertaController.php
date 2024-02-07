@@ -14,7 +14,7 @@ class PengajuanIzinPesertaController extends Controller
     public function index(Request $request) {
 
         $query = PengajuanIzin::query();
-        $query->select('kode_izin', 'start_date', 'end_date', 'user_id', 'nama_lengkap', 'instansi', 'status', 'keterangan', 'status_code');
+        $query->select('kode_izin', 'start_date', 'end_date', 'user_id', 'file_surat_dokter', 'nama_lengkap', 'instansi', 'status', 'keterangan_izin', 'status_code');
         $query->join('users', 'pengajuan_izin.user_id', '=', 'users.id');
         $query->orderBy('start_date', 'desc');
 
@@ -88,7 +88,7 @@ class PengajuanIzinPesertaController extends Controller
 
     public function decline($kodeIzin) {
         try {
-            $update = DB::table('pengajuan_izin')
+            DB::table('pengajuan_izin')
             ->where('kode_izin', $kodeIzin)
             ->update([
                 'status_code' => 0

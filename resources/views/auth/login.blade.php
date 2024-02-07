@@ -18,6 +18,12 @@
         <h4 class="mb-2">Selamat datang di E-Presensi! 👋</h4>
         <p class="mb-4">Masuk ke akun Anda</p>
 
+        @if (session()->has('error'))
+            <div class="alert alert-danger">
+              {{ session('error') }}
+            </div>
+        @endif
+
         <form id="formAuthentication" class="mb-3" action="{{ route('authenticate') }}" method="POST">
           @csrf
           <div class="mb-3">
