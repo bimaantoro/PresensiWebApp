@@ -41,13 +41,18 @@
     padding: 5px;
     font-size: 12px;
   }
+
+  body.A4.landscape .sheet {
+    width: 297mm !important;
+    height: auto !important;
+  }
   
   </style>
 </head>
 
 <!-- Set "A5", "A4" or "A3" for class name -->
 <!-- Set also "landscape" if you need -->
-<body class="A3 landscape">
+<body class="A4 landscape">
 
   <!-- Each sheet element should have the class "sheet" -->
   <!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
@@ -71,7 +76,7 @@
         </tr>
     </table>
 
-    <table class="table-presence">
+    <table class="table-presence" width="100%">
         <tr>
             <th rowspan="2">ID</th>
             <th rowspan="2">Nama</th>

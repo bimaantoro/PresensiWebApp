@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('working_hours', function (Blueprint $table) {
-            $table->char('id')->primary();
+            $table->char('id', 50)->primary();
             $table->string('name', 50)->nullable();
             $table->time('start_check_in')->nullable();
-            $table->time('check_in')->nullable();
+            $table->time('jam_in')->nullable();
             $table->time('end_check_in')->nullable();
-            $table->time('check_out')->nullable();
+            $table->time('jam_out')->nullable();
             $table->timestamps();
         });
     }

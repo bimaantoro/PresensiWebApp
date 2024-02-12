@@ -27,7 +27,7 @@ class StudentController extends Controller
         return view('admin.student.index', compact('student'));
     }
 
-    public function store(Request $request) {
+    /* public function store(Request $request) {
         $idStudent = $request->id;
         $username = $request->username;
         $password = Hash::make('12345678');
@@ -61,14 +61,58 @@ class StudentController extends Controller
                     $folderPath = 'public/uploads/student/';
                     $request->file('avatar')->storeAs($folderPath, $avatar);
                 }
-
-                return redirect()->back()->with('success', 'Data Peserta berhasil ditambahkan');
+                return redirect()->back()->with(['success', 'Data Peserta berhasil ditambahkan']);
             }
-            
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Data Peserta gagal ditambahkan');
+            if($e->getCode() == 23000) {
+                $message = 'Data dengan ID ' . $idStudent . " Sudah ada";
+            } else {
+                $message = 'Hubungi IT';
+            }
+
+            return redirect()->back()->with(['error', 'Data Peserta gagal ditambahkan, ' . $message]);
+        }
+    } */
+
+    public function store(Request $request) {
+        $idStudent = $request->id;
+        $username = $request->username;
+        $password = Hash::make('12345678');
+        $namaLengkap = $request->nama_lengkap;
+        $instansi = $request->instansi;
+        $startInternship = $request->start_internship;
+        $endInternship = $request->end_internship;
+
+        $avatar = null;
+
+        if($request->hasFile('avatar')) {
+            $avatar = $idStudent . "." . $request->file('avatar')->getClientOriginalExtension();
         }
 
+        try {
+            $data = [
+                'id' => $idStudent,
+                'username' => $username,
+                'password' => $password,
+                'nama_lengkap' => $namaLengkap,
+                'instansi' => $instansi,
+                'start_internship' => $startInternship,
+                'end_internship' => $endInternship,
+                'avatar' => $avatar,
+            ];
+
+            $save = DB::table('users')->insert($data);
+
+            if ($save && $avatar != null) {
+                $folderPath = 'public/uploads/student/';
+                $request->file('avatar')->storeAs($folderPath, $avatar);
+            }
+            return redirect()->back()->with(['success' => 'Data Peserta berhasil ditambahkan']);
+        } catch (\Exception $e) {
+            $message = ($e->getCode() == 23000) ? 'Data dengan ID ' . $idStudent . " Sudah ada" : 'Hubungi IT';
+
+            return redirect()->back()->with(['error' => 'Data Peserta gagal ditambahkan, ' . $message]);
+        }
     }
 
     public function edit(Request $request) {
@@ -121,11 +165,11 @@ class StudentController extends Controller
                     $request->file('avatar')->storeAs($folderPath, $avatar);
                 }
 
-                return redirect()->back()->with('success', 'Data peserta berhasil diperbarui');
+                return redirect()->back()->with(['success' => 'Data peserta berhasil diperbarui']);
             }
             
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Data peserta gagal diperbarui');
+            return redirect()->back()->with(['error' => 'Data peserta gagal diperbarui']);
         }
     }
 

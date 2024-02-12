@@ -111,7 +111,7 @@
         <tr>
           <td>Periode PKL / Magang</td>
           <td>:</td>
-          <td>{{ $student->start_internship_month }} S.d {{ $student->end_internship_month }}</td>
+          <td>{{ $student->start_internship }} S.d {{ $student->end_internship }}</td>
       </tr>
     </table>
 
@@ -145,7 +145,7 @@
         </td>
         <td style="text-align: center">{{ $p->presence_status }}</td>
         <td>
-          @if ($p->check_in >= "07:00")
+          @if ($p->check_in >= $p->jam_in)
               Terlambat
           @else
               Tepat waktu

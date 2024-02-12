@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('file_surat_dokter')->nullable();
             $table->string('status', 10);
             $table->string('status_code', 5)->default(0);
-            $table->smallInteger('jumlah_hari')->nullable();
+            $table->smallInteger('jumlah_izin')->nullable();
             $table->string('keterangan_izin')->nullable();
             $table->string('keterangan_penolakan')->nullable();
             $table->char('user_id');

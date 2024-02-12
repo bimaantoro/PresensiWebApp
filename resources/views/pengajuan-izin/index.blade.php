@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">
-                            <select name="month" id="month" class="form-control selectmaterialize">
+                            <select name="month" id="month" class="form-control">
                                 <option value="">Bulan</option>
                                 @for ($i = 1; $i <= 12; $i++)
                                 <option {{ Request('month') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $months[$i] }}</option>
@@ -40,7 +40,7 @@
                     </div>
                     <div class="col-6">
                         <div class="form-group">
-                            <select name="year" id="year" class="form-control selectmaterialize">
+                            <select name="year" id="year" class="form-control">
                                 <option value="">Tahun</option>
                                 @php
                                     $initialYear = 2023 ;
@@ -58,13 +58,11 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-12">
                         <button class="btn btn-danger w-100">Cari Data</button>
                     </div>
                 </div>
-
             </form>
         </div>
     </div>
@@ -78,7 +76,7 @@
                 } else if ($d->status == 'S') {
                     $status = 'Sakit';
                 } else {
-                    $status = 'Not Found';
+                    $status = 'Tidak ditemukan';
                 }
             @endphp
                 <div class="card mt-2 card-izin" status_code="{{ $d->status_code }}" id_izin="{{ $d->id }}"  data-toggle="modal" data-target="#actionSheetIconed">
@@ -92,7 +90,7 @@
                                 @endif
                             </div>
                             <div class="data-presence">
-                                <h3 style="line-height: 30px">{{ date('d-m-Y', strtotime($d->start_date)) }}  ({{ $status }})
+                                <h3 style="line-height: 3px">{{ date('d-m-Y', strtotime($d->start_date)) }}  ({{ $status }})
                                 </h3>
                                 <small>{{ date('d-m-Y', strtotime($d->start_date)) }} s.d {{ date('d-m-Y', strtotime($d->end_date)) }}</small>
                                 <p>
@@ -112,7 +110,7 @@
                                 @elseif ($d->status_code == 1)
                                     <span class="badge bg-success">Approved</span>
                                 @elseif($d->status_code == 2)
-                                    <span class="badge bg-danger">Decline</span>
+                                    <span class="badge bg-danger">Rejected</span>
                                 @endif
                             </div>
                         </div>

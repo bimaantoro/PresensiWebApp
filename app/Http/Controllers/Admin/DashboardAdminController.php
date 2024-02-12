@@ -12,27 +12,26 @@ class DashboardAdminController extends Controller
     public function index() {
         $today = date('Y-m-d');
 
-        $dataPresence = DB::table('presences')
-        ->selectRaw('COUNT(user_id) as jmlh_hadir, SUM(IF(check_in > "07:00", 1, 0)) as jmlh_terlambat')
-        ->where('presence_at', $today)
-        ->first();
+          // Query Rekap Presensi
+          $dataPresence = DB::table('presences')
+          ->selectRaw('SUM(IF(presence_status="H", 1, 0)) as jmlh_hadir,
+          SUM(IF(presence_status="I", 1, 0)) as jmlh_izin,
+          SUM(IF(presence_status="S", 1, 0)) as jmlh_sakit,
+          SUM(IF(presences.check_in > working_hours.jam_in, 1, 0)) as jmlh_terlambat')
+          ->leftJoin('working_hours', 'presences.working_hour_id', '=', 'working_hours.id')
+          ->where('presence_at', $today)
+          ->first();
 
-        $dataIzin = DB::table('pengajuan_izin')
-        ->selectRaw('SUM(IF(status="I", 1, 0)) as jmlh_izin, SUM(IF(status="S", 1, 0)) as jmlh_sakit')
-        ->where('start_date', $today)
-        ->where('status_code', 1)
-        ->first();
-
-
-        return view('admin.dashboard.index', compact('dataPresence', 'dataIzin'));
+        return view('admin.dashboard.index', compact('dataPresence'));
     }
 
     public function getPresence(Request $request) {
         $date = $request->date;
         
         $presence = DB::table('presences')
-        ->select('presences.*', 'nama_lengkap', 'instansi', 'keterangan_izin')
-        ->leftJoin('pengajuan_izin', 'presences.kode_izin', '=', 'pengajuan_izin.kode_izin')
+        ->select('presences.*', 'nama_lengkap', 'instansi', 'keterangan_izin', 'working_hours.jam_in', 'working_hours.name', 'working_hours.jam_out')
+        ->leftJoin('working_hours', 'presences.working_hour_id', '=', 'working_hours.id')
+        ->leftJoin('pengajuan_izin', 'presences.pengajuan_izin_id', '=', 'pengajuan_izin.id')
         ->join('users', 'presences.user_id', '=', 'users.id')
         ->where('presence_at', $date)
         ->get();

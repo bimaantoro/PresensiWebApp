@@ -30,7 +30,7 @@
         <span class="input-icon-addon">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock-hour-8" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 12l-3 2" /><path d="M12 7v5" /></svg>
         </span>
-        <input type="text" value="{{ $workHours->check_in }}" class="form-control" id="check-in" name="check_in" placeholder="Jam Masuk">
+        <input type="text" value="{{ $workHours->jam_in }}" class="form-control" id="jam-in" name="jam_in" placeholder="Jam Masuk">
       </div>
     </div>
     <div class="mb-3">
@@ -46,7 +46,7 @@
         <span class="input-icon-addon">
           <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock-hour-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 12l2 3" /><path d="M12 7v5" /></svg>
         </span>
-        <input type="text" value="{{ $workHours->check_out }}" class="form-control" name="check_out" id="check-out" placeholder="Jam Pulang">
+        <input type="text" value="{{ $workHours->jam_out }}" class="form-control" name="jam_out" id="jam-out" placeholder="Jam Pulang">
       </div>
     </div>
     <div class="mb-3">

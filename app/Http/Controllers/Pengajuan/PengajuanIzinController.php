@@ -13,21 +13,19 @@ class PengajuanIzinController extends Controller
     //
     public function index(Request $request) {
         $idStudent = Auth::user()->id;
+        $dataIzinQuery = DB::table('pengajuan_izin')
+        ->where('user_id', $idStudent);
         
         if(!empty($request->month) && !empty($request->year)) {
-            $dataIzin = DB::table('pengajuan_izin')
-            ->orderBy('start_date', 'desc')
-            ->where('user_id', $idStudent)
-            ->whereRaw('MONTH(start_date)="' . $request->month . '"')
-            ->whereRaw('YEAR(start_date)="' . $request->year . '"')
-            ->get();
+            $dataIzinQuery->whereMonth('start_date', $request->month)
+            ->whereYear('start_date', $request->year);
         } else {
-            $dataIzin = DB::table('pengajuan_izin')
-            ->where('user_id', $idStudent)
-            ->limit(5)
-            ->orderBy('start_date', 'desc')
-            ->get();
+            $dataIzinQuery->orderByDesc('start_date')
+            ->limit(5);
         }
+
+        $dataIzin = $dataIzinQuery->orderBy('start_date', 'desc')
+        ->get();
 
         $months = [
             "",
@@ -62,25 +60,25 @@ class PengajuanIzinController extends Controller
         return $check;
     }
 
-    public function showAct($kodeIzin) {
+    public function showAct($id) {
         $dataIzin = DB::table('pengajuan_izin')
-        ->where('kode_izin', $kodeIzin)
+        ->where('id', $id)
         ->first();
 
         return view('pengajuan-izin.show-act', compact('dataIzin'));
     }
 
-    public function destroy($kodeIzin) {
+    public function destroy($id) {
 
         $checkDataIzin = DB::table('pengajuan_izin')
-        ->where('kode_izin', $kodeIzin)
+        ->where('id', $id)
         ->first();
 
         $fileSuratDokter = $checkDataIzin->file_surat_dokter;
 
         try {
             DB::table('pengajuan_izin')
-            ->where('kode_izin', $kodeIzin)
+            ->where('id', $id)
             ->delete();
 
             if($fileSuratDokter != null) {

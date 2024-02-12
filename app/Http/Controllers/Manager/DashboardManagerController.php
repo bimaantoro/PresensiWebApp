@@ -62,8 +62,9 @@ class DashboardManagerController extends Controller
         ->first();
 
         $presence = DB::table('presences')
-        ->select('presences.*', 'keterangan_izin')
-        ->leftJoin('pengajuan_izin', 'presences.kode_izin', '=', 'pengajuan_izin.kode_izin')
+        ->select('presences.*', 'keterangan_izin', 'working_hours.*')
+        ->leftJoin('working_hours', 'presences.working_hour_id', '=', 'working_hours.id')
+        ->leftJoin('pengajuan_izin', 'presences.pengajuan_izin_id', '=', 'pengajuan_izin.id')
         ->where('presences.user_id', $idStudent)
         ->whereRaw('MONTH(presence_at)="' . $month . '"')
         ->whereRaw('YEAR(presence_at)="' . $year . '"')
@@ -135,14 +136,19 @@ class DashboardManagerController extends Controller
                 IFNULL(check_in, 'NA'), '|',
                 IFNULL(check_out, 'NA'), '|',
                 IFNULL(presence_status, 'NA'), '|',
-                IFNULL(presences.kode_izin, 'NA'), '|',
-                IFNULL('keterangan', 'NA'), '|'
+                IFNULL(working_hours.name, 'NA'), '|',
+                IFNULL(working_hours.jam_in, 'NA'), '|',
+                IFNULL(working_hours.jam_out, 'NA'), '|',
+                IFNULL(presences.pengajuan_izin_id, 'NA'), '|',
+                IFNULL('keterangan_izin', 'NA'), '|'
             ), NULL)) as tgl_" . $i . ","; 
 
             $fieldDate .= "tgl_" . $i . ",";
             $i++;
             $startDate = date('Y-m-d', strtotime("+1 days", strtotime($startDate)));
         }
+
+        // dd($selectDate);
 
         $totalDays = count($rangeDate);
         $lastIndex = $totalDays - 1;
@@ -157,17 +163,17 @@ class DashboardManagerController extends Controller
         }
 
         $query = User::query();
-        $query->selectRaw("$fieldDate id, nama_lengkap, instansi");
-
+        $query->selectRaw("$fieldDate users.id, nama_lengkap, instansi");
         $query->leftJoin(
             DB::raw("(
                 SELECT
                 $selectDate
                 presences.user_id
                 FROM presences
-                LEFT JOIN pengajuan_izin ON presences.kode_izin = pengajuan_izin.kode_izin
+                LEFT JOIN working_hours ON presences.working_hour_id = working_hours.id
+                LEFT JOIN pengajuan_izin ON presences.pengajuan_izin_id = pengajuan_izin.id
                 WHERE presence_at BETWEEN '$rangeDate[0]' AND '$endDate'
-                GROUP BY user_id
+                GROUP BY presences.user_id
             ) presences"),
             function($join) {
                 $join->on('users.id', '=', 'presences.user_id');

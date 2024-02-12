@@ -19,13 +19,13 @@
             <form action="/pengajuan-izin/absen/store" method="POST" id="form-izin-absen">
                 @csrf
                 <div class="form-group">
-                    <input type="text" class="form-control datepicker" placeholder="Dari Tanggal" id="start_date" name="start_date" autocomplete="off">
+                    <input type="text" class="form-control datepicker" placeholder="Dari Tanggal" id="start-date" name="start_date" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control datepicker" placeholder="Sampai Tanggal" id="end_date" name="end_date" autocomplete="off">
+                    <input type="text" class="form-control datepicker" placeholder="Sampai Tanggal" id="end-date" name="end_date" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Lama izin (dalam hari)" id="jumlah_hari" name="jumlah_hari" readonly>
+                    <input type="text" class="form-control" placeholder="Lama izin (dalam hari)" id="jumlah-izin" name="jumlah_izin" readonly autocomplete="off">
                 </div>
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="Keterangan" id="keterangan" name="keterangan_izin" autocomplete="off">
@@ -53,8 +53,8 @@
             });
 
             function loadJumlahHari() {
-                const startDate = $('#start_date').val();
-                const endDate = $('#end_date').val();
+                const startDate = $('#start-date').val();
+                const endDate = $('#end-date').val();
                 const date1 = new Date(startDate);
                 const date2 = new Date(endDate);
 
@@ -72,16 +72,16 @@
                     numberOfDays = differenceInDays + 1;
                 }
 
-                $('#jumlah_hari').val(numberOfDays);
+                $('#jumlah-izin').val(numberOfDays);
             }
 
-            $('#start_date, #end_date').change(function(e) {
+            $('#start-date, #end-date').change(function(e) {
                 loadJumlahHari(); 
             });
 
             $('#form-izin-absen').submit(function() {
-                const startDate = $('#start_date').val();
-                const endDate = $('#end_date').val();
+                const startDate = $('#start-date').val();
+                const endDate = $('#end-date').val();
                 const keterangan = $('#keterangan').val();
 
                 if(startDate === '' || endDate === '') {

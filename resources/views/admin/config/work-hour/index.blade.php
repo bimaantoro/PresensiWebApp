@@ -35,11 +35,11 @@
                   <thead>
                     <tr>
                       <th>No</th>
-                      <th>Kode Jam Kerja</th>
+                      <th>ID Jam Kerja</th>
                       <th>Nama Jam Kerja</th>
-                      <th>Awal Jam Masuk</th>
+                      <th>Awal Jam Presensi</th>
                       <th>Jam Masuk</th>
-                      <th>Akhir Jam Masuk</th>
+                      <th>Akhir Jam Presensi</th>
                       <th>Jam Pulang</th>
                       <th class="w-1">Aksi</th>
                     </tr>
@@ -51,9 +51,9 @@
                             <td>{{ $wh->id }}</td>
                             <td>{{ $wh->name }}</td>
                             <td>{{ $wh->start_check_in }}</td>
-                            <td>{{ $wh->check_in }}</td>
+                            <td>{{ $wh->jam_in }}</td>
                             <td>{{ $wh->end_check_in }}</td>
-                            <td>{{ $wh->check_out }}</td>
+                            <td>{{ $wh->jam_out }}</td>
                             <td>
                               <div class="btn-list flex-nowrap">
                                 <a href="#" class="edit btn-primary btn btn-sm" id_jam_kerja="{{ $wh->id }}" >
@@ -98,7 +98,7 @@
               <span class="input-icon-addon">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-barcode" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7v-1a2 2 0 0 1 2 -2h2" /><path d="M4 17v1a2 2 0 0 0 2 2h2" /><path d="M16 4h2a2 2 0 0 1 2 2v1" /><path d="M16 20h2a2 2 0 0 0 2 -2v-1" /><path d="M5 11h1v2h-1z" /><path d="M10 11l0 2" /><path d="M14 11h1v2h-1z" /><path d="M19 11l0 2" /></svg>
               </span>
-              <input type="text" value="" id="id-jk" class="form-control" name="id" placeholder="Kode Jam Kerja">
+              <input type="text" value="" id="id-jk" class="form-control" name="id" placeholder="ID Jam Kerja">
             </div>
           </div>
           <div class="mb-3">
@@ -114,7 +114,7 @@
               <span class="input-icon-addon">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock-hour-7" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 12l-2 3" /><path d="M12 7v5" /></svg>
               </span>
-              <input type="text" value="" id="start-check-in" class="form-control" name="start_check_in" placeholder="Awal Jam Masuk">
+              <input type="text" value="" id="start-check-in" class="form-control" name="start_check_in" placeholder="Awal Jam Presensi">
             </div>
           </div>
           <div class="mb-3">
@@ -122,7 +122,7 @@
               <span class="input-icon-addon">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock-hour-8" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 12l-3 2" /><path d="M12 7v5" /></svg>
               </span>
-              <input type="text" value="" class="form-control" id="check-in" name="check_in" placeholder="Jam Masuk">
+              <input type="text" value="" class="form-control" id="jam-in" name="jam_in" placeholder="Jam Masuk">
             </div>
           </div>
           <div class="mb-3">
@@ -130,7 +130,7 @@
               <span class="input-icon-addon">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock-hour-9" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 12h-3.5" /><path d="M12 7v5" /></svg>
               </span>
-              <input type="text" value="" class="form-control" id="end-check-in" name="end_check_in" placeholder="Akhir Jam Masuk">
+              <input type="text" value="" class="form-control" id="end-check-in" name="end_check_in" placeholder="Akhir Jam Presensi">
             </div>
           </div>
           <div class="mb-3">
@@ -138,7 +138,7 @@
               <span class="input-icon-addon">
                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock-hour-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 12l2 3" /><path d="M12 7v5" /></svg>
               </span>
-              <input type="text" value="" class="form-control" name="check_out" id="check-out" placeholder="Jam Pulang">
+              <input type="text" value="" class="form-control" name="jam_out" id="jam-out" placeholder="Jam Pulang">
             </div>
           </div>
           <div class="mb-3">
@@ -172,6 +172,9 @@
 @push('master-admin-script')
     <script>
       $(function() {
+
+        $("#start-check-in, #jam-in, #end-check-in, #jam-out").mask("00:00");
+
         $("#btn-add-jk").click(function() {
           $("#modal-add-jk").modal("show");
         });
@@ -181,9 +184,9 @@
           const idJamKerja = $("#id-jk").val();
           const namaJamKerja = $("#name-jk").val();
           const startCheckIn = $("#start-check-in").val();
-          const checkIn = $("#check-in").val();
+          const checkIn = $("#jam-in").val();
           const endCheckIn = $("#end-check-in").val();
-          const checkOut = $("#check-out").val();
+          const checkOut = $("#jam-out").val();
 
           if(idJamKerja === "") {
             Swal.fire({
@@ -222,7 +225,7 @@
               text: "Jam Masuk harus diisi",
               confirmButtonText: "OK"
             }).then((result) => {
-              $("#check-in").focus();
+              $("#jam-in").focus();
             });
             return false;
           } else if(endCheckIn === "") {
@@ -241,7 +244,7 @@
               text: "Jam Pulang harus diisi",
               confirmButtonText: "OK"
             }).then((result) => {
-              $("#check-out").focus();
+              $("#jam-out").focus();
             }); 
           }
         });

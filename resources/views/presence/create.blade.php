@@ -8,7 +8,7 @@
     <!-- * App Header -->
 @endsection
 @section('content')
-<div class="section content-master-user">
+<div class="section" style="margin-top: 70px">
     <div class="row">
         <div class="col">
             <input type="text" id="latitude">
@@ -21,15 +21,15 @@
         <p id="jam"></p>
         <p>{{ $workingHour->name }}</p>
         <p>Mulai Presensi: {{ date('H:i', strtotime($workingHour->start_check_in))  }}</p>
-        <p>Jam Masuk: {{ date('H:i', strtotime($workingHour->check_in)) }}</p>
+        <p>Jam Masuk: {{ date('H:i', strtotime($workingHour->jam_in)) }}</p>
         <p>Akhir Presensi: {{ date('H:i', strtotime($workingHour->end_check_in)) }}</p>
-        <p>Jam Pulang: {{ date('H:i', strtotime($workingHour->check_out)) }}</p>
+        <p>Jam Pulang: {{ date('H:i', strtotime($workingHour->jam_out)) }}</p>
     </div>
     <div class="row mt-2">
         <div class="col">
         @if ($checkIsPresence > 0)
             <button id="btn-check-in" class="btn btn-danger btn-block">
-                <ion-icon name="camera-outline"></ion-icon> Preensi Pulang
+                <ion-icon name="camera-outline"></ion-icon> Presensi Pulang
             </button>
         @else
             <button id="btn-check-in" class="btn btn-success btn-block">
@@ -77,7 +77,7 @@ crossorigin=""/>
         return e;
     }
 </script>
-<script language="JavaScript">
+<script>
     Webcam.set({
         width: 320,
         height: 240,
@@ -107,11 +107,11 @@ crossorigin=""/>
         }).addTo(map);
 
         let marker = L.marker([latitude, longitude]).addTo(map);
-        let circle = L.circle([0.5592349, 123.1351417], {
+        let circle = L.circle([1.4778368, 124.8493568], {
             color: 'red',
             fillColor: '#f03',
             fillOpacity: 0.5,
-            radius: 40
+            radius: 500
         }).addTo(map);
     }
 
@@ -132,25 +132,37 @@ crossorigin=""/>
                 latitude: latitude,
                 longitude: longitude,
             },
-            success: (response) => {
-                const status = response.split('|');
-                
-                if(status[0] === 'success') {
+            success: (response) => {                
+                if(response.hasOwnProperty('error')) {
                     Swal.fire({
-                    title: 'Berhasil!',
-                    text: status[1],
-                    icon: 'success',
-                });
-                setTimeout("location.href='/dashboard'", 3000);
+                        title: 'Error!',
+                        text: response.error,
+                        icon: 'error',
+                    });
+                } else if(response.hasOwnProperty('message')) {
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: response.message,
+                        icon: 'success',
+                    });
+                    setTimeout("location.href='/dashboard'", 3000);
                 } else {
                     Swal.fire({
+                        title: 'Error!',
+                        text: 'Invalid response from server',
+                        icon: 'error',
+                    });
+                }
+            },
+            error: (xhr, status, error) => {
+                console.error(error);
+                Swal.fire({
                     title: 'Error!',
-                    text: status[1],
+                    text: 'Something went wrong. Please try again later.',
                     icon: 'error',
                 });
-                }
             }
-        })
+        });
     });
 </script>
 @endpush

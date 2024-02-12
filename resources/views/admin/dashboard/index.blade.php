@@ -1,5 +1,5 @@
 @extends('layouts.master-admin')
-@section('title', 'Dashboard')
+@section('title', 'Rekap Presensi Hari ini')
 @section('content')
 <!-- Page body -->
 <div class="page-body">
@@ -60,7 +60,7 @@
                     </div>
                     <div class="col">
                       <div class="font-weight-medium">
-                        {{ $dataIzin->jmlh_izin != null ? $dataIzin->jmlh_izin : 0 }}
+                        {{ $dataPresence->jmlh_izin != null ? $dataPresence->jmlh_izin : 0 }}
                       </div>
                       <div class="text-muted">
                         Peserta Izin
@@ -81,7 +81,7 @@
                     </div>
                     <div class="col">
                       <div class="font-weight-medium">
-                        {{ $dataIzin->jmlh_sakit != null ? $dataIzin->jmlh_sakit : 0 }}
+                        {{ $dataPresence->jmlh_sakit != null ? $dataPresence->jmlh_sakit : 0 }}
                       </div>
                       <div class="text-muted">
                         Peserta Sakit
@@ -133,6 +133,7 @@
                     <th>ID Peserta</th>
                     <th>Nama</th>
                     <th>Asal Instansi</th>
+                    <th>Jadwal</th>
                     <th>Jam Masuk</th>
                     <th>Jam Pulang</th>
                     <th>Keterangan</th>

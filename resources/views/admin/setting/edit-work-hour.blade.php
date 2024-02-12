@@ -30,7 +30,7 @@
                 <div class="row">
                     <div class="col-6 mb-3">
                         <div class="table-responsive">
-                            <form action="/admin/config/set-work-hour/update" method="POST">
+                            <form action="/admin/setting/work-hour/update" method="POST">
                                 @csrf
                                 <input type="hidden" name="id" value="{{ $student->id }}">
                                 <table class="table table-vcenter table-striped">
@@ -73,9 +73,9 @@
                                   <tr>
                                     <th>Kode Jam Kerja</th>
                                     <th>Nama Jam Kerja</th>
-                                    <th>Awal Jam Masuk</th>
+                                    <th>Awal Jam Presensi</th>
                                     <th>Jam Masuk</th>
-                                    <th>Akhir Jam Masuk</th>
+                                    <th>Akhir Jam Presensi</th>
                                     <th>Jam Pulang</th>
                                   </tr>
                               </thead>
@@ -85,9 +85,9 @@
                                         <td>{{ $wh->id }}</td>
                                         <td>{{ $wh->name }}</td>
                                         <td>{{ $wh->start_check_in }}</td>
-                                        <td>{{ $wh->check_in }}</td>
+                                        <td>{{ $wh->jam_in }}</td>
                                         <td>{{ $wh->end_check_in }}</td>
-                                        <td>{{ $wh->check_out }}</td>
+                                        <td>{{ $wh->jam_out }}</td>
                                     </tr>
                                 @endforeach
                               </tbody>

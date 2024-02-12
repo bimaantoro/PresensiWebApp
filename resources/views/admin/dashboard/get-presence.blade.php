@@ -5,6 +5,7 @@
     <td>{{ $p->user_id }}</td>
     <td>{{ $p->nama_lengkap }}</td>
     <td>{{ $p->instansi }}</td>
+    <td>{{ $p->name }} ({{ $p->jam_in }} S.d {{ $p->jam_out }})</td>
     <td>
         <div class="d-flex py-1 align-items-center">
             <img src="{{ asset('storage/uploads/presence/' . $p->photo_in) }}" alt="" class="me-2" width="180">
@@ -27,7 +28,7 @@
         </div>
     </td>
     <td>
-        @if ($p->check_in > '07.00')
+        @if ($p->check_in > $p->jam_in)
             <span class="badge bg-danger text-light">Terlambat</span>
         @else
             <span class="badge bg-success text-light">Tepat waktu</span>
@@ -48,13 +49,15 @@
     <td>{{ $p->instansi }}</td>
     <td>-</td>
     <td>-</td>
+    <td>-</td>
     <td>
-        @if ($p->status_presence == 'I')
+        @if ($p->presence_status == 'I')
             <span class="badge bg-warning">Izin</span>
-        @elseif($p->status_presence == 'S')
+        @elseif($p->presence_status == 'S')
         <span class="badge bg-info">Sakit</span>      
         @endif
     </td>
+    <td>{{ $p->keterangan_izin }}</td>
 </tr>
 @endif
 @endforeach

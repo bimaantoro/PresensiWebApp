@@ -21,11 +21,11 @@ return new class extends Migration
             $table->string('longitude')->nullable();
             $table->date('presence_at')->nullable();
             $table->char('presence_status', 10)->nullable();
-            $table->char('user_id');
+            $table->char('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->char('pengajuan_izin_id');
+            $table->char('pengajuan_izin_id')->nullable();
             $table->foreign('pengajuan_izin_id')->references('id')->on('pengajuan_izin')->onDelete('cascade');
-            $table->char('working_hour_id');
+            $table->char('working_hour_id')->nullable();
             $table->foreign('working_hour_id')->references('id')->on('working_hours')->onDelete('cascade');
             $table->timestamps();
         });

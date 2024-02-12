@@ -88,7 +88,7 @@
                     <thead>
                         <tr>
                         <th>No</th>
-                        <th>Kode Pengajuan Izin</th>
+                        <th>ID Pengajuan Izin</th>
                         <th>Tanggal</th>
                         <th>ID Peserta</th>
                         <th>Nama</th>
@@ -106,7 +106,7 @@
                         @foreach ($dataIzin as $di)
                             <tr>
                                 <td>{{ $loop->iteration + $dataIzin->firstItem() - 1 }}</td>
-                                <td>{{ $di->kode_izin }}</td>
+                                <td>{{ $di->id }}</td>
                                 <td>{{  date('d-m-Y', strtotime( $di->start_date)) }} s.d {{  date('d-m-Y', strtotime( $di->end_date)) }}</td>
                                 <td>{{ $di->user_id }}</td>
                                 <td>
@@ -127,7 +127,7 @@
                                   </a>
                                   @endif
                                 </td>
-                                <td>{{ $di->keterangan }}</td>
+                                <td>{{ $di->keterangan_izin }}</td>
                                 <td>
                                     @if ($di->status_code == 1)
                                         <span class="badge bg-success text-light">Disetujui</span>
@@ -140,11 +140,11 @@
                                 <td>
                                 <div class="btn-list flex-nowrap">
                                     @if ($di->status_code == 0)
-                                    <a href="#" class="btn-primary btn btn-sm validate" kode_izin="{{ $di->kode_izin }}">
+                                    <a href="#" class="btn-primary btn btn-sm validate" id_izin="{{ $di->id }}">
                                         Validasi
                                     </a>
                                     @else
-                                    <a href="/admin/pengajuan-izin/{{ $di->kode_izin }}/decline" class="btn btn-danger btn-sm">
+                                    <a href="/admin/pengajuan-izin/{{ $di->id }}/decline" class="btn btn-danger btn-sm">
                                         Batalkan
                                     </a>
                                     @endif
@@ -175,7 +175,7 @@
               <form action="/admin/pengajuan-izin/approve" id="form-add-student" method="POST">
                 @method('PUT')
                 @csrf
-                <input type="hidden" id="kode-izin-form" name="kode_izin_form">
+                <input type="hidden" id="id-izin-form" name="id_izin_form">
                 <div class="mb-3">
                     <select class="form-select" name="status_code" id="status-code">
                         <option value="1">Setujui</option>
@@ -183,7 +183,8 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                  <input type="text" class="form-control" name="keterangan_penolakan" id="keterangan-penolakan" placeholder="Tulis catatan tolak pengajuan">
+                  <label for="keterangan-penolakan" class="form-label">Keterangan (Opsional)</label>
+                  <input type="text" class="form-control" name="keterangan_penolakan" id="keterangan-penolakan" placeholder="Diisi jika menolak pengajuan izin">
               </div>
                 <div class="mb-3">
                   <button class="btn btn-primary w-100 ms-auto" type="submit">
@@ -202,8 +203,8 @@
         $(function() {
             $(".validate").click(function(e) {
                 e.preventDefault();
-                const kodeIzin = $(this).attr("kode_izin");
-                $("#kode-izin-form").val(kodeIzin);
+                const idIzin = $(this).attr("id_izin");
+                $("#id-izin-form").val(idIzin);
                 $("#modal-izin-student").modal("show");
             });
 

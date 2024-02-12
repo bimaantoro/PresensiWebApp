@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\PengajuanIzin;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,11 +11,12 @@ class PengajuanIzinPesertaController extends Controller
 {
     //
     public function index(Request $request) {
-
         $query = PengajuanIzin::query();
-        $query->select('kode_izin', 'start_date', 'end_date', 'user_id', 'file_surat_dokter', 'nama_lengkap', 'instansi', 'status', 'keterangan_izin', 'status_code');
+        $query->select('pengajuan_izin.id', 'start_date', 'end_date', 'pengajuan_izin.user_id', 'file_surat_dokter', 'nama_lengkap', 'instansi', 'status', 'keterangan_izin', 'status_code');
         $query->join('users', 'pengajuan_izin.user_id', '=', 'users.id');
         $query->orderBy('start_date', 'desc');
+
+        
 
 
         if(!empty($request->start_date) && !empty($request->end_date)) {
@@ -43,11 +43,11 @@ class PengajuanIzinPesertaController extends Controller
 
     public function update(Request $request) {
         $statusCode = $request->status_code;
-        $kodeIzin = $request->kode_izin_form;
+        $idIzin = $request->id_izin_form;
         $tolakPengajuan = $request->keterangan_penolakan;
 
         $dataIzin = DB::table('pengajuan_izin')
-        ->where('kode_izin', $kodeIzin)
+        ->where('id', $idIzin)
         ->first();
 
         $idStudent = $dataIzin->user_id;
@@ -64,14 +64,14 @@ class PengajuanIzinPesertaController extends Controller
                         'user_id' => $idStudent,
                         'presence_at' => $startDate,
                         'presence_status' => $status,
-                        'kode_izin' => $kodeIzin,
+                        'pengajuan_izin_id' => $idIzin,
                     ]);
                     $startDate = date('Y-m-d', strtotime('+1 days', strtotime($startDate)));
                 }
             }
 
             DB::table('pengajuan_izin')
-            ->where('kode_izin', $kodeIzin)
+            ->where('id', $idIzin)
             ->update([
                 'status_code' => $statusCode,
                 'keterangan_penolakan' => $tolakPengajuan,
@@ -79,32 +79,32 @@ class PengajuanIzinPesertaController extends Controller
 
             DB::commit();
 
-            return redirect()->back()->with('success', 'Data berhasil diperbarui');
+            return redirect()->back()->with(['success' => 'Data berhasil diproses']);
         }catch(\Exception $e) {
-            dd($e);
-            return redirect()->back()->with('error', 'Data gagal diperbarui');
+            DB::rollBack();
+            return redirect()->back()->with(['error' => 'Data gagal diproses']);
         }
     }
 
-    public function decline($kodeIzin) {
+    public function decline($id) {
         try {
             DB::table('pengajuan_izin')
-            ->where('kode_izin', $kodeIzin)
+            ->where('id', $id)
             ->update([
                 'status_code' => 0
             ]);
 
             DB::table('presences')
-            ->where('kode_izin', $kodeIzin)
+            ->where('pengajuan_izin_id', $id)
             ->delete();
 
             DB::commit();
 
-            return redirect()->back()->with('success', 'Data berhasil dibatalkan');
+            return redirect()->back()->with(['success' => 'Data berhasil dibatalkan']);
 
         }catch(\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Data gagal diperbarui');
+            return redirect()->back()->with(['error' => 'Data gagal diperbarui']);
         }
     }
 }

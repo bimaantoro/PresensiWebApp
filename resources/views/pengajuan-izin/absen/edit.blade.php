@@ -16,20 +16,20 @@
 <div class="section content-master-user">
     <div class="row">
         <div class="col">
-            <form action="/pengajuan-izin/absen/{{ $dataIzin->kode_izin }}/update" method="POST" id="form-izin-absen">
+            <form action="/pengajuan-izin/absen/{{ $dataIzin->id }}/update" method="POST" id="form-izin-absen">
                 @method('PUT')
                 @csrf
                 <div class="form-group">
-                    <input type="text" class="form-control datepicker" placeholder="Dari Tanggal" value="{{ $dataIzin->start_date }}" id="start_date" name="start_date" autocomplete="off">
+                    <input type="text" class="form-control datepicker" placeholder="Dari Tanggal" value="{{ $dataIzin->start_date }}" id="start-date" name="start_date" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control datepicker" placeholder="Sampai Tanggal" value="{{ $dataIzin->end_date }}" id="end_date" name="end_date" autocomplete="off">
+                    <input type="text" class="form-control datepicker" placeholder="Sampai Tanggal" value="{{ $dataIzin->end_date }}" id="end-date" name="end_date" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Lama izin (dalam hari)" id="number_of_days" name="number_of_days" readonly>
+                    <input type="text" class="form-control" placeholder="Lama izin (dalam hari)" id="jumlah-izin" name="jumlah_izin" readonly>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" value="{{ $dataIzin->keterangan }}" placeholder="Keterangan" id="keterangan" name="keterangan" autocomplete="off">
+                    <input type="text" class="form-control" value="{{ $dataIzin->keterangan_izin }}" placeholder="Keterangan" id="keterangan" name="keterangan_izin" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <button class="btn btn-success w-100">
@@ -54,8 +54,8 @@
             });
 
             function loadJumlahHari() {
-                const startDate = $('#start_date').val();
-                const endDate = $('#end_date').val();
+                const startDate = $('#start-date').val();
+                const endDate = $('#end-date').val();
                 const date1 = new Date(startDate);
                 const date2 = new Date(endDate);
 
@@ -73,41 +73,18 @@
                     numberOfDays = differenceInDays + 1;
                 }
 
-                $('#number_of_days').val(numberOfDays + " Hari");
+                $('#jumlah-izin').val(numberOfDays);
             }
 
             loadJumlahHari(); 
 
-            $('#start_date, #end_date').change(function(e) {
+            $('#start-date, #end-date').change(function(e) {
                 loadJumlahHari(); 
             });
 
-            $('#izinAt').change(function(e) {
-                const izinAt = $(this).val();
-                $.ajax({
-                    type: 'POST',
-                    url: '/pengajuan-izin/check',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        izinAt: izinAt
-                    },
-                    success: (response) => {
-                        if(response == 1) {
-                            Swal.fire({
-                                title: 'Oops!',
-                                text: 'Anda sudah melakukan pengajuan izin pada tanggal tersebut',
-                                icon: 'warning',
-                            }).then((result) => {
-                                $('#izinAt').val('');
-                            });
-                        }
-                    }
-                });
-            });
-
             $('#form-izin-absen').submit(function() {
-                const startDate = $('#start_date').val();
-                const endDate = $('#end_date').val();
+                const startDate = $('#start-date').val();
+                const endDate = $('#end-date').val();
                 const keterangan = $('#keterangan').val();
 
                 if(startDate === '' || endDate === '') {

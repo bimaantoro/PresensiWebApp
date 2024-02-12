@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ConfigWorkingHourController;
 use App\Http\Controllers\Admin\DashboardAdminController;
 use App\Http\Controllers\Admin\PengajuanIzinPesertaController;
+use App\Http\Controllers\Admin\SetWorkingHourStudentController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RedirectAuthenticatedUsersController;
@@ -63,14 +64,14 @@ Route::middleware(['auth'])->group(function() {
             Route::get('/admin/students', 'index')->name('student-admin');
             Route::post('/admin/student/store', 'store')->name('student.store');
             Route::post('/admin/student/edit', 'edit')->name('student.edit');
-            Route::put('/admin/student/{id_student}/update', 'update');
-            Route::delete('/admin/student/{id_student}/delete', 'destroy');
+            Route::put('/admin/student/{id}/update', 'update');
+            Route::delete('/admin/student/{id}/delete', 'destroy');
         });
 
         Route::controller(PengajuanIzinPesertaController::class)->group(function() {
             Route::get('/admin/pengajuan-izin', 'index')->name('pengajuan-izin-admin');
             Route::put('/admin/pengajuan-izin/approve', 'update');
-            Route::get('/admin/pengajuan-izin/{kode_izin}/decline', 'decline');
+            Route::get('/admin/pengajuan-izin/{id}/decline', 'decline');
         });
 
         Route::controller(ConfigWorkingHourController::class)->group(function() {
@@ -79,10 +80,12 @@ Route::middleware(['auth'])->group(function() {
             Route::post('/admin/config/work-hour/edit', 'edit');
             Route::put('/admin/config/work-hour/{id}/update', 'update');
             Route::delete('/admin/config/work-hour/{id}/delete', 'destroy');
-            
-            Route::get('admin/config/{id}/set-work-hour', 'setWorkHourStudent');
-            Route::post('admin/config/set-work-hour/store', 'storeWorkHourStudent');
-            Route::post('admin/config/set-work-hour/update', 'updateWorkHourStudent');
+        });
+
+        Route::controller(SetWorkingHourStudentController::class)->group(function() {
+            Route::get('admin/setting/{id}/work-hour', 'setWorkHourStudent');
+            Route::post('admin/setting/work-hour/store', 'storeWorkHourStudent');
+            Route::post('admin/setting/work-hour/update', 'updateWorkHourStudent');
         });
     });
 
@@ -111,8 +114,8 @@ Route::middleware(['auth'])->group(function() {
 
         Route::controller(PengajuanIzinController::class)->group(function() {
             Route::get('/pengajuan-izin', 'index')->name('pengajuan-izin');
-            Route::get('/pengajuan-izin/{kode_izin}/showact', 'showAct');
-            Route::get('/pengajuan-izin/{kode_izin}/delete', 'destroy');
+            Route::get('/pengajuan-izin/{id}/showact', 'showAct');
+            Route::get('/pengajuan-izin/{id}/delete', 'destroy');
             // Route::post('/pengajuan-izin/check', 'check');
         });
 
@@ -121,8 +124,8 @@ Route::middleware(['auth'])->group(function() {
             Route::post('/pengajuan-izin/absen/store', 'store');
             Route::post('/pengajuan-izin/absen/check', 'check');
 
-            Route::get('/pengajuan-izin/absen/{kode_izin}/edit', 'edit');
-            Route::put('/pengajuan-izin/absen/{kode_izin}/update', 'update');
+            Route::get('/pengajuan-izin/absen/{id}/edit', 'edit');
+            Route::put('/pengajuan-izin/absen/{id}/update', 'update');
         });
 
         Route::controller(PengajuanIzinSakitController::class)->group(function() {
@@ -130,8 +133,8 @@ Route::middleware(['auth'])->group(function() {
             Route::post('/pengajuan-izin/sakit/store', 'store');
             Route::post('/pengajuan-izin/sakit/check', 'check');
 
-            Route::get('/pengajuan-izin/sakit/{kode_izin}/edit', 'edit');
-            Route::put('/pengajuan-izin/sakit/{kode_izin}/update', 'update');
+            Route::get('/pengajuan-izin/sakit/{id}/edit', 'edit');
+            Route::put('/pengajuan-izin/sakit/{id}/update', 'update');
         });
     });
 });

@@ -4,6 +4,7 @@
     margin: auto;
     height: auto !important;
     border-radius: 15px; 
+    overflow: hidden;
 }
 
 #map {
@@ -80,12 +81,12 @@
     gap: 1px;
  }
 
- .data-presence {
-    margin-left: 10px;
- }
-
  .history-content {
     display: flex;
+ }
+
+ .data-presence {
+    margin-left: 10px;
  }
 
  .status {

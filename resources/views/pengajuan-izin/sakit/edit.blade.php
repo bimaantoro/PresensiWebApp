@@ -16,17 +16,17 @@
 <div class="section content-master-user">
     <div class="row">
         <div class="col">
-            <form action="/pengajuan-izin/sakit/{{ $dataIzin->kode_izin }}/update" method="POST" id="form-izin-sakit" enctype="multipart/form-data">
+            <form action="/pengajuan-izin/sakit/{{ $dataIzin->id }}/update" method="POST" id="form-izin-sakit" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
                 <div class="form-group">
-                    <input type="text" class="form-control datepicker" placeholder="Dari Tanggal" id="start_date" value="{{ $dataIzin->start_date }}" name="start_date" autocomplete="off">
+                    <input type="text" class="form-control datepicker" placeholder="Dari Tanggal" id="start-date" value="{{ $dataIzin->start_date }}" name="start_date" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control datepicker" placeholder="Sampai Tanggal" value="{{ $dataIzin->end_date }}" id="end_date" name="end_date" autocomplete="off">
+                    <input type="text" class="form-control datepicker" placeholder="Sampai Tanggal" value="{{ $dataIzin->end_date }}" id="end-date" name="end_date" autocomplete="off">
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Lama izin (dalam hari)" id="number_of_days" name="number_of_days" readonly>
+                    <input type="text" class="form-control" placeholder="Lama izin (dalam hari)" id="number-of-days" name="number_of_days" readonly>
                 </div>
                 @if ($dataIzin->file_surat_dokter != null)
                     <div class="row">
@@ -50,7 +50,7 @@
                     </label>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Keterangan" id="keterangan" name="keterangan" value="{{ $dataIzin->keterangan }}" autocomplete="off">
+                    <input type="text" class="form-control" placeholder="Keterangan" id="keterangan" name="keterangan_izin" value="{{ $dataIzin->keterangan_izin }}" autocomplete="off">
                 </div>
                 <div class="form-group">
                     <button class="btn btn-success w-100">
@@ -75,8 +75,8 @@
             });
 
             function loadJumlahHari() {
-                const startDate = $('#start_date').val();
-                const endDate = $('#end_date').val();
+                const startDate = $('#start-date').val();
+                const endDate = $('#end-date').val();
                 const date1 = new Date(startDate);
                 const date2 = new Date(endDate);
 
@@ -94,16 +94,38 @@
                     numberOfDays = differenceInDays + 1;
                 }
 
-                $('#number_of_days').val(numberOfDays + " Hari");
+                $('#number-of-days').val(numberOfDays + " Hari");
             }
 
             loadJumlahHari(); 
 
-            $('#start_date, #end_date').change(function(e) {
+            $('#start-date, #end-date').change(function(e) {
                 loadJumlahHari(); 
             });
 
-            $('#izinAt').change(function(e) {
+            $('#form-izin-sakit').submit(function() {
+                const startDate = $('#start-date').val();
+                const endDate = $('#end-date').val();
+                const keterangan = $('#keterangan').val();
+
+                if(startDate === '' || endDate === '') {
+                    Swal.fire({
+                        title: 'Oops!',
+                        text: 'Tanggal harus diisi',
+                        icon: 'warning',
+                    });
+                    return false;
+                } else if(keterangan === '') {
+                    Swal.fire({
+                        title: 'Oops!',
+                        text: 'Keterangan harus diisi',
+                        icon: 'warning',
+                    });
+                    return false;
+                }
+            });
+
+            /* $('#izinAt').change(function(e) {
                 const izinAt = $(this).val();
                 $.ajax({
                     type: 'POST',
@@ -124,29 +146,7 @@
                         }
                     }
                 });
-            });
-
-            $('#form-izin-sakit').submit(function() {
-                const startDate = $('#start_date').val();
-                const endDate = $('#end_date').val();
-                const keterangan = $('#keterangan').val();
-
-                if(startDate === '' || endDate === '') {
-                    Swal.fire({
-                        title: 'Oops!',
-                        text: 'Tanggal harus diisi',
-                        icon: 'warning',
-                    });
-                    return false;
-                } else if(keterangan === '') {
-                    Swal.fire({
-                        title: 'Oops!',
-                        text: 'Keterangan harus diisi',
-                        icon: 'warning',
-                    });
-                    return false;
-                }
-            });
+            }); */
         });
 </script>
 @endpush
