@@ -8,7 +8,7 @@
     </a>
     <a href="{{ route('pengajuan-izin') }}" class="item {{ request()->is('pengajuan-izin') ? 'active' : '' }}">
         <div class="col">
-            <ion-icon name="calendar-number-outline"></ion-icon>
+            <ion-icon name="calendar-outline"></ion-icon>
             <strong>Izin</strong>
         </div>
     </a>

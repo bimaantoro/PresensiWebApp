@@ -17,17 +17,17 @@
         @endif
         @if (session()->has('error'))
             <div class="alert alert-danger">
-                {{ session('danger') }}
+                {{ session('error') }}
             </div>
         @endif
     </div>
-    <form action="/profile/{{ $employee->id_employee }}" method="POST" enctype="multipart/form-data">
-        @method('put')
+    <form action="/profile/{{ $student->id }}" method="POST" enctype="multipart/form-data">
+        @method('PUT')
         @csrf
         <div class="col">
             <div class="form-group boxed">
                 <div class="input-wrapper">
-                    <input type="text" class="form-control" value="{{ old('fullname', $employee->fullname) }}" name="fullname" placeholder="Nama lengkap" autocomplete="off">
+                    <input type="text" class="form-control" value="{{ old('nama_lengkap', $student->nama_lengkap) }}" name="nama_lengkap" placeholder="Nama lengkap" autocomplete="off">
                 </div>
             </div>
             <div class="form-group boxed">
@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="custom-file-upload" id="fileUpload1">
-                <input type="file" name="photo" id="fileuploadInput" accept=".png, .jpg, .jpeg">
+                <input type="file" name="avatar" id="fileuploadInput" accept=".png, .jpg, .jpeg">
                 <label for="fileuploadInput">
                     <span>
                         <strong>
@@ -48,9 +48,9 @@
             </div>
             <div class="form-group boxed">
                 <div class="input-wrapper">
-                    <button type="submit" class="btn btn-success btn-block">
+                    <button type="submit" class="btn btn-danger btn-block">
                         <ion-icon name="refresh-outline"></ion-icon>
-                        Update
+                        Update Profil
                     </button>
                 </div>
             </div>

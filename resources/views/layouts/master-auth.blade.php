@@ -1,35 +1,61 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#000000">
-    <title>Login</title>
-    <meta name="description" content="">
-    <meta name="keywords" content="" />
-    <link rel="icon" type="image/png"  href="{{ asset('assets/img/favicon.ico') }}" sizes="32x32">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('assets/img/icon/192x192.png') }}">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="manifest" href="__manifest.json">
-</head>
+<html
+  lang="en"
+  class="light-style layout-wide customizer-hide"
+  dir="ltr"
+  data-theme="theme-default"
+  data-template="vertical-menu-template-free">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-<body class="bg-white">
+    <title>Login | E-Presensi PKL / Magang PT. Telkom Witel Gorontalo</title>
 
-    @include('partials.user.loader')
+    <meta name="description" content="" />
 
-    <!-- App Capsule -->
-    <div id="appCapsule" class="pt-0">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/icon/favicon.ico') }}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet" />
+
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/boxicons.css') }}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
+    {{-- <link rel="stylesheet" href="{{ asset('assets/css/auth/demo.css') }}" /> --}}
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+
+    <!-- Page CSS -->
+    <!-- Page -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/page-auth.css') }}" />
+
+    <!-- Helpers -->
+    <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="{{ asset('assets/vendor/js/config.js') }}"></script>
+  </head>
+
+  <body>
+    <!-- Content -->
+
+    <div class="container-xxl">
         @yield('content')
     </div>
-    <!-- * App Capsule -->
 
+    <!-- / Content -->
 
-    @include('partials.script.master-user')
-
-</body>
-
+    @include('partials.script.master-auth')
+  </body>
 </html>

@@ -12,53 +12,56 @@ class ProfileController extends Controller
 {
     //
     public function edit() {
-        $idEmployee = Auth::guard('employee')->user()->id_employee;
+        $idStudent = Auth::user()->id;
 
-        $employee = DB::table('employees')
-        ->where('id_employee', $idEmployee)
+        $student = DB::table('users')
+        ->where('id', $idStudent)
         ->first();
 
-        return view('profile.edit', compact('employee'));
+        return view('profile.edit', compact('student'));
     }
 
     public function update(Request $request) {
-        $idEmployee = Auth::guard('employee')->user()->id_employee;
-        $fullname = $request->fullname;
+        $idStudent = Auth::user()->id;
+        $namaLengkap = $request->nama_lengkap;
         $password = Hash::make($request->password);
 
-        $employee = DB::table('employees')
-        ->where('id_employee', $idEmployee)
+        $student = DB::table('users')
+        ->where('id', $idStudent)
         ->first();
 
-        if($request->hasFile('photo')) {
-            $photo = $idEmployee . "." . $request->file('photo')->getClientOriginalExtension();
+        $request->validate([
+            'avatar' => 'image|mimes:png, jpg|max:500'
+        ]);
+
+        if($request->hasFile('avatar')) {
+            $avatar = $idStudent . "." . $request->file('avatar')->getClientOriginalExtension();
         } else {
-            $photo = $employee->photo;
+            $avatar = $student->avatar;
         }
         
         if(empty($request->password)) {
             $data = [
-                'fullname' => $fullname,
-                'photo'=> $photo
+                'nama_lengkap' => $namaLengkap,
+                'avatar'=> $avatar
             ];
         } else {
             $data = [
-                'fullname' => $fullname,
+                'nama_lengkap' => $namaLengkap,
                 'password' => $password,
-                'photo' => $photo
+                'avatar' => $avatar
             ];
         }
 
-        $update = DB::table('employees')
-        ->where('id_employee', $idEmployee)
+        $update = DB::table('users')
+        ->where('id', $idStudent)
         ->update($data);
 
         if($update) {
-            if($request->hasFile('photo')) {
-                $folderPath = 'public/uploads/employee/';
-                $request->file('photo')->storeAs($folderPath, $photo);
+            if($request->hasFile('avatar')) {
+                $folderPath = 'public/uploads/student/';
+                $request->file('avatar')->storeAs($folderPath, $avatar);
             }
-
             return redirect()->back()->with('success', 'Data berhasil di perbarui');
         } else {
             return redirect()->back()->with('error', 'Data gagal di perbarui');

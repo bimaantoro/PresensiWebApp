@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Employee;
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -29,22 +27,33 @@ class UserSeeder extends Seeder
 
         // $user->assignRole('user');
 
-        $admin = Employee::create([
-            'id_employee' => '122',
+        $manager = User::create([
+            'id' => '111',
+            'username' => 'manager',
+            'nama_lengkap' => 'General Manager Telkom',
+            'instansi' => 'Telkom Witel Gorontalo',
+            'password' => bcrypt('12345678'),
+            'role' => 'manager'
+        ]);
+
+        $admin = User::create([
+            'id' => '222',
             'username' => 'admin',
-            'fullname' => 'Admin KOPINETGO',
+            'nama_lengkap' => 'Admin Telkom',
+            'instansi' => 'Telkom Witel Gorontalo',
             'password' => bcrypt('12345678'),
             'role' => 'admin'
         ]);
 
-        $user = Employee::create([
-            'id_employee' => '123',
-            'username' => 'loremipsum',
-            'fullname' => 'mas lorem ipsum',
-            'position' => 'Software Engineering',
-            'gender' => 'l',
+        $user = User::create([
+            'id' => '531420054',
+            'username' => 'bimantoro',
+            'nama_lengkap' => 'Muhammad Amirul Bimantoro',
+            'instansi' => 'Universitas Negeri Gorontalo',
+            'start_internship' => 'Januari',
+            'end_internship' => 'Maret',
             'password' => bcrypt('12345678'),
-            'role' => 'user'
+            'role' => 'student'
         ]);
     }
 }

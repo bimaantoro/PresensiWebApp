@@ -8,23 +8,32 @@
     <!-- * App Header -->
 @endsection
 @section('content')
-<div class="section content-master-user">
+<div class="section" style="margin-top: 70px">
     <div class="row">
         <div class="col">
-            <input type="hidden" id="latitude">
-            <input type="hidden" id="longitude">
-            <div id="my_camera"></div>
+            <input type="text" id="latitude">
+            <input type="text" id="longitude">
+            <div class="my_camera"></div>
         </div>
+    </div>
+    <div class="jam-digital-malasngoding">
+        <p>{{ date('d-m-Y') }}</p>
+        <p id="jam"></p>
+        <p>{{ $workingHour->name }}</p>
+        <p>Mulai Presensi: {{ date('H:i', strtotime($workingHour->start_check_in))  }}</p>
+        <p>Jam Masuk: {{ date('H:i', strtotime($workingHour->jam_in)) }}</p>
+        <p>Akhir Presensi: {{ date('H:i', strtotime($workingHour->end_check_in)) }}</p>
+        <p>Jam Pulang: {{ date('H:i', strtotime($workingHour->jam_out)) }}</p>
     </div>
     <div class="row mt-2">
         <div class="col">
-            @if ($checkIsPresence > 0)
+        @if ($checkIsPresence > 0)
             <button id="btn-check-in" class="btn btn-danger btn-block">
-                <ion-icon name="camera-outline"></ion-icon> Absen Pulang
+                <ion-icon name="camera-outline"></ion-icon> Presensi Pulang
             </button>
         @else
             <button id="btn-check-in" class="btn btn-success btn-block">
-                <ion-icon name="camera-outline"></ion-icon> Absen Masuk
+                <ion-icon name="camera-outline"></ion-icon> Presensi Masuk
             </button>
         @endif
         </div>
@@ -36,7 +45,7 @@
     </div>
 </div>
 @endsection
-@push('map-style')
+@push('master-user-css')
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
 crossorigin=""/>
@@ -44,8 +53,31 @@ crossorigin=""/>
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
 @endpush
-@push('webcam-script')
-<script language="JavaScript">
+@push('master-user-script')
+<script type="text/javascript">
+    window.onload = function() {
+        jam();
+    }
+
+    function jam() {
+        let e = document.getElementById('jam')
+        , d = new Date()
+        , h, m, s;
+        h = d.getHours();
+        m = set(d.getMinutes());
+        s = set(d.getSeconds());
+
+        e.innerHTML = h + ':' + m + ':' + s;
+
+        setTimeout('jam()', 1000);
+    }
+
+    function set(e) {
+        e = e < 10 ? '0' + e : e;
+        return e;
+    }
+</script>
+<script>
     Webcam.set({
         width: 320,
         height: 240,
@@ -53,28 +85,34 @@ crossorigin=""/>
         jpeg_quality: 90,
     });
     
-    Webcam.attach('#my_camera');
+    Webcam.attach('.my_camera');
 
-    const getLatitude = document.getElementById('latitude');
-    const getLongitude = document.getElementById('longitude');
+    let getLatitude = document.getElementById('latitude');
+    let getLongitude = document.getElementById('longitude');
 
     if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showLocation, showError)
     }
 
     function showLocation(position) {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
         getLatitude.value = latitude;
         getLongitude.value = longitude;
-        const map = L.map('map').setView([latitude, longitude], 13);
-        
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        let map = L.map('map').setView([latitude, longitude], 18);
+
+        L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
+        maxZoom: 20,
+        subdomains:['mt0','mt1','mt2','mt3']
         }).addTo(map);
 
-        const marker = L.marker([latitude, longitude]).addTo(map)
+        let marker = L.marker([latitude, longitude]).addTo(map);
+        let circle = L.circle([1.4778368, 124.8493568], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 500
+        }).addTo(map);
     }
 
     function showError() {}
@@ -94,25 +132,37 @@ crossorigin=""/>
                 latitude: latitude,
                 longitude: longitude,
             },
-            success: (response) => {
-                const status = response.split('|');
-                
-                if(status[0] === 'success') {
+            success: (response) => {                
+                if(response.hasOwnProperty('error')) {
                     Swal.fire({
-                    title: 'Berhasil!',
-                    text: status[1],
-                    icon: 'success',
-                });
-                setTimeout("location.href='/dashboard'", 3000);
+                        title: 'Error!',
+                        text: response.error,
+                        icon: 'error',
+                    });
+                } else if(response.hasOwnProperty('message')) {
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: response.message,
+                        icon: 'success',
+                    });
+                    setTimeout("location.href='/dashboard'", 3000);
                 } else {
                     Swal.fire({
+                        title: 'Error!',
+                        text: 'Invalid response from server',
+                        icon: 'error',
+                    });
+                }
+            },
+            error: (xhr, status, error) => {
+                console.error(error);
+                Swal.fire({
                     title: 'Error!',
-                    text: status[1],
+                    text: 'Something went wrong. Please try again later.',
                     icon: 'error',
                 });
-                }
             }
-        })
+        });
     });
 </script>
 @endpush

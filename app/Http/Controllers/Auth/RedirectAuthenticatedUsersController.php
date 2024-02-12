@@ -9,10 +9,12 @@ class RedirectAuthenticatedUsersController extends Controller
 {
     //
     public function home() {
-        if(Auth::guard('employee')->user()->role == 'admin') {
-            return redirect()->route('dashboard-admin');
-        } else if(Auth::guard('employee')->user()->role == 'user') {
-            return redirect()->route('dashboard');
+        if(Auth::user()->role == 'manager') {
+            return redirect('manager/dashboard');
+        } else if(Auth::user()->role == 'admin') {
+            return redirect('admin/dashboard');
+        } else if(Auth::user()->role == 'student') {
+            return redirect('dashboard');
         } else {
             return auth()->logout();
         }

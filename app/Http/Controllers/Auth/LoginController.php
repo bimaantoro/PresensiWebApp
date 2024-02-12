@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,27 +14,22 @@ class LoginController extends Controller
         return view('auth.login');
     }
 
-    public function authenticate(LoginRequest $request) {
-        $request->authenticate();
+    public function authenticate(Request $request) { 
+        $credentials = $request->validate([
+            'username' => ['required', 'string'],
+            'password' => ['required', 'string'],
+        ]);
 
-        $request->session()->regenerate();
-        return redirect()->intended(RouteServiceProvider::HOME);
-        // $credentials = $request->validate([
-        //     'username' => 'required',
-        //     'password' => 'required',
-        // ]);
-
-        // if(Auth::guard('employee')->attempt($credentials)) {
-        //     $request->session()->regenerate();
-
-        //     return redirect()->intended('dashboard');
-        // }
-
-        // return back()->with('loginError', 'Username / Kata sandi salah. Silakan cek kembali');
+        if(Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->intended(RouteServiceProvider::HOME);
+        } else {
+            return redirect('/')->with(['error' => 'Maaf, Username / Password Anda salah.']);
+        }
     }
 
     public function logout(Request $request) {
-        Auth::guard('employee')->logout();
+        Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

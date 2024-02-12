@@ -24,7 +24,7 @@
             </li>
             <li class="list-inline-item">
               <a href="./changelog.html" class="link-secondary" rel="noopener">
-                v1.0.0-beta20
+                v1.0.0-beta19
               </a>
             </li>
           </ul>

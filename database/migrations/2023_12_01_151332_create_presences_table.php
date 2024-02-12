@@ -13,15 +13,20 @@ return new class extends Migration
     {
         Schema::create('presences', function (Blueprint $table) {
             $table->id();
-            $table->time('check_in');
+            $table->time('check_in')->nullable();
             $table->time('check_out')->nullable();
-            $table->string('photo_in');
+            $table->string('photo_in')->nullable();
             $table->string('photo_out')->nullable();
-            $table->string('latitude');
-            $table->string('longitude');
-            $table->date('presence_at');
-            $table->string('employee_id');
-            $table->foreign('employee_id')->references('id_employee')->on('employees')->onDelete('cascade');
+            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
+            $table->date('presence_at')->nullable();
+            $table->char('presence_status', 10)->nullable();
+            $table->char('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->char('pengajuan_izin_id')->nullable();
+            $table->foreign('pengajuan_izin_id')->references('id')->on('pengajuan_izin')->onDelete('cascade');
+            $table->char('working_hour_id')->nullable();
+            $table->foreign('working_hour_id')->references('id')->on('working_hours')->onDelete('cascade');
             $table->timestamps();
         });
     }

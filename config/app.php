@@ -70,9 +70,10 @@ return [
     |
     */
 
+    // set sesuai zona waktu
     'timezone' => env('APP_TIMEZONE', 'UTC'),
 
-    /*
+    /*.
     |--------------------------------------------------------------------------
     | Application Locale Configuration
     |--------------------------------------------------------------------------
@@ -168,6 +169,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Spatie\Permission\PermissionServiceProvider::class,
     ])->toArray(),
 
     /*

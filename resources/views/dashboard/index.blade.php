@@ -1,20 +1,20 @@
 @extends('layouts.master-user')
 @section('content')
 <div class="section" id="user-section">
-    {{-- <a href="{{ route('logout') }}" >
+    <a href="{{ route('logout') }}" class="logout">
         <ion-icon name="log-out-outline"></ion-icon>
-    </a> --}}
+    </a>
     <div id="user-detail">
         <div class="avatar">
-            @if (!empty(Auth::guard('employee')->user()->photo))
-                <img src="{{ asset('storage/uploads/employee/' . Auth::guard('employee')->user()->photo) }}" alt="avatar" class="imaged w64" style="height: 60px">
+            @if (!empty(Auth::user()->avatar))
+                <img src="{{ asset('storage/uploads/student/' . Auth::user()->avatar) }}" alt="avatar" class="imaged w64" style="height: 60px">
             @else
-                <img src="assets/img/sample/avatar/avatar1.jpg" alt="avatar" class="imaged w64 rounded">
+                <img src="{{ asset('assets/img/avatar-default.jpg') }}" alt="avatar" class="imaged w64 rounded">
             @endif
         </div>
         <div id="user-info">
-            <h2 id="user-name">{{ Auth::guard('employee')->user()->fullname }}</h2>
-            <span id="user-role">{{ Auth::guard('employee')->user()->position }}</span>
+            <h3 id="user-name">{{ Auth::user()->nama_lengkap }}</h3>
+            <span id="user-role">{{ Auth::user()->instansi }}</span>
         </div>
     </div>
 </div>
@@ -36,7 +36,7 @@
                 <div class="item-menu text-center">
                     <div class="menu-icon">
                         <a href="{{ route('pengajuan-izin') }}" class="primary" style="font-size: 40px;">
-                            <ion-icon name="calendar-number-outline"></ion-icon>
+                            <ion-icon name="calendar-outline"></ion-icon>
                         </a>
                     </div>
                     <div class="menu-name">
@@ -53,16 +53,6 @@
                         <span class="text-center">Riwayat</span>
                     </div>
                 </div>
-                <div class="item-menu text-center">
-                    <div class="menu-icon">
-                        <a href="" class="orange" style="font-size: 40px;">
-                            <ion-icon name="location"></ion-icon>
-                        </a>
-                    </div>
-                    <div class="menu-name">
-                        Lokasi
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -76,14 +66,18 @@
                         <div class="presencecontent">
                             <div class="iconpresence">
                                 @if ($todayPresence != null)
-                                    <img src="{{ asset('storage/uploads/presence/' . $todayPresence->photo_in) }}" alt="" class="imaged w48">
+                                    @if ($todayPresence->photo_in != null)
+                                        <img src="{{ asset('storage/uploads/presence/' . $todayPresence->photo_in) }}" alt="" class="imaged w48">
+                                    @else
+                                    <ion-icon name="camera"></ion-icon>
+                                    @endif
                                 @else
                                     <ion-icon name="camera"></ion-icon>
                                 @endif
                             </div>
                             <div class="presencedetail">
                                 <h4 class="presencetitle">Masuk</h4>
-                                <span>{{ $todayPresence != null ? $todayPresence->check_in : 'Belum Absen' }}</span>
+                                <span>{{ $todayPresence != null ? $todayPresence->check_in : 'Belum Presensi' }}</span>
                             </div>
                         </div>
                     </div>
@@ -95,14 +89,18 @@
                         <div class="presencecontent">
                             <div class="iconpresence">
                                 @if ($todayPresence != null && $todayPresence->check_out != null)
-                                    <img src="{{ asset('storage/uploads/presence/' . $todayPresence->photo_out) }}" alt="" class="imaged w48">
+                                    @if ($todayPresence->photo_out != null)
+                                        <img src="{{ asset('storage/uploads/presence/' . $todayPresence->photo_out) }}" alt="" class="imaged w48">
+                                    @else
+                                        <ion-icon name="camera"></ion-icon>
+                                    @endif
                                 @else
                                     <ion-icon name="camera"></ion-icon>
                                 @endif
                             </div>
                             <div class="presencedetail">
                                 <h4 class="presencetitle">Pulang</h4>
-                                <span>{{ $todayPresence != null && $todayPresence->check_out != null ? $todayPresence->check_out : 'Belum absen' }}</span>
+                                <span>{{ $todayPresence != null && $todayPresence->check_out != null ? $todayPresence->check_out : 'Belum Presensi' }}</span>
                             </div>
                         </div>
                     </div>
@@ -111,8 +109,9 @@
         </div>
     </div>
 
+    {{-- Rekap Presensi --}}
     <div id="rekap-presence">
-        <h3>Rekap Presensi {{ $months[$thisMonth] }} {{ $thisYear }}</h3>
+        <h3>Rekap Presensi {{ $months[$currentMonth] }} {{ $currentYear }}</h3>
         <div class="row">
             <div class="col-3">
                 <div class="card">
@@ -137,8 +136,8 @@
             <div class="col-3">
                 <div class="card">
                     <div class="card-body text-center card-rekap-presence">
-                        <span class="badge bg-danger badge-rekap-presence">{{ $dataIzin->jmlh_izin }}</span>
-                        <ion-icon name="calendar-number-outline" class="text-primary mb-1 icon-rekap-presence"></ion-icon>
+                        <span class="badge bg-danger badge-rekap-presence">{{ $dataPresence->jmlh_izin }}</span>
+                        <ion-icon name="calendar-outline" class="text-primary mb-1 icon-rekap-presence"></ion-icon>
                         <br>
                         <span class="txt-rekap-presence">Izin</span>
                     </div>
@@ -147,7 +146,7 @@
             <div class="col-3">
                 <div class="card">
                     <div class="card-body text-center card-rekap-presence">
-                        <span class="badge bg-danger badge-rekap-presence">{{ $dataIzin->jmlh_sakit }}</span>
+                        <span class="badge bg-danger badge-rekap-presence">{{ $dataPresence->jmlh_sakit }}</span>
                         <ion-icon name="medkit-outline" class="text-danger mb-1 icon-rekap-presence"></ion-icon>
                         <br>
                         <span class="txt-rekap-presence">Sakit</span>
@@ -162,56 +161,127 @@
             <ul class="nav nav-tabs style1" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" href="#home" role="tab">
-                        Bulan Ini
+                        Bulan {{ $months[date('m') * 1 ] }} {{ date('Y') }}
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#profile" role="tab">
                         Leaderboard
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </div>
-        <div class="tab-content mt-2" style="margin-bottom:100px;">
+        <div class="tab-content mt-2" style="margin-bottom: 100px">
             <div class="tab-pane fade show active" id="home" role="tabpanel">
-                <ul class="listview image-listview">
-                    @foreach ($presenceHistoryOfMonth as $h)
-                    <li>
-                        <div class="item">
-                            <div class="icon-box bg-danger">
-                                <ion-icon name="finger-print-outline"></ion-icon>
-                            </div>
-                            <div class="in">
-                                <div>{{ date('d-m-Y', strtotime($h->presence_at)) }}</div>
-                                {{-- <span class="badge badge-success">{{ $h->check_in }}</span> --}}
-                                {{-- <span class="badge badge-danger">{{ $todayPresence != null && $h->check_out != null ? $h->check_out : 'Belum absen' }}</span> --}}
-                            </div>
-                        </div> 
-                    </li>
-                    @endforeach
-                </ul>
-            </div>
-            <div class="tab-pane fade" id="profile" role="tabpanel">
-                <ul class="listview image-listview">
-                    @foreach ($leaderboardPresence as $l)
-                    <li>
-                        <div class="item">
-                            <img src="assets/img/sample/avatar/avatar1.jpg" alt="image" class="image">
-                            <div class="in">
-                                <div>
-                                    <b>{{ $l->fullname }}</b><br>
-                                    <small class="text-muted">{{ $l->position }}</small>
+                @foreach ($presenceHistoryOfMonth as $h)
+                @if ($h->presence_status == 'H')
+                    <div class="card mb-1">
+                        <div class="card-body">
+                            <div class="history-content">
+                                <div class="icon-presence">
+                                    <ion-icon name="finger-print-outline" style="font-size: 48px;" class="text-success"></ion-icon>
                                 </div>
-                                <span class="badge {{ $l->check_in < '07:00' ? 'bg-success' : 'bg-danger' }}">
-                                    {{ $l->check_in }}
-                                </span>
+                                <div class="data-presence">
+                                    <h3 style="line-height: 2px">{{ $h->name }}</h3>
+                                    <h4>{{ dateToIndo($h->presence_at) }}</h4>
+                                    <span>
+                                        {!! $h->check_in != null ? date('H:i', strtotime($h->check_in)) : '<span class="text-danger"> Belum Presensi</span>' !!}
+                                    </span>
+                                    <span>
+                                        {!! $h->check_out != null ? "- " . date('H:i', strtotime($h->check_out)) : '<span class="text-danger">- Belum Presensi</span>' !!}
+                                    </span>
+                                    <div id="keterangan" class="mt-2">
+                                        @php
+                                            $checkIn = date('H:i', strtotime($h->check_in));
+                                            $jamIn = date('H:i', strtotime($h->jam_in));
+    
+                                            $jadwalJamMasuk = $h->presence_at . " " . $jamIn;
+                                            $jamPresensi = $h->presence_at . " " . $checkIn;
+                                        @endphp
+                                        @if ($checkIn > $jamIn)
+                                        @php
+                                            $jmlhTerlambat = calculateLateofCheckIn($jadwalJamMasuk, $jamPresensi);
+                                            $jmlhTerlambatDesimal = calculateLateofCheckInDecimal($jadwalJamMasuk, $jamPresensi);
+                                        @endphp
+                                            {{-- <span class="danger">Terlambat {{ $jmlhTerlambat }} ({{ $jmlhTerlambatDesimal }} Jam)</span> --}}
+                                            <span class="danger">Terlambat</span>
+                                        @else
+                                        <span style="color: green">Tepat Waktu</span>
+                                        @endif
+                                    </div>
+                                    <br>
+                                    {{-- <span>
+                                        {!! date('H:i', strtotime($h->check_in)) > date('H:i', strtotime($h->jam_in)) ? '<span class="text-danger">Terlambat</span>' : '<span class="text-success">Tepat Waktu</span>' !!}
+                                    </span> --}}
+                                </div>
                             </div>
                         </div>
-                    </li>
-                    @endforeach
-                </ul>
+                    </div>
+                @elseif($h->presence_status == 'I')
+                    <div class="card mb-1">
+                        <div class="card-body">
+                            <div class="history-content">
+                                <div class="icon-presence">
+                                    <ion-icon name="calendar-outline" style="font-size: 48px;" class="text-primary"></ion-icon>
+                                </div>
+                                <div class="data-presence">
+                                    <h3 style="line-height: 2px">Izin - {{ $h->pengajuan_izin_id }}</h3>
+                                    <h4>{{ dateToIndo($h->presence_at) }}</h4>
+                                    <span>
+                                       {{ $h->keterangan_izin }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @elseif($h->presence_status == 'S')
+                    <div class="card mb-1">
+                        <div class="card-body">
+                            <div class="history-content">
+                                <div class="icon-presence">
+                                    <ion-icon name="medkit-outline" style="font-size: 48px;" class="text-danger"></ion-icon>
+                                </div>
+                                <div class="data-presence">
+                                    <h3 style="line-height: 2px">Sakit - {{ $h->pengajuan_izin_id }}</h3>
+                                    <h4>{{ dateToIndo($h->presence_at) }}</h4>
+                                    <span>
+                                        {{ $h->keterangan_izin }}
+                                    </span>
+                                    <br>
+                                    @if (!empty($d->file_surat_dokter))
+                                        <span style="color: blue">
+                                            <ion-icon name="document-attach-outline"></ion-icon>
+                                            Lihat Surat Izin Dokter
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endforeach
             </div>
         </div>
+        {{-- <div class="tab-pane fade" id="profile" role="tabpanel">
+            <ul class="listview image-listview">
+                @foreach ($leaderboardPresence as $l)
+                <li>
+                    <div class="item">
+                        <img src="assets/img/no-avatar.png" alt="image" class="image">
+                        <div class="in">
+                            <div>
+                                <b>{{ $l->nama_lengkap }}</b><br>
+                                <small class="text-muted">{{ $l->instansi }}</small>
+                            </div>
+                            <span class="badge {{ $l->check_in < '07:00' ? 'bg-success' : 'bg-danger' }}">
+                                {{ $l->check_in }}
+                            </span>
+                        </div>
+                    </div>
+                </li>
+                @endforeach
+            </ul>
+        </div> --}}
     </div>
 </div>
 @endsection
