@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Admin\ConfigWorkingHourController;
 use App\Http\Controllers\Admin\DashboardAdminController;
-use App\Http\Controllers\Admin\EmployeeAdminController;
+use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\PengajuanIzinKaryawanController;
 use App\Http\Controllers\Admin\PresenceEmployeeController;
 use App\Http\Controllers\Admin\SetWorkingHourEmployeeController;
@@ -56,11 +56,11 @@ Route::middleware(['auth:employee'])->group(function() {
 
         Route::get('/admin/dashboard', [DashboardAdminController::class, 'index'])->name('dashboard-admin');
 
-        Route::controller(EmployeeAdminController::class)->group(function() {
+        Route::controller(EmployeeController::class)->group(function() {
             Route::get('/admin/employees', 'index')->name('employee-admin');
             Route::post('/admin/employee/store', 'store')->name('employee.store');
             Route::post('/admin/employee/edit', 'edit')->name('employee.edit');
-            Route::put('/admin/employee/{id_employee}', 'update');
+            Route::put('/admin/employee/{id_employee}/update', 'update');
             Route::delete('/admin/employee/{id_employee}/delete', 'destroy');
         });
 

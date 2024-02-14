@@ -56,3 +56,6 @@
       </button>
     </div>
 </form>
+<script>
+  $("#start-check-in, #jam-in, #end-check-in, #jam-out").mask("00:00");
+</script>

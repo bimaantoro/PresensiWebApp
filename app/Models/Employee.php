@@ -12,6 +12,7 @@ class Employee extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     protected $primaryKey = 'id_employee';
+    public $incrementing = false;
 
     protected $fillable = [
         'id_employee',
@@ -32,13 +33,5 @@ class Employee extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
-
-    public function presence() {
-        return $this->hasOne(Presence::class);
-    }
-
-    public function pengajuanIzin() {
-        return $this->hasOne(PengajuanIzin::class);
-    }
 }
 
