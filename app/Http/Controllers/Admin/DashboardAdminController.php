@@ -12,17 +12,16 @@ class DashboardAdminController extends Controller
     public function index() {
         $today = date('Y-m-d');
 
-        $dataPresence = DB::table('presences')
-        ->selectRaw('COUNT(employee_id) as jmlh_hadir, SUM(IF(check_in > "07:00", 1, 0)) as jmlh_terlambat')
-        ->where('presence_at', $today)
-        ->first();
+          // Query Rekap Presensi
+          $dataPresence = DB::table('presences')
+          ->selectRaw('SUM(IF(presence_status="H", 1, 0)) as jmlh_hadir,
+          SUM(IF(presence_status="I", 1, 0)) as jmlh_izin,
+          SUM(IF(presence_status="S", 1, 0)) as jmlh_sakit,
+          SUM(IF(presences.check_in > working_hours.jam_in, 1, 0)) as jmlh_terlambat')
+          ->leftJoin('working_hours', 'presences.working_hour_id', '=', 'working_hours.id')
+          ->where('presence_at', $today)
+          ->first();
 
-        $dataIzin = DB::table('pengajuan_izin')
-        ->selectRaw('SUM(IF(status="i", 1, 0)) as jmlh_izin, SUM(IF(status="s", 1, 0)) as jmlh_sakit')
-        ->where('start_date', $today)
-        ->where('status_code', 1)
-        ->first();
-
-        return view('admin.dashboard.index', compact('dataPresence', 'dataIzin'));
+        return view('admin.dashboard.index', compact('dataPresence'));
     }
 }

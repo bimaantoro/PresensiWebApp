@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Presence;
 
 use App\Http\Controllers\Controller;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -11,14 +12,60 @@ use Illuminate\Support\Facades\Storage;
 class PresenceController extends Controller
 {
     //
+    public function getDay() {
+        $day = (new DateTime())->format('N');
+
+        switch($day) {
+            case 1:
+                $today = 'Senin';
+                break;
+            case 2: 
+                $today = 'Selasa';
+                break;
+            case 3:
+                $today = 'Rabu';
+                break;
+            case 4:
+                $today = 'Kamis';
+                break;               
+            case 5:
+                $today = 'Jumat';
+                break;
+            case 6:
+                $today = 'Sabtu';
+                break;
+            case 7:
+                $today = 'Minggu';
+                break;
+            default:
+                $today = 'Tidak diketahui';
+                break;
+        }
+
+        return $today;
+    }
+
     public function create() {
-        $idEmployee = Auth::guard('employee')->user()->id_employee;
+        $idEmployee = Auth::guard('employee')->user()->id;
+
+        $days = $this->getDay();
+
         $checkIsPresence = DB::table('presences')
         ->where('presence_at', date('Y-m-d'))
         ->where('employee_id', $idEmployee)
         ->count();
 
-        return view('presence.create', compact('checkIsPresence'));
+        $workingHour = DB::table('config_working_hours')
+        ->join('working_hours', 'config_working_hours.working_hour_id', '=','working_hours.id')
+        ->where('employee_id', $idEmployee)
+        ->where('day', $days)
+        ->first();
+
+        if($workingHour == null) {
+            return view('presence.error-presence');
+        } else  {
+            return view('presence.create', compact('checkIsPresence', 'workingHour'));
+        }
     }
 
     public function store(Request $request) {

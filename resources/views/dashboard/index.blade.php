@@ -53,7 +53,7 @@
                         <span class="text-center">Riwayat</span>
                     </div>
                 </div>
-                <div class="item-menu text-center">
+                {{-- <div class="item-menu text-center">
                     <div class="menu-icon">
                         <a href="" class="orange" style="font-size: 40px;">
                             <ion-icon name="location"></ion-icon>
@@ -62,7 +62,7 @@
                     <div class="menu-name">
                         Lokasi
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -76,7 +76,11 @@
                         <div class="presencecontent">
                             <div class="iconpresence">
                                 @if ($todayPresence != null)
-                                    <img src="{{ asset('storage/uploads/presence/' . $todayPresence->photo_in) }}" alt="" class="imaged w48">
+                                        @if ($todayPresence->photo_in != null)
+                                        <img src="{{ asset('storage/uploads/presence/' . $todayPresence->photo_in) }}" alt="" class="imaged w48">
+                                    @else
+                                    <ion-icon name="camera"></ion-icon>
+                                    @endif
                                 @else
                                     <ion-icon name="camera"></ion-icon>
                                 @endif
@@ -95,7 +99,11 @@
                         <div class="presencecontent">
                             <div class="iconpresence">
                                 @if ($todayPresence != null && $todayPresence->check_out != null)
-                                    <img src="{{ asset('storage/uploads/presence/' . $todayPresence->photo_out) }}" alt="" class="imaged w48">
+                                        @if ($todayPresence->photo_out != null)
+                                            <img src="{{ asset('storage/uploads/presence/' . $todayPresence->photo_out) }}" alt="" class="imaged w48">
+                                        @else
+                                            <ion-icon name="camera"></ion-icon>
+                                        @endif
                                 @else
                                     <ion-icon name="camera"></ion-icon>
                                 @endif
@@ -112,7 +120,7 @@
     </div>
 
     <div id="rekap-presence">
-        <h3>Rekap Presensi {{ $months[$thisMonth] }} {{ $thisYear }}</h3>
+        <h3>Rekap Presensi {{ $months[$currentMonth] }} {{ $currentYear }}</h3>
         <div class="row">
             <div class="col-3">
                 <div class="card">

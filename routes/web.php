@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\ConfigWorkingHourController;
 use App\Http\Controllers\Admin\DashboardAdminController;
 use App\Http\Controllers\Admin\EmployeeAdminController;
 use App\Http\Controllers\Admin\PengajuanIzinKaryawanController;
 use App\Http\Controllers\Admin\PresenceEmployeeController;
+use App\Http\Controllers\Admin\SetWorkingHourEmployeeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RedirectAuthenticatedUsersController;
 use App\Http\Controllers\Dashboard\DashboardController;
@@ -71,9 +73,23 @@ Route::middleware(['auth:employee'])->group(function() {
         Route::controller(PengajuanIzinKaryawanController::class)->group(function() {
             Route::get('/admin/pengajuan-izin-karyawan', 'index')->name('pengajuan-izin-admin');
             Route::put('/admin/pengajuan-izin/approve', 'update');
-            Route::get('/admin/pengajuan-izin/{kode_izin}/decline', 'decline');
+            Route::get('/admin/pengajuan-izin/{id}/decline', 'decline');
             // Route::put('/admin/pengajuan-izin-karyawan/update', 'update');
             // Route::get('/admin/pengajuan-izin-karyawan/{id}', 'updateStatusApproved');
+        });
+
+        Route::controller(ConfigWorkingHourController::class)->group(function() {
+            Route::get('/admin/config/work-hours', 'index');
+            Route::post('/admin/config/work-hour/store', 'store');
+            Route::post('/admin/config/work-hour/edit', 'edit');
+            Route::put('/admin/config/work-hour/{id}/update', 'update');
+            Route::delete('/admin/config/work-hour/{id}/delete', 'destroy');
+        });
+
+        Route::controller(SetWorkingHourEmployeeController::class)->group(function() {
+            Route::get('admin/setting/{id}/work-hour', 'setWorkHourEmployee');
+            Route::post('admin/setting/work-hour/store', 'storeWorkHourEmployee');
+            Route::post('admin/setting/work-hour/update', 'updateWorkHourEmployee');
         });
     });
 

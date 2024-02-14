@@ -13,8 +13,17 @@
         <div class="col">
             <input type="hidden" id="latitude">
             <input type="hidden" id="longitude">
-            <div id="my_camera"></div>
+            <div class="my_camera"></div>
         </div>
+    </div>
+    <div class="jam-digital-malasngoding">
+        <p>{{ date('d-m-Y') }}</p>
+        <p id="jam"></p>
+        <p>{{ $workingHour->name }}</p>
+        <p>Mulai Presensi: {{ date('H:i', strtotime($workingHour->start_check_in))  }}</p>
+        <p>Jam Masuk: {{ date('H:i', strtotime($workingHour->jam_in)) }}</p>
+        <p>Akhir Presensi: {{ date('H:i', strtotime($workingHour->end_check_in)) }}</p>
+        <p>Jam Pulang: {{ date('H:i', strtotime($workingHour->jam_out)) }}</p>
     </div>
     <div class="row mt-2">
         <div class="col">
@@ -36,7 +45,7 @@
     </div>
 </div>
 @endsection
-@push('map-style')
+@push('master-user-css')
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
 integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
 crossorigin=""/>
@@ -44,7 +53,30 @@ crossorigin=""/>
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
 @endpush
-@push('webcam-script')
+@push('master-user-script')
+<script type="text/javascript">
+    window.onload = function() {
+        jam();
+    }
+
+    function jam() {
+        let e = document.getElementById('jam')
+        , d = new Date()
+        , h, m, s;
+        h = d.getHours();
+        m = set(d.getMinutes());
+        s = set(d.getSeconds());
+
+        e.innerHTML = h + ':' + m + ':' + s;
+
+        setTimeout('jam()', 1000);
+    }
+
+    function set(e) {
+        e = e < 10 ? '0' + e : e;
+        return e;
+    }
+</script>
 <script language="JavaScript">
     Webcam.set({
         width: 320,
@@ -53,7 +85,7 @@ crossorigin=""/>
         jpeg_quality: 90,
     });
     
-    Webcam.attach('#my_camera');
+    Webcam.attach('.my_camera');
 
     const getLatitude = document.getElementById('latitude');
     const getLongitude = document.getElementById('longitude');

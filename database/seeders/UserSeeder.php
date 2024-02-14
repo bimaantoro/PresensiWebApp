@@ -47,7 +47,7 @@ class UserSeeder extends Seeder
         ]);
 
         $karyawan = Employee::create([
-            'id_employee' => '331',
+            'id_employee' => '333',
             'username' => 'deanthalib',
             'fullname' => 'Dean Thalib',
             'position' => 'Software Engineering',
