@@ -10,7 +10,6 @@
     <link href="{{ asset('assets/css/inc/tabler/tabler-flags.min.css?1692870487') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/inc/tabler/tabler-payments.min.css?1692870487') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/inc/tabler/tabler-vendors.min.css?1692870487') }}" rel="stylesheet"/>
-    <link href="{{ asset('assets/css/inc/tabler/demo.min.css?1692870487') }}" rel="stylesheet"/>
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     @stack('monitor-presence-style')
     @stack('presence-map-style')
@@ -25,14 +24,22 @@
     </style>
   </head>
   <body>
-    <script src="{{ asset('assets/js/lib/demo-theme.min.js?1692870487') }}"></script>
     <div class="page">
-      <!-- Sidebar -->
-      @include('partials.manager.sidebar')
       <!-- Navbar -->
-      @include('partials.manager.header')
+      @include('partials.manager.navbar')
       <div class="page-wrapper">
         <!-- Page header -->
+        <div class="page-header d-print-none">
+          <div class="container-xl">
+              <div class="row g-2 align-items-center">
+                  <div class="col">
+                      <h2 class="page-title">
+                          @yield('title')
+                      </h2>
+                  </div>
+              </div>
+          </div>
+        </div>
         <!-- Page body -->
         @yield('content')
         

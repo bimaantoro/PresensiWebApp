@@ -8,51 +8,52 @@
 <!-- * App Header -->
 @endsection
 @section('content')
-<div class="section content-master-user">
-    <div class="row">
-        <div class="col-6">
-            <div class="form-group">
-                <select name="month" id="month" class="form-control selectmaterialize">
-                    <option value="">Bulan</option>
-                    @for ($i = 1; $i <= 12; $i++)
-                    <option {{ Request('month') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $months[$i] }}</option>
-                    @endfor
-                </select>
+<div class="row content-master">
+    <div class="col">
+        <div class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <select name="month" id="month" class="form-control selectmaterialize">
+                        <option value="">Bulan</option>
+                        @for ($i = 1; $i <= 12; $i++)
+                        <option {{ Request('month') == $i ? 'selected' : '' }} value="{{ $i }}">{{ $months[$i] }}</option>
+                        @endfor
+                    </select>
+                </div>
             </div>
-        </div>
-        <div class="col-6">
-            <div class="form-group">
-                <select name="year" id="year" class="form-control selectmaterialize">
-                    <option value="">Tahun</option>
-                    @php
-                        $initialYear = 2023 ;
-                        $currentYear =  date('Y');
-                        for ($i = $initialYear; $i <= $currentYear; $i++) { 
-                            if(Request('year') == $i) {
-                                $selected = 'selected';
-                            } else {
-                                $selected = '';
+            <div class="col-6">
+                <div class="form-group">
+                    <select name="year" id="year" class="form-control selectmaterialize">
+                        <option value="">Tahun</option>
+                        @php
+                            $initialYear = 2023 ;
+                            $currentYear =  date('Y');
+                            for ($i = $initialYear; $i <= $currentYear; $i++) { 
+                                if(Request('year') == $i) {
+                                    $selected = 'selected';
+                                } else {
+                                    $selected = '';
+                                }
+                                echo "<option $selected value='$i'>$i</option>";
                             }
-                            echo "<option $selected value='$i'>$i</option>";
-                        }
-                    @endphp
-                </select>
+                        @endphp
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <button class="btn btn-success btn-block"  id="search-history-presence">
+                        <ion-icon name="search-outline"></ion-icon>Cari Data
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="form-group">
-                <button class="btn btn-success btn-block"  id="search-history-presence">
-                    <ion-icon name="search-outline"></ion-icon>Search
-                </button>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-2">
-        <div class="col" id="show-history">
-
-        </div>
+</div>
+<div class="row mt-2 history-container">
+    <div class="col" id="show-history">
     </div>
 </div>
 @endsection

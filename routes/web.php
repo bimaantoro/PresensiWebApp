@@ -4,13 +4,12 @@ use App\Http\Controllers\Admin\ConfigWorkingHourController;
 use App\Http\Controllers\Admin\DashboardAdminController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\PengajuanIzinKaryawanController;
-use App\Http\Controllers\Admin\PresenceEmployeeController;
 use App\Http\Controllers\Admin\SetWorkingHourEmployeeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RedirectAuthenticatedUsersController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Direktur\DashboardDirekturController;
 use App\Http\Controllers\History\HistoryController;
-use App\Http\Controllers\Manager\ReportPresenceController;
 use App\Http\Controllers\Pengajuan\PengajuanIzinController;
 use App\Http\Controllers\Presence\PresenceController;
 use App\Http\Controllers\Profile\ProfileController;
@@ -43,7 +42,7 @@ Route::middleware(['auth:employee'])->group(function() {
 
         Route::get('/direktur/logout', [LoginController::class, 'logout']);
 
-        Route::controller(ReportPresenceController::class)->group(function() {
+        Route::controller(DashboardDirekturController::class)->group(function() {
             Route::get('direktur/dashboard', 'reportPresence')->name('dashboard-direktur');
             Route::post('/direktur/report-presence/print', 'printReportPresence');
             Route::post('/direktur/recap-presence/print', 'printRecapPresence');
@@ -54,7 +53,11 @@ Route::middleware(['auth:employee'])->group(function() {
     Route::middleware(['authRole:admin'])->group(function() {
         Route::get('/admin/logout', [LoginController::class, 'logout']);
 
-        Route::get('/admin/dashboard', [DashboardAdminController::class, 'index'])->name('dashboard-admin');
+        Route::controller(DashboardAdminController::class)->group(function() {
+            Route::get('/admin/dashboard', 'index')->name('dashboard-admin');
+            Route::post('/admin/presences', 'getPresence');
+            Route::post('/admin/presence/map', 'showMap');
+        });
 
         Route::controller(EmployeeController::class)->group(function() {
             Route::get('/admin/employees', 'index')->name('employee-admin');
@@ -64,18 +67,10 @@ Route::middleware(['auth:employee'])->group(function() {
             Route::delete('/admin/employee/{id_employee}/delete', 'destroy');
         });
 
-        Route::controller(PresenceEmployeeController::class)->group(function() {
-            Route::get('/admin/presences', 'index')->name('presence-admin');
-            Route::post('/admin/presences', 'getPresence')->name('presence-admin.get-presence');
-            Route::post('/admin/presence/map', 'showMap')->name('presence-admin.show-map');
-        });
-
         Route::controller(PengajuanIzinKaryawanController::class)->group(function() {
-            Route::get('/admin/pengajuan-izin-karyawan', 'index')->name('pengajuan-izin-admin');
+            Route::get('/admin/pengajuan-izin', 'index')->name('pengajuan-izin-admin');
             Route::put('/admin/pengajuan-izin/approve', 'update');
             Route::get('/admin/pengajuan-izin/{id}/decline', 'decline');
-            // Route::put('/admin/pengajuan-izin-karyawan/update', 'update');
-            // Route::get('/admin/pengajuan-izin-karyawan/{id}', 'updateStatusApproved');
         });
 
         Route::controller(ConfigWorkingHourController::class)->group(function() {
@@ -87,7 +82,7 @@ Route::middleware(['auth:employee'])->group(function() {
         });
 
         Route::controller(SetWorkingHourEmployeeController::class)->group(function() {
-            Route::get('admin/setting/{id}/work-hour', 'setWorkHourEmployee');
+            Route::get('admin/setting/{id_employee}/work-hour', 'setWorkHourEmployee');
             Route::post('admin/setting/work-hour/store', 'storeWorkHourEmployee');
             Route::post('admin/setting/work-hour/update', 'updateWorkHourEmployee');
         });

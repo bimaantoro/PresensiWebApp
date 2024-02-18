@@ -13,15 +13,15 @@
                       <table class="table table-vcenter table-striped">
                         <tr>
                             <th>ID Karyawan</th>
-                            <td>{{ $student->id }}</td>
+                            <td>{{ $employee->id_employee }}</td>
                         </tr>
                         <tr>
                             <th>Nama Karyawan</th>
-                            <td>{{ $student->nama_lengkap }}</td>
+                            <td>{{ $employee->fullname }}</td>
                         </tr>
                         <tr>
-                            <th>Asal Instansi</th>
-                            <td>{{ $student->instansi }}</td>
+                            <th>Jabatan</th>
+                            <td>{{ $employee->position }}</td>
                         </tr>
                       </table>
                     </div> 
@@ -32,7 +32,7 @@
                         <div class="table-responsive">
                             <form action="/admin/setting/work-hour/store" method="POST">
                                 @csrf
-                                <input type="hidden" name="id" value="{{ $student->id }}">
+                                <input type="hidden" name="id" value="{{ $employee->id_employee }}">
                                 <table class="table table-vcenter table-striped">
                                     <thead>
                                         <tr>
@@ -109,6 +109,19 @@
                                         <tr>
                                             <td>Sabtu
                                                 <input type="hidden" name="day[]" value="Sabtu">
+                                            </td>
+                                            <td>
+                                                <select name="working_hour_id[]" id="id-jam-kerja" class="form-select">
+                                                    <option value="">Jam Kerja</option>
+                                                    @foreach ($workHours as $wh)
+                                                        <option value="{{ $wh->id }}">{{ $wh->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Minggu
+                                                <input type="hidden" name="day[]" value="Minggu">
                                             </td>
                                             <td>
                                                 <select name="working_hour_id[]" id="id-jam-kerja" class="form-select">

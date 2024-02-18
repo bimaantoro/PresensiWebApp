@@ -82,7 +82,7 @@
     </table>
 
     <table class="table-data-employee">
-        <tr>
+        {{-- <tr>
             <td rowspan="4">
               @if ($employee->photo != null)
                 <img src="{{ asset('storage/uploads/employee/' . $employee->photo) }}" alt="" width="120" height="150">
@@ -90,7 +90,7 @@
                 <img src="{{ asset('assets/img/no-image.png') }}" alt="" width="120" height="150">
               @endif
             </td>
-        </tr>
+        </tr> --}}
         <tr>
             <td>ID Karyawan</td>
             <td>:</td>
@@ -138,7 +138,7 @@
         </td>
         <td style="text-align: center">{{ $p->presence_status }}</td>
         <td>
-          @if ($p->check_in >= "07:00")
+          @if ($p->check_in >= $p->jam_in)
               Terlambat
           @else
               Tepat waktu
@@ -148,7 +148,7 @@
       @else
       <tr>
         <td>{{ $loop->iteration }}</td>
-        {{-- <td>{{ date('d-m-Y', strtotime($p->presence_at)) }}</td> --}}
+        <td>{{ date('d-m-Y', strtotime($p->presence_at)) }}</td>
         <td>-</td>
         <td>
           -
@@ -157,13 +157,10 @@
         <td>
          -
         </td>
+        <td style="text-align: center">{{ $p->presence_status }}</td>
         <td>
-          -
+          {{ $p->keterangan_izin }}
         </td>
-        {{-- <td>{{ $p->status_presence }}</td> --}}
-        {{-- <td>{{ $p->keterangan }}</td> --}}
-        <td></td>
-        <td></td>
       </tr>
       @endif
       @endforeach

@@ -10,7 +10,7 @@ class DashboardController extends Controller
 {
     //
     public function index() {
-        $idEmployee = Auth::guard('employee')->user()->id;
+        $idEmployee = Auth::guard('employee')->user()->id_employee;
 
         $today = date('Y-m-d');
         $currentMonth = date('m') * 1;

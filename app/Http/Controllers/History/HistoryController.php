@@ -35,12 +35,13 @@ class HistoryController extends Controller
         $year = $request->year;
 
         $history = DB::table('presences')
-        ->select('presences.*', 'keterangan_izin', 'file_surat_dokter')
-        ->leftJoin('pengajuan_izin', 'presences.kode_izin', '=', 'pengajuan_izin.kode_izin')
+        ->select('presences.*', 'working_hours.*', 'keterangan_izin', 'file_surat_dokter')
+        ->leftJoin('working_hours', 'presences.working_hour_id', '=', 'working_hours.id')
+        ->leftJoin('pengajuan_izin', 'presences.pengajuan_izin_id', '=', 'pengajuan_izin.id')
         ->where('presences.employee_id', $idEmployee)
         ->whereRaw('MONTH(presence_at)="'. $month. '"')
         ->whereRaw('YEAR(presence_at)="' . $year . '"')
-        ->orderBy('presence_at')
+        ->orderByDesc('presence_at')
         ->get();
 
         return view('history.show', compact('history'));

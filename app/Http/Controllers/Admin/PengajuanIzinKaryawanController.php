@@ -11,9 +11,8 @@ class PengajuanIzinKaryawanController extends Controller
 {
     //
     public function index(Request $request) {
-
         $query = PengajuanIzin::query();
-        $query->select('kode_izin', 'start_date', 'end_date', 'employee_id', 'fullname', 'position', 'status', 'keterangan_izin', 'status_code');
+        $query->select('pengajuan_izin.id', 'start_date', 'end_date', 'pengajuan_izin.employee_id', 'file_surat_dokter', 'fullname', 'position', 'status', 'keterangan_izin', 'status_code');
         $query->join('employees', 'pengajuan_izin.employee_id', '=', 'employees.id_employee');
         $query->orderBy('start_date', 'desc');
 
@@ -41,11 +40,11 @@ class PengajuanIzinKaryawanController extends Controller
 
     public function update(Request $request) {
         $statusCode = $request->status_code;
-        $kodeIzin = $request->kode_izin_form;
+        $idIzin = $request->id_izin_form;
         $tolakPengajuan = $request->keterangan_penolakan;
 
         $dataIzin = DB::table('pengajuan_izin')
-        ->where('kode_izin', $kodeIzin)
+        ->where('id', $idIzin)
         ->first();
 
         $idEmployee = $dataIzin->employee_id;
@@ -62,14 +61,14 @@ class PengajuanIzinKaryawanController extends Controller
                         'employee_id' => $idEmployee,
                         'presence_at' => $startDate,
                         'presence_status' => $status,
-                        'kode_izin' => $kodeIzin,
+                        'pengajuan_izin_id' => $idIzin,
                     ]);
                     $startDate = date('Y-m-d', strtotime('+1 days', strtotime($startDate)));
                 }
             }
 
             DB::table('pengajuan_izin')
-            ->where('kode_izin', $kodeIzin)
+            ->where('id', $idIzin)
             ->update([
                 'status_code' => $statusCode,
                 'keterangan_penolakan' => $tolakPengajuan,
@@ -77,32 +76,32 @@ class PengajuanIzinKaryawanController extends Controller
 
             DB::commit();
 
-            return redirect()->back()->with('success', 'Data berhasil diperbarui');
+            return redirect()->back()->with('success', 'Data berhasil diproses');
         }catch(\Exception $e) {
-            dd($e);
-            return redirect()->back()->with('error', 'Data gagal diperbarui');
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Data gagal diproses');
         }
     }
 
-    public function decline($kodeIzin) {
+    public function decline($id) {
         try {
             DB::table('pengajuan_izin')
-            ->where('kode_izin', $kodeIzin)
+            ->where('id', $id)
             ->update([
                 'status_code' => 0
             ]);
 
             DB::table('presences')
-            ->where('kode_izin', $kodeIzin)
+            ->where('id', $id)
             ->delete();
 
             DB::commit();
 
-            return redirect()->back()->with('success', 'Data berhasil dibatalkan');
+            return redirect()->back()->with('success', 'Data berhasil diproses');
 
         }catch(\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Data gagal diperbarui');
+            return redirect()->back()->with('error', 'Data gagal diproses');
         }
     }
 }

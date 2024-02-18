@@ -11,6 +11,25 @@
     height: 200px;
 }
 
+.jam-digital-malasngoding {
+    background-color: #27272783;
+    position: absolute;
+    top: 70px;
+    right: 25px;
+    z-index: 500;
+    width: 150px;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.jam-digital-malasngoding p {
+    color: #fff;
+    font-size: 16px;
+    text-align: left;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
 .card-rekap-presence {
     padding: 12px 12px !important;
     line-height: 0.8rem !important;
@@ -56,6 +75,24 @@
 .pengajuan-izin-content {
     display: flex;
     gap: 1px;
+    margin-top: 15px;
+ }
+
+.history-container {
+    position: fixed;
+    width: 100%;
+    margin: auto;
+    overflow-y: scroll;
+    height: 430px;
+}
+
+.content-master {
+    margin-top: 70px;
+}
+
+ .history-content {
+    display: flex;
+    gap: 1;
     margin-top: 15px;
  }
 

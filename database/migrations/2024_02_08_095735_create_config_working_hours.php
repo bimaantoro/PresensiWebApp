@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('config_working_hours', function (Blueprint $table) {
             $table->id();
             $table->string('day', 50)->nullable();
-            $table->string('employee_id');
+            $table->char('employee_id')->nullable();
             $table->foreign('employee_id')->references('id_employee')->on('employees')->onDelete('cascade');
             $table->char('working_hour_id')->nullable();
             $table->foreign('working_hour_id')->references('id')->on('working_hours')->onDelete('cascade');

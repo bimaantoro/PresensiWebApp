@@ -87,26 +87,26 @@ crossorigin=""/>
     
     Webcam.attach('.my_camera');
 
-    const getLatitude = document.getElementById('latitude');
-    const getLongitude = document.getElementById('longitude');
+    let getLatitude = document.getElementById('latitude');
+    let getLongitude = document.getElementById('longitude');
 
     if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showLocation, showError)
     }
 
     function showLocation(position) {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
         getLatitude.value = latitude;
         getLongitude.value = longitude;
-        const map = L.map('map').setView([latitude, longitude], 13);
+        let map = L.map('map').setView([latitude, longitude], 18);
 
         L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}',{
         maxZoom: 20,
         subdomains:['mt0','mt1','mt2','mt3']
         }).addTo(map);
 
-        const marker = L.marker([latitude, longitude]).addTo(map)
+        let marker = L.marker([latitude, longitude]).addTo(map);
     }
 
     function showError() {}
@@ -126,25 +126,37 @@ crossorigin=""/>
                 latitude: latitude,
                 longitude: longitude,
             },
-            success: (response) => {
-                const status = response.split('|');
-                
-                if(status[0] === 'success') {
+            success: (response) => {                
+                if(response.hasOwnProperty('error')) {
                     Swal.fire({
-                    title: 'Berhasil!',
-                    text: status[1],
-                    icon: 'success',
-                });
-                setTimeout("location.href='/dashboard'", 3000);
+                        title: 'Error!',
+                        text: response.error,
+                        icon: 'error',
+                    });
+                } else if(response.hasOwnProperty('message')) {
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: response.message,
+                        icon: 'success',
+                    });
+                    setTimeout("location.href='/dashboard'", 3000);
                 } else {
                     Swal.fire({
+                        title: 'Error!',
+                        text: 'Invalid response from server',
+                        icon: 'error',
+                    });
+                }
+            },
+            error: (xhr, status, error) => {
+                console.error(error);
+                Swal.fire({
                     title: 'Error!',
-                    text: status[1],
+                    text: 'Something went wrong. Please try again later.',
                     icon: 'error',
                 });
-                }
             }
-        })
+        });
     });
 </script>
 @endpush

@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 class SetWorkingHourEmployeeController extends Controller
 {
     //
-    public function setWorkHourEmployee($id) {
+    public function setWorkHourEmployee($idEmployee) {
 
-        $student = DB::table('employees')
-        ->where('id_employee', $id)
+        $employee = DB::table('employees')
+        ->where('id_employee', $idEmployee)
         ->first();
 
         $workHours = DB::table('working_hours')
@@ -21,18 +21,18 @@ class SetWorkingHourEmployeeController extends Controller
         ->get();
 
         $checkWorkHour = DB::table('config_working_hours')
-        ->where('employee_id', $id)
+        ->where('employee_id', $idEmployee)
         ->count();
 
         if($checkWorkHour > 0) {
             $setWorkingHour = DB::table('config_working_hours')
-            ->where('employee_id', $id)
+            ->where('employee_id', $idEmployee)
             ->get();
 
-            return view('admin.setting.edit-work-hour', compact('student', 'workHours', 'setWorkingHour'));
+            return view('admin.setting.edit-work-hour', compact('employee', 'workHours', 'setWorkingHour'));
         }
 
-        return view('admin.setting.work-hour', compact('student', 'workHours'));
+        return view('admin.setting.work-hour', compact('employee', 'workHours'));
     }
 
     public function storeWorkHourEmployee(Request $request) {
@@ -51,16 +51,14 @@ class SetWorkingHourEmployeeController extends Controller
         try {
             ConfigWorkingHour::insert($data);
 
-            return redirect('admin/employees')->with(['success' => 'Jam Kerja Peserta berhasil disetting']);
+            return redirect('admin/employees')->with(['success' => 'Jam Kerja karyawan berhasil disetting']);
         } catch(\Exception $e) {
-
-            dd($e);
-            return redirect('admin/employees')->with(['error' => 'Jam Kerja Peserta gagal disetting']);
+            return redirect('admin/employees')->with(['error' => 'Jam Kerja karyawan gagal disetting']);
         }
     }
 
     public function updateWorkHourEmployee(Request $request) {
-        $idEmployee = $request->id;
+        $idEmployee = $request->id_employee;
         $day = $request->day;
         $idJamKerja = $request->working_hour_id;
         
@@ -83,11 +81,11 @@ class SetWorkingHourEmployeeController extends Controller
             
             DB::commit();
 
-            return redirect('admin/employees')->with(['success' => 'Jam Kerja Peserta berhasil disetting']);
+            return redirect('admin/employees')->with(['success' => 'Jam Kerja karyawan berhasil disetting']);
         } catch(\Exception $e) {
             DB::rollBack();
             
-            return redirect('admin/employees')->with(['error' => 'Jam Kerja Peserta gagal disetting']);
+            return redirect('admin/employees')->with(['error' => 'Jam Kerja karyawan gagal disetting']);
         }
     }
 }

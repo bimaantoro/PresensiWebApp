@@ -41,6 +41,11 @@
     padding: 5px;
     font-size: 12px;
   }
+
+  body.A4.landscape .sheet {
+    width: 297mm !important;
+    height: auto !important;
+  }
   
   </style>
 </head>
@@ -70,86 +75,86 @@
     </table>
 
     <table class="table-presence">
-        <tr>
-          <th rowspan="2">ID Karyawan</th>
-          <th rowspan="2">Nama</th>
-          <th rowspan="2">Jabatan</th>
-          <th colspan="{{ $totalDays }}">Bulan {{ $months[$month] }} {{ $year }}</th>
-          <th rowspan="2">H</th>
-          <th rowspan="2">I</th>
-          <th rowspan="2">S</th>
-          <th rowspan="2">A</th>
-        </tr>
-        <tr>
-          @foreach ($rangeDate as $rd)
-            @if ($rd != NULL)
-              <th>{{ date('d', strtotime($rd)) }}</th>
-            @endif
-          @endforeach
-        </tr>
-        @foreach ($recapPresence as $rp)
-        <tr>
-          <td>{{ $rp->id_employee }}</td>
-          <td>{{ $rp->fullname }}</td>
-          <td>{{ $rp->position }}</td>
-          <?php
-            $totalPresence = 0;
-            $totalAlpa = 0;
-            $totalAbsen = 0;
-            $totalSakit = 0;
-            $color = "";
-            for ($i=1; $i <= $totalDays; $i++) { 
-              $date = "tgl_" . $i;
-              $dataPresence = explode("|", $rp->$date);
+      <tr>
+        <th rowspan="2">ID Karyawan</th>
+        <th rowspan="2">Nama</th>
+        <th rowspan="2">Jabatan</th>
+        <th colspan="{{ $totalDays }}">Bulan {{ $months[$month] }} {{ $year }}</th>
+        <th rowspan="2">H</th>
+        <th rowspan="2">I</th>
+        <th rowspan="2">S</th>
+        <th rowspan="2">A</th>
+    </tr>
+    <tr>
+      @foreach ($rangeDate as $rd)
+        @if ($rd != NULL)
+          <th>{{ date('d', strtotime($rd)) }}</th>
+        @endif
+      @endforeach
+    </tr>
+    @foreach ($recapPresence as $rp)
+    <tr>
+      <td>{{ $rp->id_employee }}</td>
+      <td>{{ $rp->fullname }}</td>
+      <td>{{ $rp->position }}</td>
+      <?php
+        $totalPresence = 0;
+        $totalAlpa = 0;
+        $totalAbsen = 0;
+        $totalSakit = 0;
+        $color = "";
+        for ($i=1; $i <= $totalDays; $i++) { 
+          $date = "tgl_" . $i;
+          $dataPresence = explode("|", $rp->$date);
 
-              if($rp->$date != NULL) {
-                $statusPresence = $dataPresence[2];
-              } else {
-                $statusPresence = "";
-              }
-
-              if($statusPresence == 'H') {
-                 $totalPresence += 1;
-                 $color = "white";
-              }
-
-              if($statusPresence == 'I') {
-                $totalAbsen += 1;
-                $color = "#ffbb00";
-              }
-
-              if($statusPresence == 'S') {
-                $totalSakit += 1;
-                 $color = "#34a1eb";
-              }
-
-              if(empty($statusPresence)) {
-                $totalAlpa += 1;
-                $color = "red";
-              } else {
-                $color = "";
-              }
-          ?>
-          <td style="background-color: {{ $color }}">            
-            {{ $statusPresence }}
-          </td>
-          <?php
+          if($rp->$date != NULL) {
+            $statusPresence = $dataPresence[2];
+          } else {
+            $statusPresence = "";
           }
-          ?>
-          <td>
-            {{ !empty($totalPresence) ? $totalPresence : "" }}
-          </td>
-          <td>
-            {{ !empty($totalAbsen) ? $totalAbsen : "" }}
-          </td>
-          <td>
-            {{ !empty($totalSakit) ? $totalSakit : "" }}
-          </td>
-          <td>
-            {{ !empty($totalAlpa) ? $totalAlpa : "" }}
-          </td>
-        </tr>
-        @endforeach
+
+          if($statusPresence == 'H') {
+             $totalPresence += 1;
+             $color = "white";
+          }
+
+          if($statusPresence == 'I') {
+            $totalAbsen += 1;
+            $color = "#ffbb00";
+          }
+
+          if($statusPresence == 'S') {
+            $totalSakit += 1;
+             $color = "#34a1eb";
+          }
+
+          if(empty($statusPresence)) {
+            $totalAlpa += 1;
+            $color = "red";
+          } else {
+            $color = "";
+          }
+      ?>
+      <td style="background-color: {{ $color }}">            
+        {{ $statusPresence }}
+      </td>
+      <?php
+      }
+      ?>
+      <td>
+        {{ !empty($totalPresence) ? $totalPresence : "" }}
+      </td>
+      <td>
+        {{ !empty($totalAbsen) ? $totalAbsen : "" }}
+      </td>
+      <td>
+        {{ !empty($totalSakit) ? $totalSakit : "" }}
+      </td>
+      <td>
+        {{ !empty($totalAlpa) ? $totalAlpa : "" }}
+      </td>
+    </tr>
+    @endforeach
     </table>
 
     <table width="100%" style="margin-top: 100px">

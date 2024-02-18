@@ -11,22 +11,21 @@ class PengajuanIzinController extends Controller
 {
     //
     public function index(Request $request) {
-        $idEmployee = Auth::guard('employee')->user()->id_employee;
+        $idEmployee = Auth::user()->id_employee;
+        $dataIzinQuery = DB::table('pengajuan_izin')
+        ->where('employee_id', $idEmployee);
         
         if(!empty($request->month) && !empty($request->year)) {
-            $dataIzin = DB::table('pengajuan_izin')
-            ->orderBy('start_date', 'desc')
-            ->where('employee_id', $idEmployee)
-            ->whereRaw('MONTH(start_date)="' . $request->month . '"')
-            ->whereRaw('YEAR(start_date)="' . $request->year . '"')
-            ->get();
+            $dataIzinQuery->whereMonth('start_date', $request->month)
+            ->whereYear('start_date', $request->year);
         } else {
-            $dataIzin = DB::table('pengajuan_izin')
-            ->where('employee_id', $idEmployee)
-            ->limit(5)
-            ->orderBy('start_date', 'desc')
-            ->get();
+            $dataIzinQuery->orderByDesc('start_date')
+            ->limit(5);
         }
+
+        $dataIzin = $dataIzinQuery->orderBy('start_date', 'desc')
+        ->get();
+
         $months = [
             "",
             "Januari",
@@ -44,10 +43,6 @@ class PengajuanIzinController extends Controller
         ];
 
         return view('pengajuan-izin.index', compact('dataIzin', 'months'));
-    }
-
-    public function create() {
-        return view('pengajuan-izin.create');
     }
 
     public function createAbsen() {
@@ -68,15 +63,15 @@ class PengajuanIzinController extends Controller
         $latestIzin = DB::table('pengajuan_izin')
         ->whereRaw('MONTH(start_date)="' . $month . '"')
         ->whereRaw('YEAR(start_date)="' . $year . '"')
-        ->orderBy('kode_izin', 'desc')
+        ->orderByDesc('id')
         ->first();
 
-        $latestKodeIzin = $latestIzin != null ? $latestIzin->kode_izin : "";
+        $latestKodeIzin = $latestIzin != null ? $latestIzin->id : "";
         $formatKey = "IZ" . $month . $formatYear;
         $kodeIzin = kodeIzin($latestKodeIzin, $formatKey, 3);
 
         $data = [
-            'kode_izin' => $kodeIzin,
+            'id' => $kodeIzin,
             'start_date' => $startDate,
             'end_date' => $endDate,
             'status' => $status,
@@ -134,10 +129,10 @@ class PengajuanIzinController extends Controller
         $latestIzin = DB::table('pengajuan_izin')
         ->whereRaw('MONTH(start_date)="' . $month . '"')
         ->whereRaw('YEAR(start_date)="' . $year . '"')
-        ->orderBy('kode_izin', 'desc')
+        ->orderByDesc('id')
         ->first();
 
-        $latestKodeIzin = $latestIzin != null ? $latestIzin->kode_izin : "";
+        $latestKodeIzin = $latestIzin != null ? $latestIzin->id : "";
         $formatKey = "IZ" . $month . $formatYear;
         $kodeIzin = kodeIzin($latestKodeIzin, $formatKey, 3);
 
@@ -148,7 +143,7 @@ class PengajuanIzinController extends Controller
         }
 
         $data = [
-            'kode_izin' => $kodeIzin,
+            'id' => $kodeIzin,
             'start_date' => $startDate,
             'end_date' => $endDate,
             'status' => $status,
@@ -191,28 +186,6 @@ class PengajuanIzinController extends Controller
             } else {
                 return redirect()->route('pengajuan-izin')->with(['error' => 'Data gagal disimpan']);
             }
-        }
-    }
-
-    public function store(Request $request) {
-        $idEmployee = Auth::guard('employee')->user()->id_employee;
-        $izinAt = $request->izinAt;
-        $status = $request->status;
-        $keterangan = $request->keterangan;
-
-        $data = [
-            'izin_at' => $izinAt,
-            'status' => $status,
-            'keterangan' => $keterangan,
-            'employee_id' => $idEmployee,
-        ];
-
-        $save = DB::table('pengajuan_izin')->insert($data);
-
-        if($save) {
-            return redirect()->route('pengajuan-izin')->with(['success' => 'Data berhasil disimpan']);
-        } else {
-            return redirect()->route('pengajuan-izin')->with(['error' => 'Data gagal disimpan']);
         }
     }
 

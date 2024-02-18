@@ -10,12 +10,16 @@ class PengajuanIzin extends Model
     use HasFactory;
 
     protected $table = 'pengajuan_izin';
+    protected $primaryKey = 'id';
+    public $incrementing = false;
     
     protected $fillable = [
-        'izin_at',
-        'status',
+        'start_date',
+        'end_date',
         'keterangan',
-        'status_approved',
+        'file_surat_dokter',
+        'status',
+        'status_code',
         'employee_id'
     ];
 

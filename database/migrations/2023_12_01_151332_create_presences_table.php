@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('longitude')->nullable();
             $table->date('presence_at')->nullable();
             $table->char('presence_status', 10)->nullable();
-            $table->string('employee_id')->nullable();
+            $table->char('employee_id')->nullable();
             $table->foreign('employee_id')->references('id_employee')->on('employees')->onDelete('cascade');
             $table->char('pengajuan_izin_id')->nullable();
             $table->foreign('pengajuan_izin_id')->references('id')->on('pengajuan_izin')->onDelete('cascade');
