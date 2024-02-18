@@ -11,6 +11,7 @@
     <link href="{{ asset('assets/css/inc/tabler/tabler-payments.min.css?1692870487') }}" rel="stylesheet"/>
     <link href="{{ asset('assets/css/inc/tabler/tabler-vendors.min.css?1692870487') }}" rel="stylesheet"/>
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+    <link rel="icon" type="image/png"  href="{{ asset('assets/img/favicon.ico') }}" sizes="32x32">
     <style>
       @import url('https://rsms.me/inter/inter.css');
       :root {

@@ -3,7 +3,7 @@
 @section('content')
 <div class="login-form mt-1">
     <div class="section">
-        <img src="{{ asset('assets/img/login.jpg') }}" alt="image" class="form-image">
+        <img src="{{ asset('assets/img/king-logo.png') }}" alt="image" class="form-image">
     </div>
     <div class="section mt-1">
         <h1>E-Presensi PT. KOPINETGO</h1>
@@ -38,7 +38,7 @@
             </div>
 
             <div class="form-group boxed">
-                <button type="submit" class="btn btn-primary btn-block btn-lg">Masuk</button>
+                <button type="submit" class="btn btn-danger btn-block btn-lg">Masuk</button>
             </div>
 
         </form>
