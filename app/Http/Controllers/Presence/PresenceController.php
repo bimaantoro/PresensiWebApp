@@ -69,7 +69,7 @@ class PresenceController extends Controller
     }
 
     public function store(Request $request) {
-        $idEmployee = Auth::user()->id_employee;
+        $idEmployee = Auth::guard('employee')->user()->id_employee;
         $today = date('Y-m-d');
         $currentHour = date('H:i:s');
         $image = $request->image;

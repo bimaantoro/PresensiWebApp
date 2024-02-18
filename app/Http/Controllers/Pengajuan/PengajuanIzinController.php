@@ -11,7 +11,7 @@ class PengajuanIzinController extends Controller
 {
     //
     public function index(Request $request) {
-        $idEmployee = Auth::user()->id_employee;
+        $idEmployee = Auth::guard('employee')->user()->id_employee;
         $dataIzinQuery = DB::table('pengajuan_izin')
         ->where('employee_id', $idEmployee);
         
@@ -68,10 +68,10 @@ class PengajuanIzinController extends Controller
 
         $latestKodeIzin = $latestIzin != null ? $latestIzin->id : "";
         $formatKey = "IZ" . $month . $formatYear;
-        $kodeIzin = kodeIzin($latestKodeIzin, $formatKey, 3);
+        $idIzin = kodeIzin($latestKodeIzin, $formatKey, 3);
 
         $data = [
-            'id' => $kodeIzin,
+            'id' => $idIzin,
             'start_date' => $startDate,
             'end_date' => $endDate,
             'status' => $status,
@@ -134,16 +134,16 @@ class PengajuanIzinController extends Controller
 
         $latestKodeIzin = $latestIzin != null ? $latestIzin->id : "";
         $formatKey = "IZ" . $month . $formatYear;
-        $kodeIzin = kodeIzin($latestKodeIzin, $formatKey, 3);
+        $idIzin = kodeIzin($latestKodeIzin, $formatKey, 3);
 
         if($request->hasFile('file_surat_dokter')) {
-            $fileSuratDokter = $kodeIzin . '.' . $request->file('file_surat_dokter')->getClientOriginalExtension();
+            $fileSuratDokter = $idIzin . '.' . $request->file('file_surat_dokter')->getClientOriginalExtension();
         } else {
             $fileSuratDokter = null;
         }
 
         $data = [
-            'id' => $kodeIzin,
+            'id' => $idIzin,
             'start_date' => $startDate,
             'end_date' => $endDate,
             'status' => $status,
@@ -177,7 +177,7 @@ class PengajuanIzinController extends Controller
 
             if($save) {
                 if($request->hasFile('file_surat_dokter')) {
-                    $fileSuratDokter = $kodeIzin . '.' . $request->file('file_surat_dokter')->getClientOriginalExtension();
+                    $fileSuratDokter = $idIzin . '.' . $request->file('file_surat_dokter')->getClientOriginalExtension();
                     $folderPath = 'public/uploads/suratDokter';
                     $request->file('file_surat_dokter')->storeAs($folderPath, $fileSuratDokter);
                 }

@@ -43,7 +43,7 @@ Route::middleware(['auth:employee'])->group(function() {
         Route::get('/direktur/logout', [LoginController::class, 'logout']);
 
         Route::controller(DashboardDirekturController::class)->group(function() {
-            Route::get('direktur/dashboard', 'reportPresence')->name('dashboard-direktur');
+            Route::get('/direktur/dashboard', 'reportPresence')->name('dashboard-direktur');
             Route::post('/direktur/report-presence/print', 'printReportPresence');
             Route::post('/direktur/recap-presence/print', 'printRecapPresence');
         });
